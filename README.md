@@ -47,7 +47,7 @@ Usage
   ```
   
 
-2. Add widget to view
+2. Usage comment widget in view:
 
 - Add module to config section:
 ```php

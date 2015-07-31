@@ -28,20 +28,20 @@ Usage
 
 **1. Manage comments in admin panel:** 
 
-- Add the following code to admin module section in main config
+    1.1 Add the following code to admin module section in main config
 
   ```php
   'controllerMap' => [
         'comments' => 'yii2mod\comments\controllers\ManageController'
   ]  
   ```
-- Run migrations:
+    1.2 Run migrations:
   
   ```php
       php yii migrate --migrationPath=@vendor/yii2mod/yii2-comments/migrations
   ```
   
-- You can then access to management section through the following URL:
+**You can then access to management section through the following URL:**
   ```
     http://localhost/path/to/index.php?r=admin/comments/index
   ```
@@ -49,7 +49,7 @@ Usage
 
 **2. Usage comment widget in view:**
 
-- Add module to config section:
+    2.1 Add module to config section:
 ```php
 'modules' => [
     'comment' => [
@@ -58,7 +58,7 @@ Usage
 ]
 ```
 
-- Use in view:
+   2.2 Use in view:
 
 ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget(['model' => $model]); ?>

@@ -28,7 +28,7 @@ Usage
 
 1. Manage comments in admin panel: 
 
-- Add following code to admin module section in main config
+- Add the following code to admin module section in main config
 
   ```php
   'controllerMap' => [

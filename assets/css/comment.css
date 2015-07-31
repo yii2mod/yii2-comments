@@ -1,0 +1,197 @@
+/* Comments */
+.comments {
+    margin: 40px 0 40px 0;
+}
+
+.comments .comments-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comments .comment-author-avatar {
+    float: left;
+    width: 60px;
+}
+
+.comments .comment-details {
+    padding-left: 90px;
+}
+
+.comments .comment-content {
+    background: -webkit-linear-gradient(right left, #f8f8f8, #f3f3f3);
+    background: -moz-linear-gradient(right left, #f8f8f8, #f3f3f3);
+    background: -o-linear-gradient(right left, #f8f8f8, #f3f3f3);
+    background: linear-gradient(to left right, #f8f8f8, #f3f3f3);
+    -webkit-box-shadow: 0 0 3px #cccccc, inset 0 -1px 1px #e9e9e9, 0 1px 1px rgba(0, 0, 0, 0.12), inset 0 1px 1px white;
+    -moz-box-shadow: 0 0 3px #cccccc, inset 0 -1px 1px #e9e9e9, 0 1px 1px rgba(0, 0, 0, 0.12), inset 0 1px 1px white;
+    box-shadow: 0 0 3px #cccccc, inset 0 -1px 1px #e9e9e9, 0 1px 1px rgba(0, 0, 0, 0.12), inset 0 1px 1px white;
+    padding: 20px;
+    border-radius: 5px;
+    border-top: 1px solid #e7e7e7;
+    overflow: hidden;
+}
+
+.comments .comment-date {
+    font-size: 14px;
+    color: #979797;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.comments .comment-author-name {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0 0 5px 0;
+}
+
+/* Apply on 2nd level comments list */
+.comments-list .children {
+    padding-left: 45px;
+    border-left: 2px solid #dfdfdf;
+    margin: 20px 0 0 0;
+}
+
+.comments-list .comment {
+    position: relative;
+    margin: 0 0 20px 0;
+}
+
+.comments-list .children .comment:after {
+    content: "";
+    position: absolute;
+    left: -46px;
+    top: 48px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 3px 0 3px 6px;
+    border-color: transparent transparent transparent #184780;
+}
+
+.comments-list .children .comment:before {
+    content: "";
+    position: absolute;
+    left: -47px;
+    top: 25px;
+    width: 2px;
+    height: 40px;
+    background-color: #184780;
+    border-bottom: 6px solid #f9f9f9;
+    border-top: 6px solid #f9f9f9;
+}
+
+.comments .comment-author-avatar img {
+    border: 1px solid #e2e2e2;
+}
+
+.comments ul,
+.comments ol {
+    list-style-type: none;
+}
+
+.title-block .title-seperator {
+    background: url("../images/title-pattern.png");
+    height: 5px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.title-block .h3-body-title {
+    float: left;
+    margin: 0 20px 20px 0;
+}
+
+.comment-action-buttons {
+    float: right;
+}
+
+.comment-action-buttons a {
+    font-weight: normal;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.63);
+    padding: 5px;
+}
+
+.comment-action-buttons a:hover {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.63);
+}
+
+.comment-action-buttons a:focus {
+    outline: none;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.63);
+}
+
+.comment-box {
+    margin-top: 15px;
+}
+
+.comment-box textarea {
+    background: #fdfdfd;
+    vertical-align: middle;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    padding: 5px 6px 4px;
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1) inset;
+    border: 1px solid #c1c1c1;
+    font-size: 13px;
+    color: #333;
+    line-height: 17px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    overflow: auto;
+    border-radius: 0;
+}
+
+.comment-box .comment-box-partial .comment-submit {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 12px;
+    font-weight: normal;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 15px;
+    border: 1px solid #008cc9;
+    border-radius: 3px;
+    height: 26px;
+    line-height: 26px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: block;
+    color: #fff !important;
+    background: #008cc9 0 0;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    margin: 10px 0 0;
+}
+
+.comment-submit:focus {
+    outline: none !important;
+}
+
+.comment-box .comment-box-partial .comment-submit:hover {
+    background: #187BA7;
+}
+
+#cancel-reply {
+    display: none;
+    color: #008cc9;
+}
+
+#cancel-reply:hover {
+    text-decoration: none;
+    color: #187BA7;
+}

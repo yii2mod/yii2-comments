@@ -1,0 +1,23 @@
+{
+  "name": "yii2mod/yii2-comments",
+  "description": "Comments module for Yii2",
+  "type": "yii2-extension",
+  "keywords": ["yii2", "extension"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Igor Chepurnoy",
+      "email": "igorzfort@gmail.com"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": ">=2.0.4",
+    "yii2mod/yii2-behaviors": "*",
+    "yii2mod/yii2-editable": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "yii2mod\\comments\\": ""
+    }
+  }
+}

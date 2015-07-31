@@ -1,4 +1,4 @@
-Comments module for Yii2
+Comments module for Yii2 
 ========================
 
 This module provide a comments managing system for Yii2 application.

@@ -64,3 +64,7 @@ Usage
 ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget(['model' => $model]); ?>
 ```
+
+#### Example comments
+-----
+![Alt text](http://res.cloudinary.com/zfort/image/upload/v1438350103/comments_fooguz.png "Example comments")

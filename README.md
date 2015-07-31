@@ -26,7 +26,7 @@ to the require section of your composer.json.
 Usage
 ======================================
 
-1. Manage comments in admin panel: 
+**1. Manage comments in admin panel:** 
 
 - Add the following code to admin module section in main config
 
@@ -47,7 +47,7 @@ Usage
   ```
   
 
-2. Usage comment widget in view:
+**2. Usage comment widget in view:**
 
 - Add module to config section:
 ```php

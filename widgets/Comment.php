@@ -36,6 +36,11 @@ class Comment extends Widget
     public $clientOptions = [];
 
     /**
+     * @var null pjax container id
+     */
+    private $pjaxContainerId = null;
+
+    /**
      * Initializes the object.
      * This method is invoked at the end of the constructor after the object is initialized with the
      * given configuration.
@@ -45,6 +50,7 @@ class Comment extends Widget
         if ($this->model === null) {
             throw new InvalidConfigException('The "model" property must be set.');
         }
+        $this->pjaxContainerId = 'comment-pjax-container-' . $this->getId();
         $this->registerAssets();
     }
 
@@ -76,7 +82,8 @@ class Comment extends Widget
             'comments' => $comments,
             'commentModel' => $commentModel,
             'maxLevel' => $this->maxLevel,
-            'encryptedEntity' => $encryptedEntity
+            'encryptedEntity' => $encryptedEntity,
+            'pjaxContainerId' => $this->pjaxContainerId
         ]);
     }
 
@@ -86,6 +93,7 @@ class Comment extends Widget
     protected function registerAssets()
     {
         $view = $this->getView();
+        $this->clientOptions['pjaxContainerId'] = '#' . $this->pjaxContainerId;
         $options = Json::encode($this->clientOptions);
         CommentAsset::register($view);
         $view->registerJs('jQuery.comment(' . $options . ');');

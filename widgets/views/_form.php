@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this \yii\web\View */
-/* @var $model \yii2mod\comments\models\CommentModel */
+/* @var $commentModel \yii2mod\comments\models\CommentModel */
 /* @var $encryptedEntity string */
 ?>
 <div class="comment-form-container">
@@ -15,8 +15,6 @@ use yii\widgets\ActiveForm;
             'class' => 'comment-box'
         ],
         'action' => Url::to(['/comment/default/create', 'entity' => $encryptedEntity]),
-        'enableAjaxValidation' => true,
-        'enableClientValidation' => false,
         'validateOnChange' => false,
         'validateOnBlur' => false
     ]); ?>
@@ -25,8 +23,8 @@ use yii\widgets\ActiveForm;
     <?php echo $form->field($commentModel, 'parentId', ['template' => '{input}'])->hiddenInput(['data' => ['comment' => 'parent-id']]); ?>
     <div class="comment-box-partial">
         <div class="button-container show">
-            <?php echo Html::a('Click here to cancel reply.', '#', ['id' => 'cancel-reply', 'class' => 'pull-right', 'data' => ['action' => 'cancel-reply']]); ?>
-            <?php echo Html::submitButton('Comment', ['class' => 'btn btn-primary comment-submit']); ?>
+            <?php echo Html::a(Yii::t('app', 'Click here to cancel reply.'), '#', ['id' => 'cancel-reply', 'class' => 'pull-right', 'data' => ['action' => 'cancel-reply']]); ?>
+            <?php echo Html::submitButton(Yii::t('app', 'Comment'), ['class' => 'btn btn-primary comment-submit']); ?>
         </div>
     </div>
     <?php $form->end(); ?>

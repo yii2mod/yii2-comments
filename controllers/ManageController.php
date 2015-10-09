@@ -5,6 +5,7 @@ namespace yii2mod\comments\controllers;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\models\CommentSearchModel;
 use yii2mod\comments\Module;

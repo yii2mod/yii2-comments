@@ -2,7 +2,7 @@
 /* @var $this \yii\web\View */
 /* @var $comments array */
 /* @var $commentModel \yii2mod\comments\models\CommentModel */
-/* @var $maxLevel null|integer coments max level */
+/* @var $maxLevel null|integer comments max level */
 /* @var $encryptedEntity string */
 ?>
 <div class="comments row">

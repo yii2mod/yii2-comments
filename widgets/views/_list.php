@@ -6,7 +6,7 @@ use yii\helpers\Url;
 /* @var $this \yii\web\View */
 /* @var $comment \yii2mod\comments\models\CommentModel */
 /* @var $comments array */
-/* @var $maxLevel null|integer coments max level */
+/* @var $maxLevel null|integer comments max level */
 ?>
 <?php if (!empty($comments)) : ?>
     <?php foreach ($comments as $comment) : ?>

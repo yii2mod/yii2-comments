@@ -38,11 +38,12 @@ class DefaultController extends Controller
 
     /**
      * Create comment.
-     * @param $entity string ecrypt entity
+     * @param $entity string encrypt entity
      * @return array|null|Response
      */
     public function actionCreate($entity)
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         /* @var $module Module */
         $module = Yii::$app->getModule(Module::$name);
         $commentModelClass = $module->commentModelClass;
@@ -54,18 +55,20 @@ class DefaultController extends Controller
                 'entity' => $entityData['entity'],
                 'entityId' => $entityData['entityId'],
             ]);
-            $load = $model->load(Yii::$app->request->post());
-            if (Yii::$app->request->isAjax && $load) {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return ['status' => 'success'];
+            } else {
+                return [
+                    'status' => 'error',
+                    'errors' => ActiveForm::validate($model)
+                ];
             }
-            if ($load && $model->save()) {
-                Yii::$app->session->setFlash('success', 'Comment has been added.');
-                return $this->redirect(Yii::$app->request->referrer);
-            }
+        } else {
+            return [
+                'status' => 'error',
+                'message' => Yii::t('app', 'Oops, something went wrong. Please try again later.')
+            ];
         }
-        Yii::$app->session->setFlash('error', 'Oops, something went wrong. Please try again later.');
-        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
@@ -77,10 +80,10 @@ class DefaultController extends Controller
     public function actionDelete($id)
     {
         if ($this->findModel($id)->deleteComment()) {
-            return 'Comment was deleted.';
+            return Yii::t('app', 'Comment was deleted.');
         } else {
             Yii::$app->response->setStatusCode(500);
-            return 'Comment has not been deleted. Please try again!';
+            return Yii::t('app', 'Comment has not been deleted. Please try again!');
         }
     }
 
@@ -98,7 +101,7 @@ class DefaultController extends Controller
         if (($model = $commentModelClass::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
 }

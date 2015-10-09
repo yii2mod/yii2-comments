@@ -6,6 +6,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii2mod\comments\models\CommentModel;
@@ -48,6 +49,7 @@ class DefaultController extends Controller
         $decryptEntity = Yii::$app->getSecurity()->decryptByKey($entity, $module::$name);
         if ($decryptEntity !== false) {
             $entityData = Json::decode($decryptEntity);
+            /* @var $model CommentModel */
             $model = new $commentModelClass([
                 'entity' => $entityData['entity'],
                 'entityId' => $entityData['entityId'],
@@ -91,7 +93,7 @@ class DefaultController extends Controller
      */
     protected function findModel($id)
     {
-        /** @var Comment $model */
+        /** @var CommentModel $model */
         $commentModelClass = Yii::$app->getModule(Module::$name)->commentModelClass;
         if (($model = $commentModelClass::findOne($id)) !== null) {
             return $model;

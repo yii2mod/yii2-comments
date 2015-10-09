@@ -24,7 +24,15 @@
         // Comment content selector
         contentSelector: '.comment-body',
         // Cancel reply button selector
-        cancelReplyBtnSelector: '#cancel-reply'
+        cancelReplyBtnSelector: '#cancel-reply',
+        //Pjax container id
+        pjaxContainerId: '#comment-pjax-container',
+        //Pjax default settings
+        pjaxSettings: {
+            timeout: 10000,
+            scrollTo: false,
+            url: window.location.href
+        }
     };
 
     // Methods
@@ -92,6 +100,39 @@
                 $this.parents(data.toolsSelector).remove();
             }
         });
+    });
+
+    /**
+     * Form beforeSubmit event
+     */
+    $(document).on('beforeSubmit', defaults.formSelector, function (e) {
+        var data = $.data(document, 'comment');
+        var commentForm = $(this);
+        //Add loading to comment button
+        commentForm.find(':submit').prop('disabled', true).text('Loading...');
+        var pjaxSettings = $.extend({container: data.pjaxContainerId}, data.pjaxSettings);
+        //Send post request
+        $.post(commentForm.attr("action"), commentForm.serialize(), function (data) {
+            //If success is status, then pjax container has been reloaded and comment form has been reset
+            if (data.status == 'success') {
+                $(pjaxSettings.container).on("pjax:end", function () {
+                    commentForm.find(':submit').prop('disabled', false).text('Comment');
+                    $(commentForm).trigger("reset");
+                });
+                $.pjax(pjaxSettings);
+            }
+            //If status is error, then only show form errors.
+            else {
+                if (data.hasOwnProperty('errors')) {
+                    commentForm.yiiActiveForm('updateMessages', data.errors, true);
+                }
+                else {
+                    commentForm.yiiActiveForm('updateAttribute', 'commentmodel-content', [data.message]);
+                }
+                commentForm.find(':submit').prop('disabled', false).text('Comment');
+            }
+        });
+        return false;
     });
 
 })(window.jQuery);

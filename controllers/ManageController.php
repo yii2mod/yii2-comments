@@ -63,7 +63,7 @@ class ManageController extends Controller
     }
 
     /**
-     * Lists all users.
+     * Lists all comments.
      * @return mixed
      */
     public function actionIndex()
@@ -114,7 +114,7 @@ class ManageController extends Controller
     }
 
     /**
-     * Finds the UserModel model based on its primary key value.
+     * Finds the CommentModel model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @return CommentModel the loaded model

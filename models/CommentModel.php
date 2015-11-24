@@ -158,8 +158,8 @@ class CommentModel extends ActiveRecord
     /**
      * Get comments tree.
      *
-     * @param $entity model class id
-     * @param $entityId model id
+     * @param $entity string model class id
+     * @param $entityId integer model id
      * @param null $maxLevel
      * @return array|\yii\db\ActiveRecord[] Comments tree
      */

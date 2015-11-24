@@ -21,6 +21,11 @@ class Comment extends Widget
     public $model;
 
     /**
+     * @var string the view file that will render the comment tree and form for posting comments.
+     */
+     public $commentView = '@vendor/yii2mod/yii2-comments/widgets/views/index';
+
+    /**
      * @var null|integer maximum comments level, level starts from 1, null - unlimited level;
      */
     public $maxLevel = 7;
@@ -78,7 +83,7 @@ class Comment extends Widget
             'entityId' => $entityId
         ]), $module::$name);
 
-        return $this->render('index', [
+        return $this->render($this->commentView, [
             'comments' => $comments,
             'commentModel' => $commentModel,
             'maxLevel' => $this->maxLevel,

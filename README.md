@@ -49,7 +49,7 @@ Usage
 
 **2. Usage comment widget in view:**
 
-    2.1 Add module to config section:
+```2.1 Add module to config section:```
 ```php
 'modules' => [
     'comment' => [
@@ -57,14 +57,22 @@ Usage
     ]
 ]
 ```
-```
-   2.2 Use in view:
-```
+```2.2 Use in view:```
 
 ```php
-<?php echo \yii2mod\comments\widgets\Comment::widget(['model' => $model]); ?>
+<?php echo \yii2mod\comments\widgets\Comment::widget([
+    'model' => $model
+]); ?>
 ```
 
+```2.3 Also you can use own template for render comments.```
+
+  ```php
+<?php echo \yii2mod\comments\widgets\Comment::widget([
+    'model' => $model,
+    'commentView' => '@app/views/site/comments/index' //path to your template
+]); ?>
+  ```
 #### Example comments
 -----
 ![Alt text](http://res.cloudinary.com/zfort/image/upload/v1438350103/comments_fooguz.png "Example comments")

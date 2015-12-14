@@ -7,11 +7,12 @@ use yii\widgets\ActiveForm;
 /* @var $this \yii\web\View */
 /* @var $commentModel \yii2mod\comments\models\CommentModel */
 /* @var $encryptedEntity string */
+/* @var $formId string comment form id */
 ?>
 <div class="comment-form-container">
     <?php $form = ActiveForm::begin([
         'options' => [
-            'id' => 'comment-form',
+            'id' => $formId,
             'class' => 'comment-box'
         ],
         'action' => Url::to(['/comment/default/create', 'entity' => $encryptedEntity]),

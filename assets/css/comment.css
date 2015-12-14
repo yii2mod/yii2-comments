@@ -89,7 +89,7 @@
     list-style-type: none;
 }
 
-.title-block .title-seperator {
+.title-block .title-separator {
     background: url("../images/title-pattern.png");
     height: 5px;
     overflow: hidden;

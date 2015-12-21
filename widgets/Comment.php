@@ -23,7 +23,12 @@ class Comment extends Widget
     /**
      * @var string the view file that will render the comment tree and form for posting comments.
      */
-     public $commentView = '@vendor/yii2mod/yii2-comments/widgets/views/index';
+    public $commentView = '@vendor/yii2mod/yii2-comments/widgets/views/index';
+
+    /**
+     * @var string comment form id
+     */
+    public $formId = 'comment-form';
 
     /**
      * @var null|integer maximum comments level, level starts from 1, null - unlimited level;
@@ -88,7 +93,8 @@ class Comment extends Widget
             'commentModel' => $commentModel,
             'maxLevel' => $this->maxLevel,
             'encryptedEntity' => $encryptedEntity,
-            'pjaxContainerId' => $this->pjaxContainerId
+            'pjaxContainerId' => $this->pjaxContainerId,
+            'formId' => $this->formId
         ]);
     }
 
@@ -97,11 +103,12 @@ class Comment extends Widget
      */
     protected function registerAssets()
     {
-        $view = $this->getView();
         $this->clientOptions['pjaxContainerId'] = '#' . $this->pjaxContainerId;
+        $this->clientOptions['formSelector'] = '#' . $this->formId;
         $options = Json::encode($this->clientOptions);
+        $view = $this->getView();
         CommentAsset::register($view);
-        $view->registerJs('jQuery.comment(' . $options . ');');
+        $view->registerJs("jQuery('#$this->formId').comment($options);");
     }
 
 }

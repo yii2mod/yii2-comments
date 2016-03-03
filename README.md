@@ -76,7 +76,7 @@ Usage
   ```
 ```2.4 Use the following code for multiple widgets on the same page:```
   ```php
-  echo \yii2mod\comments\widgets\Comment::widget([
+echo \yii2mod\comments\widgets\Comment::widget([
         'model' => $model,
     ]);
 

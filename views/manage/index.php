@@ -13,7 +13,7 @@ use yii2mod\editable\EditableColumn;
 /* @var $searchModel \yii2mod\comments\models\CommentSearchModel */
 /* @var $commentModel \yii2mod\comments\models\CommentModel */
 
-$this->title = Yii::t('app', 'Comments Management');
+$this->title = Yii::t('yii2mod.comments', 'Comments Management');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="comments-index">
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getAuthorName();
                 },
                 'filter' => $commentModel::getListAuthorsNames(),
-                'filterInputOptions' => ['prompt' => 'Select Author', 'class' => 'form-control'],
+                'filterInputOptions' => ['prompt' => Yii::t('yii2mod.comments', 'Select Author'), 'class' => 'form-control'],
             ],
             [
                 'class' => EditableColumn::className(),
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ];
                 },
                 'filter' => CommentStatus::listData(),
-                'filterInputOptions' => ['prompt' => 'Select Status', 'class' => 'form-control'],
+                'filterInputOptions' => ['prompt' => Yii::t('yii2mod.comments', 'Select Status'), 'class' => 'form-control'],
             ],
             [
                 'attribute' => 'createdAt',

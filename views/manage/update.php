@@ -8,9 +8,10 @@ use yii2mod\comments\models\enums\CommentStatus;
 /* @var $this yii\web\View */
 /* @var $model \yii2mod\comments\models\CommentModel */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = 'Update Comment: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Comments Management', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+
+$this->title = Yii::t('yii2mod.comments', 'Update Comment: ') . $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('yii2mod.comments', 'Comments Management'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = Yii::t('yii2mod.comments', 'Update');
 ?>
 <div class="comment-update">
 
@@ -29,7 +30,7 @@ $this->params['breadcrumbs'][] = 'Update';
         ?>
         <?php echo $form->field($model, 'status')->dropDownList(CommentStatus::listData()); ?>
         <div class="form-group">
-            <?php echo Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
+            <?php echo Html::submitButton(Yii::t('yii2mod.comments', 'Update'), ['class' => 'btn btn-primary']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>

@@ -68,7 +68,7 @@ class CommentModel extends ActiveRecord
         if ($this->{$attribute} !== null) {
             $comment = self::find()->where(['id' => $this->{$attribute}, 'entity' => $this->entity, 'entityId' => $this->entityId])->active()->exists();
             if ($comment === false) {
-                $this->addError('content', 'Oops, something went wrong. Please try again later.');
+                $this->addError('content', Yii::t('yii2mod.comments', 'Oops, something went wrong. Please try again later.'));
             }
         }
     }
@@ -107,16 +107,16 @@ class CommentModel extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'content' => Yii::t('app', 'Comment'),
-            'entity' => Yii::t('app', 'Entity'),
-            'status' => Yii::t('app', 'Status'),
-            'level' => Yii::t('app', 'Level'),
-            'createdBy' => Yii::t('app', 'Created by'),
-            'updatedBy' => Yii::t('app', 'Updated by'),
-            'relatedTo' => Yii::t('app', 'Related to'),
-            'createdAt' => Yii::t('app', 'Created date'),
-            'updatedAt' => Yii::t('app', 'Updated date'),
+            'id' => Yii::t('yii2mod.comments', 'ID'),
+            'content' => Yii::t('yii2mod.comments', 'Comment'),
+            'entity' => Yii::t('yii2mod.comments', 'Entity'),
+            'status' => Yii::t('yii2mod.comments', 'Status'),
+            'level' => Yii::t('yii2mod.comments', 'Level'),
+            'createdBy' => Yii::t('yii2mod.comments', 'Created by'),
+            'updatedBy' => Yii::t('yii2mod.comments', 'Updated by'),
+            'relatedTo' => Yii::t('yii2mod.comments', 'Related to'),
+            'createdAt' => Yii::t('yii2mod.comments', 'Created date'),
+            'updatedAt' => Yii::t('yii2mod.comments', 'Updated date'),
         ];
     }
 

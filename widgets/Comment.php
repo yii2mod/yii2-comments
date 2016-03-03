@@ -77,13 +77,13 @@ class Comment extends Widget
     public function init()
     {
         if (empty($this->model)) {
-            throw new InvalidConfigException('The "model" property must be set.');
+            throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "model" property must be set.'));
         }
         $this->pjaxContainerId = 'comment-pjax-container-' . $this->getId();
         $this->entity = hash('crc32', get_class($this->model));
         $this->entityId = $this->model->{$this->entityIdAttribute};
         if (empty($this->entityId)) {
-            throw new InvalidConfigException('The "entityIdAttribute" value for widget model cannot be empty.');
+            throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "entityIdAttribute" value for widget model cannot be empty.'));
         }
         if (empty($this->relatedTo)) {
             $this->relatedTo = get_class($this->model) . ':' . $this->entityId;

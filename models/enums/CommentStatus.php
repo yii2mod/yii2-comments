@@ -10,6 +10,7 @@ use yii2mod\enum\helpers\BaseEnum;
  */
 class CommentStatus extends BaseEnum
 {
+    public static $messageCategory = 'yii2mod.comments';
     const ACTIVE = 1;
     const DELETED = 2;
 

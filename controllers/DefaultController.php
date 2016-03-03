@@ -64,7 +64,7 @@ class DefaultController extends Controller
         } else {
             return [
                 'status' => 'error',
-                'message' => Yii::t('app', 'Oops, something went wrong. Please try again later.')
+                'message' => Yii::t('yii2mod.comments', 'Oops, something went wrong. Please try again later.')
             ];
         }
     }
@@ -78,10 +78,10 @@ class DefaultController extends Controller
     public function actionDelete($id)
     {
         if ($this->findModel($id)->deleteComment()) {
-            return Yii::t('app', 'Comment was deleted.');
+            return Yii::t('yii2mod.comments', 'Comment was deleted.');
         } else {
             Yii::$app->response->setStatusCode(500);
-            return Yii::t('app', 'Comment has not been deleted. Please try again!');
+            return Yii::t('yii2mod.comments', 'Comment has not been deleted. Please try again!');
         }
     }
 
@@ -99,7 +99,7 @@ class DefaultController extends Controller
         if (($model = $commentModelClass::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+            throw new NotFoundHttpException(Yii::t('yii2mod.comments', 'The requested page does not exist.'));
         }
     }
 }

@@ -90,7 +90,7 @@ class ManageController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Comment has been saved.');
+            Yii::$app->session->setFlash('success', Yii::t('yii2mod.comments', 'Comment has been saved.'));
             return $this->redirect(['index']);
         }
 
@@ -109,7 +109,7 @@ class ManageController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('success', 'Comment has been deleted.');
+        Yii::$app->session->setFlash('success', Yii::t('yii2mod.comments', 'Comment has been deleted.'));
         return $this->redirect(['index']);
     }
 
@@ -125,7 +125,7 @@ class ManageController extends Controller
         if (($model = CommentModel::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('yii2mod.comments', 'The requested page does not exist.'));
         }
     }
 }

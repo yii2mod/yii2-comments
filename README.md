@@ -61,11 +61,12 @@ Usage
 
 ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([
-    'model' => $model
+    'model' => $model,
+    'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current() // for example
 ]); ?>
 ```
 
-```2.3 Also you can use own template for render comments.```
+```2.3 You can use your own template for render comments.```
 
   ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([
@@ -73,6 +74,18 @@ Usage
     'commentView' => '@app/views/site/comments/index' //path to your template
 ]); ?>
   ```
+```2.4 Use the following code for multiple widgets on the same page:```
+  ```php
+  echo \yii2mod\comments\widgets\Comment::widget([
+        'model' => $model,
+    ]);
+
+echo \yii2mod\comments\widgets\Comment::widget([
+        'model' => $model2,
+        'formId' => 'comment-form2'
+    ]); 
+  ```
+  
 #### Example comments
 -----
 ![Alt text](http://res.cloudinary.com/zfort/image/upload/v1438350103/comments_fooguz.png "Example comments")

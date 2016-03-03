@@ -21,6 +21,12 @@ class Comment extends Widget
     public $model;
 
     /**
+     * @var string relatedTo custom text, for example: cms url: about-us, john comment about us page, etc.
+     * By default - className:primaryKey of the current model
+     */
+    public $relatedTo = '';
+
+    /**
      * @var string the view file that will render the comment tree and form for posting comments.
      */
     public $commentView = '@vendor/yii2mod/yii2-comments/widgets/views/index';
@@ -46,21 +52,47 @@ class Comment extends Widget
     public $clientOptions = [];
 
     /**
-     * @var null pjax container id
+     * @var string hash(crc32) from class name of the widget model
      */
-    private $pjaxContainerId = null;
+    protected $entity;
 
     /**
-     * Initializes the object.
-     * This method is invoked at the end of the constructor after the object is initialized with the
-     * given configuration.
+     * @var integer primary key value of the widget model
+     */
+    protected $entityId;
+
+    /**
+     * @var string encrypted entity key from params: entity, entityId, relatedTo
+     */
+    protected $encryptedEntityKey;
+
+    /**
+     * @var string pjax container id, generated automatically
+     */
+    protected $pjaxContainerId;
+
+    /**
+     * Initializes the widget params.
      */
     public function init()
     {
-        if ($this->model === null) {
+        if (empty($this->model)) {
             throw new InvalidConfigException('The "model" property must be set.');
         }
         $this->pjaxContainerId = 'comment-pjax-container-' . $this->getId();
+        $this->entity = hash('crc32', get_class($this->model));
+        $this->entityId = $this->model->{$this->entityIdAttribute};
+        if (empty($this->entityId)) {
+            throw new InvalidConfigException('The "entityIdAttribute" value for widget model cannot be empty.');
+        }
+        if (empty($this->relatedTo)) {
+            $this->relatedTo = get_class($this->model) . ':' . $this->entityId;
+        }
+        $this->encryptedEntityKey = Yii::$app->getSecurity()->encryptByKey(Json::encode([
+            'entity' => $this->entity,
+            'entityId' => $this->entityId,
+            'relatedTo' => $this->relatedTo
+        ]), Module::$name);
         $this->registerAssets();
     }
 
@@ -72,27 +104,15 @@ class Comment extends Widget
     {
         /* @var $module Module */
         $module = Yii::$app->getModule(Module::$name);
-        //Get comment model class from `comment` Module
         $commentModelClass = $module->commentModelClass;
-        //Get entity from widget and hash it.
-        $entity = $this->model;
-        $entityId = $entity->{$this->entityIdAttribute};
-        $entity = hash('crc32', $entity::className());
-        //Get comment tree by entity and entityId
-        $comments = $commentModelClass::getTree($entity, $entityId, $this->maxLevel);
-        //Create comment model
         $commentModel = Yii::createObject($commentModelClass);
-        //Encrypt entity and entityId values
-        $encryptedEntity = Yii::$app->getSecurity()->encryptByKey(Json::encode([
-            'entity' => $entity,
-            'entityId' => $entityId
-        ]), $module::$name);
+        $comments = $commentModelClass::getTree($this->entity, $this->entityId, $this->maxLevel);
 
         return $this->render($this->commentView, [
             'comments' => $comments,
             'commentModel' => $commentModel,
             'maxLevel' => $this->maxLevel,
-            'encryptedEntity' => $encryptedEntity,
+            'encryptedEntity' => $this->encryptedEntityKey,
             'pjaxContainerId' => $this->pjaxContainerId,
             'formId' => $this->formId
         ]);

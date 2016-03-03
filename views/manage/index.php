@@ -3,6 +3,7 @@
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\StringHelper;
 use yii\widgets\Pjax;
 use yii2mod\comments\models\enums\CommentStatus;
 use yii2mod\editable\EditableColumn;
@@ -10,6 +11,7 @@ use yii2mod\editable\EditableColumn;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel \yii2mod\comments\models\CommentSearchModel */
+/* @var $commentModel \yii2mod\comments\models\CommentModel */
 
 $this->title = Yii::t('app', 'Comments Management');
 $this->params['breadcrumbs'][] = $this->title;
@@ -30,9 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'content',
                 'contentOptions' => ['style' => 'max-width: 350px;'],
                 'value' => function ($model) {
-                    return \yii\helpers\StringHelper::truncate($model->content, 100);
+                    return StringHelper::truncate($model->content, 100);
                 }
             ],
+            'attribute' => 'relatedTo',
             [
                 'attribute' => 'createdBy',
                 'value' => function ($model) {

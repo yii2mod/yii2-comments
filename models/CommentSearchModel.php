@@ -18,7 +18,7 @@ class CommentSearchModel extends CommentModel
     public function rules()
     {
         return ArrayHelper::merge([
-            [['id', 'createdBy', 'content', 'status'], 'safe'],
+            [['id', 'createdBy', 'content', 'status', 'relatedTo'], 'safe'],
         ], parent::rules());
     }
 
@@ -52,6 +52,7 @@ class CommentSearchModel extends CommentModel
         $query->andFilterWhere(['createdBy' => $this->createdBy]);
         $query->andFilterWhere(['status' => $this->status]);
         $query->andFilterWhere(['like', 'content', $this->content]);
+        $query->andFilterWhere(['like', 'relatedTo', $this->relatedTo]);
 
         return $dataProvider;
     }

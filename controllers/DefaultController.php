@@ -51,10 +51,8 @@ class DefaultController extends Controller
         if ($decryptEntity !== false) {
             $entityData = Json::decode($decryptEntity);
             /* @var $model CommentModel */
-            $model = new $commentModelClass([
-                'entity' => $entityData['entity'],
-                'entityId' => $entityData['entityId'],
-            ]);
+            $model = new $commentModelClass;
+            $model->setAttributes($entityData);
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return ['status' => 'success'];
             } else {

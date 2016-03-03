@@ -27,6 +27,7 @@ class m010101_100001_init_comment extends Migration
             'level' => 'TINYINT(3) NOT NULL DEFAULT 1',
             'createdBy' => Schema::TYPE_INTEGER . ' NOT NULL',
             'updatedBy' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'relatedTo' => $this->string(500)->notNull(),
             'status' => 'TINYINT(2) NOT NULL DEFAULT 1',
             'createdAt' => Schema::TYPE_INTEGER . ' NOT NULL',
             'updatedAt' => Schema::TYPE_INTEGER . ' NOT NULL',

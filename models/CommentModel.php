@@ -22,6 +22,7 @@ use yii2mod\comments\Module;
  * @property string $content
  * @property integer $createdBy
  * @property integer $updatedBy
+ * @property string $relatedTo
  * @property integer $status
  * @property integer $level
  * @property integer $createdAt
@@ -52,7 +53,7 @@ class CommentModel extends ActiveRecord
     {
         return [
             [['entity', 'entityId', 'content'], 'required'],
-            [['content', 'entity'], 'string'],
+            [['content', 'entity', 'relatedTo'], 'string'],
             ['parentId', 'validateParentID'],
             [['entityId', 'parentId', 'createdBy', 'updatedBy', 'status', 'createdAt', 'updatedAt', 'level'], 'integer'],
         ];
@@ -113,6 +114,7 @@ class CommentModel extends ActiveRecord
             'level' => Yii::t('app', 'Level'),
             'createdBy' => Yii::t('app', 'Created by'),
             'updatedBy' => Yii::t('app', 'Updated by'),
+            'relatedTo' => Yii::t('app', 'Related to'),
             'createdAt' => Yii::t('app', 'Created date'),
             'updatedAt' => Yii::t('app', 'Updated date'),
         ];
@@ -294,15 +296,6 @@ class CommentModel extends ActiveRecord
         return Html::img("http://gravatar.com/avatar/{$this->author->id}/?s=50", $imgOptions);
     }
 
-    /**
-     * Return hash value of class name
-     * @param $className
-     * @return string
-     */
-    public static function hashEntityClass($className)
-    {
-        return hash('crc32', $className);
-    }
 
     /**
      * This function used for filter in gridView, for attribute `createdBy`.

@@ -2,6 +2,7 @@
 
 namespace yii2mod\comments;
 
+use Yii;
 use yii2mod\comments\models\CommentModel;
 
 /**
@@ -45,7 +46,7 @@ class Module extends \yii\base\Module
     public function init()
     {
         if ($this->userIdentityClass === null) {
-            $this->userIdentityClass = \Yii::$app->getUser()->identityClass;
+            $this->userIdentityClass = Yii::$app->getUser()->identityClass;
         }
         if ($this->commentModelClass === null) {
             $this->commentModelClass = CommentModel::className();

@@ -88,10 +88,8 @@ class CommentModel extends ActiveRecord
             ],
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['createdAt'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updatedAt']
-                ]
+                'createdAtAttribute' => 'createdAt',
+                'updatedAtAttribute' => 'updatedAt'
             ],
             'purify' => [
                 'class' => PurifyBehavior::className(),

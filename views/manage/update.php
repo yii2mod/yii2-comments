@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\imperavi\Widget;
+use vova07\imperavi\Widget;
 use yii\widgets\ActiveForm;
 use yii2mod\comments\models\enums\CommentStatus;
 

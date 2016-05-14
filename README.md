@@ -70,7 +70,7 @@ Usage
 ]); ?>
 ```
 
-```2.3 You can use your own template for render comments.```
+```2.3 You can use your own template for render comments:```
 
   ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([

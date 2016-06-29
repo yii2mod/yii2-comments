@@ -70,7 +70,8 @@ Usage
 ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([
     'model' => $model,
-    'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current() // for example
+    'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current(), // for example
+    'maxLevel' => 3 // maximum comments level, level starts from 1, null - unlimited level. Defaults to `7`
 ]); ?>
 ```
 

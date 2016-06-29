@@ -13,7 +13,7 @@ use yii\helpers\Url;
         <li class="comment" id="comment-<?php echo $comment->id ?>">
             <div class="comment-content" data-comment-content-id="<?php echo $comment->id ?>">
                 <div class="comment-author-avatar">
-                    <?php echo $comment->getAvatar(['alt' => $comment->getAuthorName()]); ?>
+                    <?php echo Html::img($comment->getAvatar(), ['alt' => $comment->getAuthorName()]); ?>
                 </div>
                 <div class="comment-details">
                     <?php if ($comment->isActive): ?>

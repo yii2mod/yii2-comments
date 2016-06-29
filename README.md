@@ -66,6 +66,8 @@ http://localhost/path/to/index.php?r=comments/index
 
 Usage
 -------------------
+> Delete button visible only for user with `admin` role.
+
 **Basic example:**
 ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([

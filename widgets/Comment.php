@@ -79,20 +79,21 @@ class Comment extends Widget
         if (empty($this->model)) {
             throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "model" property must be set.'));
         }
+
         $this->pjaxContainerId = 'comment-pjax-container-' . $this->getId();
         $this->entity = hash('crc32', get_class($this->model));
         $this->entityId = $this->model->{$this->entityIdAttribute};
+
         if (empty($this->entityId)) {
             throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "entityIdAttribute" value for widget model cannot be empty.'));
         }
+
         if (empty($this->relatedTo)) {
             $this->relatedTo = get_class($this->model) . ':' . $this->entityId;
         }
-        $this->encryptedEntityKey = Yii::$app->getSecurity()->encryptByKey(Json::encode([
-            'entity' => $this->entity,
-            'entityId' => $this->entityId,
-            'relatedTo' => $this->relatedTo
-        ]), Module::$name);
+
+        $this->encryptedEntityKey = $this->generateEntityKey();
+
         $this->registerAssets();
     }
 
@@ -128,7 +129,20 @@ class Comment extends Widget
         $options = Json::encode($this->clientOptions);
         $view = $this->getView();
         CommentAsset::register($view);
-        $view->registerJs("jQuery('#$this->formId').comment($options);");
+        $view->registerJs("jQuery('#{$this->formId}').comment({$options});");
     }
 
+    /**
+     * Get encrypted entity key
+     *
+     * @return string
+     */
+    protected function generateEntityKey()
+    {
+        return Yii::$app->getSecurity()->encryptByKey(Json::encode([
+            'entity' => $this->entity,
+            'entityId' => $this->entityId,
+            'relatedTo' => $this->relatedTo
+        ]), Module::$name);
+    }
 }

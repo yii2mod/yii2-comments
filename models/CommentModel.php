@@ -7,7 +7,6 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use yii2mod\behaviors\PurifyBehavior;
 use yii2mod\comments\models\enums\CommentStatus;
 use yii2mod\comments\Module;
@@ -38,6 +37,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * Declares the name of the database table associated with this AR class.
+     *
      * @return string the table name
      */
     public static function tableName()
@@ -47,6 +47,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * Returns the validation rules for attributes.
+     *
      * @return array validation rules
      */
     public function rules()
@@ -61,6 +62,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * Validate parentId attribute
+     *
      * @param $attribute
      */
     public function validateParentID($attribute)
@@ -73,9 +75,9 @@ class CommentModel extends ActiveRecord
         }
     }
 
-
     /**
      * Returns a list of behaviors that this component should behave as.
+     *
      * @return array
      */
     public function behaviors()
@@ -93,14 +95,19 @@ class CommentModel extends ActiveRecord
             ],
             'purify' => [
                 'class' => PurifyBehavior::className(),
-                'attributes' => ['content']
+                'attributes' => ['content'],
+                'config' => [
+                    'HTML.SafeIframe' => true,
+                    'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'
+                ]
             ]
         ];
     }
 
     /**
      * Returns the attribute labels.
-     * @return array attribute labels (name => label)
+     *
+     * @return array
      */
     public function attributeLabels()
     {
@@ -120,6 +127,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * @inheritdoc
+     *
      * @return CommentQuery
      */
     public static function find()
@@ -129,6 +137,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * This method is called at the beginning of inserting or updating a record.
+     *
      * @param bool $insert
      * @return bool
      */
@@ -147,11 +156,13 @@ class CommentModel extends ActiveRecord
 
     /**
      * Author relation
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getAuthor()
     {
         $module = Yii::$app->getModule(Module::$name);
+
         return $this->hasOne($module->userIdentityClass, ['id' => 'createdBy']);
     }
 
@@ -176,6 +187,7 @@ class CommentModel extends ActiveRecord
         if (!empty($models)) {
             $models = self::buildTree($models);
         }
+
         return $models;
     }
 
@@ -196,6 +208,7 @@ class CommentModel extends ActiveRecord
                 $tree[] = $node;
             }
         }
+
         return $tree;
     }
 
@@ -207,6 +220,7 @@ class CommentModel extends ActiveRecord
     public function deleteComment()
     {
         $this->status = CommentStatus::DELETED;
+
         return $this->save(false, ['status', 'updatedBy', 'updatedAt']);
     }
 
@@ -232,6 +246,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * Check if comment has children comment
+     *
      * @return bool
      */
     public function hasChildren()
@@ -257,6 +272,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * Get comment posted date as relative time
+     *
      * @return string
      */
     public function getPostedDate()
@@ -266,6 +282,7 @@ class CommentModel extends ActiveRecord
 
     /**
      * Get author name
+     *
      * @return mixed
      */
     public function getAuthorName()
@@ -280,20 +297,22 @@ class CommentModel extends ActiveRecord
      */
     public function getContent($deletedCommentText = 'Comment was deleted.')
     {
-        return $this->isDeleted ? $deletedCommentText : Yii::$app->formatter->asNtext($this->content);
+        return $this->isDeleted ? $deletedCommentText : Yii::$app->formatter->asRaw($this->content);
     }
 
     /**
      * Get avatar user
-     * @param array $imgOptions
+     *
      * @return string
      */
-    public function getAvatar($imgOptions = [])
+    public function getAvatar()
     {
-        $imgOptions = ArrayHelper::merge($imgOptions, ['class' => 'img-responsive']);
-        return Html::img("http://gravatar.com/avatar/{$this->author->id}/?s=50", $imgOptions);
+        if (method_exists($this->author, 'getAvatar')) {
+            return $this->author->getAvatar();
+        } else {
+            return "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y&s=50";
+        }
     }
-
 
     /**
      * This function used for filter in gridView, for attribute `createdBy`.

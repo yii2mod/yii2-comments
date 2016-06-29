@@ -106,7 +106,12 @@ class Comment extends Widget
         /* @var $module Module */
         $module = Yii::$app->getModule(Module::$name);
         $commentModelClass = $module->commentModelClass;
-        $commentModel = Yii::createObject($commentModelClass);
+        $commentModel = Yii::createObject([
+            'class' => $commentModelClass,
+            'entity' => $this->entity,
+            'entityId' => $this->entityId
+        ]);
+        $commentModel->entityId = $this->entityId;
         $comments = $commentModelClass::getTree($this->entity, $this->entityId, $this->maxLevel);
 
         return $this->render($this->commentView, [

@@ -18,7 +18,7 @@ use yii\widgets\Pjax;
 <div class="comments row">
     <div class="col-md-12 col-sm-12">
         <div class="title-block clearfix">
-            <h3 class="h3-body-title"><?php echo Yii::t('yii2mod.comments', 'Comments'); ?></h3>
+            <h3 class="h3-body-title"><?php echo Yii::t('yii2mod.comments', "Comments ({0})", $commentModel->getCommentsCount()); ?></h3>
             <div class="title-separator"></div>
         </div>
         <ol class="comments-list">
@@ -34,4 +34,3 @@ use yii\widgets\Pjax;
     </div>
 </div>
 <?php Pjax::end(); ?>
-

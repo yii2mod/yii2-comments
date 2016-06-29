@@ -92,4 +92,4 @@ echo \yii2mod\comments\widgets\Comment::widget([
   
 #### Example comments
 -----
-![Alt text](http://res.cloudinary.com/zfort/image/upload/v1438350103/comments_fooguz.png "Example comments")
+![Alt text](http://res.cloudinary.com/zfort/image/upload/v1467214676/comments-preview.png "Example comments")

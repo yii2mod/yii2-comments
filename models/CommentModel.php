@@ -292,12 +292,13 @@ class CommentModel extends ActiveRecord
 
     /**
      * Get comment content
+     *
      * @param string $deletedCommentText
      * @return string
      */
     public function getContent($deletedCommentText = 'Comment was deleted.')
     {
-        return $this->isDeleted ? $deletedCommentText : Yii::$app->formatter->asRaw($this->content);
+        return $this->isDeleted ? $deletedCommentText : nl2br($this->content);
     }
 
     /**
@@ -321,5 +322,15 @@ class CommentModel extends ActiveRecord
     public static function getListAuthorsNames()
     {
         return ArrayHelper::map(self::find()->joinWith('author')->all(), 'createdBy', 'author.username');
+    }
+
+    /**
+     * Get comments count
+     *
+     * @return int|string
+     */
+    public function getCommentsCount()
+    {
+        return self::find()->where(['entity' => $this->entity, 'entityId' => $this->entityId])->count();
     }
 }

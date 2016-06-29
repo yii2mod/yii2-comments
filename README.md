@@ -27,33 +27,17 @@ or add
 to the require section of your composer.json.
 
 
-Usage
-======================================
+Configuration
+-----------------------
 
-**1. Manage comments in admin panel:** 
+**Database Migrations**
 
-    1.1 Add the following code to admin module section in main config
+Before using Comments Widget, we'll also need to prepare the database.
+```php
+php yii migrate --migrationPath=@vendor/yii2mod/yii2-comments/migrations
+```
 
-  ```php
-  'controllerMap' => [
-        'comments' => 'yii2mod\comments\controllers\ManageController'
-  ]  
-  ```
-    1.2 Run migrations:
-  
-  ```php
-      php yii migrate --migrationPath=@vendor/yii2mod/yii2-comments/migrations
-  ```
-  
-**You can then access to management section through the following URL:**
-  ```
-    http://localhost/path/to/index.php?r=admin/comments/index
-  ```
-  
-
-**2. Usage comment widget in view:**
-
-```2.1 Add module to config section:```
+**Module setup**
 ```php
 'modules' => [
     'comment' => [
@@ -61,8 +45,24 @@ Usage
     ]
 ]
 ```
-```2.2 Use in view:```
 
+**Comments management section setup**
+```php
+  'controllerMap' => [
+      'comments' => 'yii2mod\comments\controllers\ManageController'
+  ]  
+```
+> Basically the above code must be placed in the `admin` module
+
+You can then access to management section through the following URL:
+http://localhost/path/to/index.php?r=comments/index
+
+> If you have added this controller in the module admin, the URL will look like the following
+> http://localhost/path/to/index.php?r=admin/comments/index
+
+Usage
+-------------------
+**Basic example:**
 ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([
     'model' => $model,
@@ -70,7 +70,7 @@ Usage
 ]); ?>
 ```
 
-```2.3 You can use your own template for render comments:```
+**You can use your own template for render comments:**
 
   ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([
@@ -78,7 +78,8 @@ Usage
     'commentView' => '@app/views/site/comments/index' //path to your template
 ]); ?>
   ```
-```2.4 Use the following code for multiple widgets on the same page:```
+  
+**Use the following code for multiple widgets on the same page:**
   ```php
 echo \yii2mod\comments\widgets\Comment::widget([
         'model' => $model,

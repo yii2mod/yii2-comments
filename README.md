@@ -38,6 +38,8 @@ php yii migrate --migrationPath=@vendor/yii2mod/yii2-comments/migrations
 ```
 
 **Module setup**
+
+To access the module, you need to add this to your application configuration:
 ```php
 'modules' => [
     'comment' => [
@@ -47,6 +49,8 @@ php yii migrate --migrationPath=@vendor/yii2mod/yii2-comments/migrations
 ```
 
 **Comments management section setup**
+
+To access the comments management section, you need to add this to your application configuration:
 ```php
   'controllerMap' => [
       'comments' => 'yii2mod\comments\controllers\ManageController'

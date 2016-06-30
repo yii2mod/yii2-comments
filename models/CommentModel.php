@@ -223,14 +223,21 @@ class CommentModel extends ActiveRecord
 
     /**
      * Delete comment.
+     * All nested comments will also be deleted
      *
-     * @return boolean Whether comment was deleted or not
+     * @return boolean whether comment was deleted or not
      */
     public function deleteComment()
     {
         $this->status = CommentStatus::DELETED;
 
-        return $this->save(false, ['status', 'updatedBy', 'updatedAt']);
+        if ($this->save(false, ['status', 'updatedBy', 'updatedAt'])) {
+            // Mark all the nested comments as deleted
+            self::updateAll(['status' => CommentStatus::DELETED], ['parentId' => $this->id]);
+            return true;
+        }
+
+        return false;
     }
 
     /**

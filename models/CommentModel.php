@@ -155,6 +155,24 @@ class CommentModel extends ActiveRecord
     }
 
     /**
+     * This method is called at the end of inserting or updating a record.
+     *
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (!$insert) {
+            // Mark all the nested comments as `deleted` after the comment was deleted
+            if (array_key_exists('status', $changedAttributes) && $this->status == CommentStatus::DELETED) {
+                self::updateAll(['status' => CommentStatus::DELETED], ['parentId' => $this->id]);
+            }
+        }
+        
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
      * Author relation
      *
      * @return \yii\db\ActiveQuery
@@ -223,7 +241,6 @@ class CommentModel extends ActiveRecord
 
     /**
      * Delete comment.
-     * All nested comments will also be deleted
      *
      * @return boolean whether comment was deleted or not
      */
@@ -231,13 +248,7 @@ class CommentModel extends ActiveRecord
     {
         $this->status = CommentStatus::DELETED;
 
-        if ($this->save(false, ['status', 'updatedBy', 'updatedAt'])) {
-            // Mark all the nested comments as deleted
-            self::updateAll(['status' => CommentStatus::DELETED], ['parentId' => $this->id]);
-            return true;
-        }
-
-        return false;
+        return $this->save(false, ['status', 'updatedBy', 'updatedAt']);
     }
 
     /**

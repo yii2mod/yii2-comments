@@ -64,8 +64,6 @@ http://localhost/path/to/index.php?r=comments/index
 > If you have added this controller in the module admin, the URL will look like the following
 > http://localhost/path/to/index.php?r=admin/comments/index
 
-Usage
--------------------
 **Notes:**
 > 1. Delete button visible only for user with `admin` role. 
 > 2. When you delete a comment, all nested comments will be marked as `deleted`.
@@ -78,6 +76,8 @@ public function getAvatar()
 }
 ```
 
+Usage
+-------------------
 **Basic example:**
 ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([

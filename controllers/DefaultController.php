@@ -12,7 +12,6 @@ use yii\widgets\ActiveForm;
 use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\Module;
 
-
 /**
  * Class DefaultController
  * @package yii2mod\comments\controllers
@@ -20,7 +19,8 @@ use yii2mod\comments\Module;
 class DefaultController extends Controller
 {
     /**
-     * Behaviors
+     * Returns a list of behaviors that this component should behave as.
+     * 
      * @return array
      */
     public function behaviors()
@@ -38,6 +38,7 @@ class DefaultController extends Controller
 
     /**
      * Create comment.
+     * 
      * @param $entity string encrypt entity
      * @return array|null|Response
      */
@@ -70,7 +71,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Delete comment page.
+     * Delete comment.
      *
      * @param integer $id Comment ID
      * @return string Comment text

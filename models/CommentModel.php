@@ -172,18 +172,26 @@ class CommentModel extends ActiveRecord
      * @param $entity string model class id
      * @param $entityId integer model id
      * @param null $maxLevel
+     * @param bool $showDeletedComments
      * @return array|\yii\db\ActiveRecord[] Comments tree
      */
-    public static function getTree($entity, $entityId, $maxLevel = null)
+    public static function getTree($entity, $entityId, $maxLevel = null, $showDeletedComments = true)
     {
         $query = self::find()->where([
             'entityId' => $entityId,
             'entity' => $entity,
         ])->with(['author']);
+
         if ($maxLevel > 0) {
             $query->andWhere(['<=', 'level', $maxLevel]);
         }
+
+        if (!$showDeletedComments) {
+            $query->active();
+        }
+
         $models = $query->orderBy(['parentId' => SORT_ASC, 'createdAt' => SORT_ASC])->all();
+
         if (!empty($models)) {
             $models = self::buildTree($models);
         }
@@ -201,6 +209,7 @@ class CommentModel extends ActiveRecord
     protected static function buildTree(&$data, $rootID = 0)
     {
         $tree = [];
+
         foreach ($data as $id => $node) {
             if ($node->parentId == $rootID) {
                 unset($data[$id]);
@@ -327,10 +336,17 @@ class CommentModel extends ActiveRecord
     /**
      * Get comments count
      *
+     * @param bool $onlyActiveComments
      * @return int|string
      */
-    public function getCommentsCount()
+    public function getCommentsCount($onlyActiveComments = true)
     {
-        return self::find()->where(['entity' => $this->entity, 'entityId' => $this->entityId])->count();
+        $query = self::find()->where(['entity' => $this->entity, 'entityId' => $this->entityId]);
+
+        if ($onlyActiveComments) {
+            $query->active();
+        }
+
+        return $query->count();
     }
 }

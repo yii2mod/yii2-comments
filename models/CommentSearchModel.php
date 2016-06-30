@@ -3,7 +3,6 @@
 namespace yii2mod\comments\models;
 
 use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
 
 /**
  * Class CommentSearchModel
@@ -12,18 +11,18 @@ use yii\helpers\ArrayHelper;
 class CommentSearchModel extends CommentModel
 {
     /**
-     * Returns the validation rules for attributes.
      * @return array validation rules
      */
     public function rules()
     {
-        return ArrayHelper::merge([
+        return [
             [['id', 'createdBy', 'content', 'status', 'relatedTo'], 'safe'],
-        ], parent::rules());
+        ];
     }
 
     /**
-     * Setup search function for filtering and sorting based on fullName field
+     * Setup search function for filtering and sorting.
+     *
      * @param $params
      * @param int $pageSize
      * @return ActiveDataProvider

@@ -11,7 +11,7 @@ use yii2mod\comments\Module;
 
 /**
  * Class Comment
- * @package app\components\comment\widgets
+ * @package yii2mod\comments\widgets
  */
 class Comment extends Widget
 {
@@ -40,6 +40,11 @@ class Comment extends Widget
      * @var null|integer maximum comments level, level starts from 1, null - unlimited level;
      */
     public $maxLevel = 7;
+
+    /**
+     * @var boolean show deleted comments. Defaults to `false`.
+     */
+    public $showDeletedComments = false;
 
     /**
      * @var string entity id attribute
@@ -111,8 +116,8 @@ class Comment extends Widget
             'entity' => $this->entity,
             'entityId' => $this->entityId
         ]);
-        $commentModel->entityId = $this->entityId;
-        $comments = $commentModelClass::getTree($this->entity, $this->entityId, $this->maxLevel);
+
+        $comments = $commentModelClass::getTree($this->entity, $this->entityId, $this->maxLevel, $this->showDeletedComments);
 
         return $this->render($this->commentView, [
             'comments' => $comments,
@@ -120,7 +125,8 @@ class Comment extends Widget
             'maxLevel' => $this->maxLevel,
             'encryptedEntity' => $this->encryptedEntityKey,
             'pjaxContainerId' => $this->pjaxContainerId,
-            'formId' => $this->formId
+            'formId' => $this->formId,
+            'showDeletedComments' => $this->showDeletedComments
         ]);
     }
 

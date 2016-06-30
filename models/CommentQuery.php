@@ -16,8 +16,7 @@ class CommentQuery extends ActiveQuery
      */
     public function active()
     {
-        $this->andWhere(['status' => CommentStatus::ACTIVE]);
-        return $this;
+        return $this->andWhere(['status' => CommentStatus::ACTIVE]);
     }
 
     /**
@@ -25,7 +24,6 @@ class CommentQuery extends ActiveQuery
      */
     public function deleted()
     {
-        $this->andWhere(['status' => CommentStatus::DELETED]);
-        return $this;
+        return $this->andWhere(['status' => CommentStatus::DELETED]);
     }
 }

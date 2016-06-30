@@ -66,6 +66,7 @@ http://localhost/path/to/index.php?r=comments/index
 
 Usage
 -------------------
+**Notes:**
 > 1. Delete button visible only for user with `admin` role. 
 > 2. When you delete a comment, all nested comments will be marked as `deleted`.
 > 3. For change the any function in the CommentModel you can create your own model and change the property `commentModelClass` in the Comment Module.

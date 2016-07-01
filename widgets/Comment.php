@@ -5,6 +5,7 @@ namespace yii2mod\comments\widgets;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Widget;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii2mod\comments\CommentAsset;
 use yii2mod\comments\Module;
@@ -85,7 +86,7 @@ class Comment extends Widget
             throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "model" property must be set.'));
         }
 
-        $this->pjaxContainerId = 'comment-pjax-container-' . $this->getId();
+        $this->pjaxContainerId = ArrayHelper::getValue($this->clientOptions, 'pjaxContainerId', 'comment-pjax-container-' . $this->getId());
         $this->entity = hash('crc32', get_class($this->model));
         $this->entityId = $this->model->{$this->entityIdAttribute};
 

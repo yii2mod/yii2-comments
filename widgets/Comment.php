@@ -38,6 +38,11 @@ class Comment extends Widget
     public $formId = 'comment-form';
 
     /**
+     * @var string pjax container id
+     */
+    public $pjaxContainerId;
+
+    /**
      * @var null|integer maximum comments level, level starts from 1, null - unlimited level;
      */
     public $maxLevel = 7;
@@ -73,11 +78,6 @@ class Comment extends Widget
     protected $encryptedEntityKey;
 
     /**
-     * @var string pjax container id, generated automatically
-     */
-    protected $pjaxContainerId;
-
-    /**
      * Initializes the widget params.
      */
     public function init()
@@ -86,7 +86,10 @@ class Comment extends Widget
             throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "model" property must be set.'));
         }
 
-        $this->pjaxContainerId = ArrayHelper::getValue($this->clientOptions, 'pjaxContainerId', 'comment-pjax-container-' . $this->getId());
+        if (empty($this->pjaxContainerId)) {
+            $this->pjaxContainerId = 'comment-pjax-container-' . $this->getId();
+        }
+
         $this->entity = hash('crc32', get_class($this->model));
         $this->entityId = $this->model->{$this->entityIdAttribute};
 

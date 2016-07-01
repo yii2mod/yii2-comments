@@ -105,7 +105,8 @@ echo \yii2mod\comments\widgets\Comment::widget([
 
 echo \yii2mod\comments\widgets\Comment::widget([
         'model' => $model2,
-        'formId' => 'comment-form2'
+        'formId' => 'comment-form2',
+        'pjaxContainerId' => 'unique-pjax-container-id' // also you can set the `pjaxContainerId`
     ]); 
   ```
   

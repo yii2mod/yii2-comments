@@ -80,6 +80,9 @@ Usage
 -------------------
 **Basic example:**
 ```php
+// the model to which are added comments, for example:
+$model = Post::find()->where(['title' => 'some post title'])->one();
+
 <?php echo \yii2mod\comments\widgets\Comment::widget([
     'model' => $model,
     'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current(), // for example

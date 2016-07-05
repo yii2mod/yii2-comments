@@ -6,7 +6,7 @@ This module provide a comments managing system for Yii2 application.
 [![Latest Stable Version](https://poser.pugx.org/yii2mod/yii2-comments/v/stable)](https://packagist.org/packages/yii2mod/yii2-comments) 
 [![Total Downloads](https://poser.pugx.org/yii2mod/yii2-comments/downloads)](https://packagist.org/packages/yii2mod/yii2-comments) 
 [![License](https://poser.pugx.org/yii2mod/yii2-comments/license)](https://packagist.org/packages/yii2mod/yii2-comments)
-[![Build Status](https://travis-ci.org/yii2mod/yii2-comments.svg?branch=1.1)](https://travis-ci.org/yii2mod/yii2-comments)
+[![Build Status](https://travis-ci.org/yii2mod/yii2-comments.svg?branch=master)](https://travis-ci.org/yii2mod/yii2-comments)
 
 Installation
 ------------

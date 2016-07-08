@@ -22,7 +22,7 @@ use yii\helpers\Url;
                                 <?php echo Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', '#', ['data' => ['action' => 'delete', 'url' => Url::to(['/comment/default/delete', 'id' => $comment->id]), 'comment-id' => $comment->id]]); ?>
                             <?php endif; ?>
                             <?php if (!Yii::$app->user->isGuest && ($comment->level < $maxLevel || is_null($maxLevel))): ?>
-                                <?php echo Html::a("<span class='glyphicon glyphicon-share-alt'></span> Reply", '#', ['class' => 'comment-reply', 'data' => ['action' => 'reply', 'comment-id' => $comment->id]]); ?>
+                                <?php echo Html::a("<span class='glyphicon glyphicon-share-alt'></span> " . Yii::t('yii2mod.comments', 'Reply'), '#', ['class' => 'comment-reply', 'data' => ['action' => 'reply', 'comment-id' => $comment->id]]); ?>
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>

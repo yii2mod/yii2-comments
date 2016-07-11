@@ -53,7 +53,8 @@ class CommentModel extends ActiveRecord
     public function rules()
     {
         return [
-            [['entity', 'entityId', 'content'], 'required'],
+            [['entity', 'entityId'], 'required'],
+            ['content', 'required', 'message' => Yii::t('yii2mod.comments', 'Comment cannot be blank.')],
             [['content', 'entity', 'relatedTo'], 'string'],
             ['parentId', 'validateParentID'],
             [['entityId', 'parentId', 'createdBy', 'updatedBy', 'status', 'createdAt', 'updatedAt', 'level'], 'integer'],
@@ -113,8 +114,10 @@ class CommentModel extends ActiveRecord
     {
         return [
             'id' => Yii::t('yii2mod.comments', 'ID'),
-            'content' => Yii::t('yii2mod.comments', 'Comment'),
+            'content' => Yii::t('yii2mod.comments', 'Content'),
             'entity' => Yii::t('yii2mod.comments', 'Entity'),
+            'entityId' => Yii::t('yii2mod.comments', 'Entity ID'),
+            'parentId' => Yii::t('yii2mod.comments', 'Parent ID'),
             'status' => Yii::t('yii2mod.comments', 'Status'),
             'level' => Yii::t('yii2mod.comments', 'Level'),
             'createdBy' => Yii::t('yii2mod.comments', 'Created by'),
@@ -168,7 +171,7 @@ class CommentModel extends ActiveRecord
                 self::updateAll(['status' => CommentStatus::DELETED], ['parentId' => $this->id]);
             }
         }
-        
+
         parent::afterSave($insert, $changedAttributes);
     }
 
@@ -323,9 +326,9 @@ class CommentModel extends ActiveRecord
      * @param string $deletedCommentText
      * @return string
      */
-    public function getContent($deletedCommentText = 'Comment was deleted.')
+    public function getContent($deletedCommentText = 'Comment has been deleted.')
     {
-        return $this->isDeleted ? $deletedCommentText : nl2br($this->content);
+        return $this->isDeleted ? Yii::t('yii2mod.comments', $deletedCommentText) : nl2br($this->content);
     }
 
     /**

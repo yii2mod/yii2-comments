@@ -9,7 +9,7 @@ use yii2mod\comments\models\enums\CommentStatus;
 /* @var $model \yii2mod\comments\models\CommentModel */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = Yii::t('yii2mod.comments', 'Update Comment: ') . $model->id;
+$this->title = Yii::t('yii2mod.comments', 'Update Comment: {0}', $model->id);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('yii2mod.comments', 'Comments Management'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('yii2mod.comments', 'Update');
 ?>

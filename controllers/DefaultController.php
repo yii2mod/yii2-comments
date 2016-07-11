@@ -79,7 +79,7 @@ class DefaultController extends Controller
     public function actionDelete($id)
     {
         if ($this->findModel($id)->deleteComment()) {
-            return Yii::t('yii2mod.comments', 'Comment was deleted.');
+            return Yii::t('yii2mod.comments', 'Comment has been deleted.');
         } else {
             Yii::$app->response->setStatusCode(500);
             return Yii::t('yii2mod.comments', 'Comment has not been deleted. Please try again!');

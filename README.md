@@ -114,6 +114,30 @@ echo \yii2mod\comments\widgets\Comment::widget([
     ]); 
   ```
   
+## Internationalization
+
+All text and messages introduced in this extension are translatable under category 'yii2mod.comments'.
+You may use translations provided within this extension, using following application configuration:
+
+```php
+return [
+    'components' => [
+        'i18n' => [
+            'translations' => [
+                'yii2mod.comments' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@yii2mod/comments/messages',
+                ],
+                // ...
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+
+  
 #### Example comments
 -----
 ![Alt text](http://res.cloudinary.com/zfort/image/upload/v1467214676/comments-preview.png "Example comments")

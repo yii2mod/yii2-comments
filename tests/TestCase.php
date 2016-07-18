@@ -4,6 +4,8 @@ namespace yii2mod\comments\tests;
 
 use yii\helpers\ArrayHelper;
 use Yii;
+use yii\helpers\FileHelper;
+use yii2mod\comments\tests\data\Session;
 
 /**
  * This is the base class for all yii framework unit tests.
@@ -16,6 +18,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->mockApplication();
 
         $this->setupTestDbData();
+
+        $this->createRuntimeFolder();
     }
 
     protected function tearDown()
@@ -29,7 +33,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      * @param array $config The application configuration, if needed
      * @param string $appClass name of the application class to create
      */
-    protected function mockApplication($config = [], $appClass = '\yii\console\Application')
+    protected function mockApplication($config = [], $appClass = '\yii\web\Application')
     {
         new $appClass(ArrayHelper::merge([
             'id' => 'testapp',
@@ -39,14 +43,30 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 'db' => [
                     'class' => 'yii\db\Connection',
                     'dsn' => 'sqlite::memory:',
-                ]
+                ],
+                'request' => [
+                    'hostInfo' => 'http://domain.com',
+                    'scriptUrl' => 'index.php'
+                ],
+                'user' => [
+                    'identityClass' => 'yii2mod\comments\tests\data\User',
+                ],
+                'i18n' => [
+                    'translations' => [
+                        'yii2mod.comments' => [
+                            'class' => 'yii\i18n\PhpMessageSource',
+                            'basePath' => '@yii2mod/comments/messages',
+                        ],
+                    ],
+                ],
             ],
             'modules' => [
                 'comment' => [
                     'class' => 'yii2mod\comments\Module',
-                    'userIdentityClass' => ''
+                    'userIdentityClass' => '',
+                    'controllerNamespace' => 'yii2mod\comments\tests\data'
                 ]
-            ]
+            ],
         ], $config));
     }
 
@@ -72,7 +92,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected function setupTestDbData()
     {
         $db = Yii::$app->getDb();
-        
+
         // Structure :
 
         $db->createCommand()->createTable('Comment', [
@@ -90,11 +110,43 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'updatedAt' => 'integer',
         ])->execute();
 
+        $db->createCommand()->createTable('User', [
+            'id' => 'pk',
+            'username' => 'string',
+            'email' => 'string',
+        ])->execute();
+
+        $db->createCommand()->createTable('Post', [
+            'id' => 'pk',
+            'title' => 'string',
+            'description' => 'string',
+            'createdAt' => 'integer'
+        ])->execute();
+
         // Data :
 
         $db->createCommand()->batchInsert('Comment', ['entity', 'entityId', 'content', 'parentId', 'level', 'createdBy', 'updatedBy', 'relatedTo', 'status', 'createdAt', 'updatedAt'], [
             ['73ccdea0', 1, 'content', null, 1, 1, 1, 'related to', 1, time(), time()],
             ['73ccdea0', 1, 'content 2', null, 1, 1, 1, 'related to', 2, time(), time()],
         ])->execute();
+
+        $db->createCommand()->insert('User', [
+            'username' => 'John Doe',
+            'email' => 'johndoe@domain.com'
+        ])->execute();
+
+        $db->createCommand()->insert('Post', [
+            'title' => 'Post Title',
+            'description' => 'some description',
+            'createdAt' => time(),
+        ])->execute();
+    }
+
+    /**
+     * Create runtime folder
+     */
+    protected function createRuntimeFolder()
+    {
+        FileHelper::createDirectory(dirname(__DIR__) . '/tests/runtime');
     }
 }

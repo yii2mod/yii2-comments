@@ -3,9 +3,10 @@
 namespace yii2mod\comments\tests;
 
 use Yii;
-use yii2mod\comments\models\CommentModel;
-use yii2mod\comments\models\enums\CommentStatus;
+use yii\helpers\Json;
 use yii2mod\comments\Module;
+use yii2mod\comments\tests\data\PostModel;
+use yii2mod\comments\tests\data\User;
 
 /**
  * Class CommentTest
@@ -13,30 +14,36 @@ use yii2mod\comments\Module;
  */
 class CommentTest extends TestCase
 {
-    public function testGetModule()
+    public function testTryAddComment()
     {
-        $this->assertInstanceOf(Module::className(), Yii::$app->getModule('comment'));
+        Yii::$app->user->login(User::find()->one());
+        Yii::$app->request->bodyParams = [
+            'CommentModel' => [
+                'content' => 'my comment',
+            ]
+        ];
+        $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
+
+        $this->assertEquals('success', $response['status']);
     }
 
-    public function testDeleteComment()
+    public function testTryAddCommentWithInvalidEntityParam()
     {
-        $comment = CommentModel::findOne(1);
-
-        $this->assertTrue($comment->deleteComment());
-        $this->assertEquals(CommentStatus::DELETED, $comment->status);
-        $this->assertTrue($comment->getIsDeleted());
-        $this->assertFalse($comment->getIsActive());
+        $response = Yii::$app->runAction('comment/default/create', ['entity' => 'invalid entity']);
+        $this->assertEquals('error', $response['status']);
     }
 
-    public function testGetActiveCommentsCount()
+    /**
+     * @return string
+     */
+    private function generateEntity()
     {
-        $comment = CommentModel::findOne(1);
-        $this->assertEquals(1, $comment->getCommentsCount());
-    }
+        $post = PostModel::find()->one();
 
-    public function testGetCommentsCountWithInactive()
-    {
-        $comment = CommentModel::findOne(1);
-        $this->assertEquals(2, $comment->getCommentsCount(false));
+        return Yii::$app->getSecurity()->encryptByKey(Json::encode([
+            'entity' => hash('crc32', get_class($post)),
+            'entityId' => $post->id,
+            'relatedTo' => get_class($post) . ':' . $post->id
+        ]), Module::$name);
     }
 }

@@ -48,7 +48,7 @@ class DefaultController extends Controller
         /* @var $module Module */
         $module = Yii::$app->getModule(Module::$name);
         $commentModelClass = $module->commentModelClass;
-        $decryptEntity = Yii::$app->getSecurity()->decryptByKey($entity, $module::$name);
+        $decryptEntity = Yii::$app->getSecurity()->decryptByKey(utf8_decode($entity), $module::$name);
         if ($decryptEntity !== false) {
             $entityData = Json::decode($decryptEntity);
             /* @var $model CommentModel */

@@ -40,10 +40,10 @@ class CommentTest extends TestCase
     {
         $post = PostModel::find()->one();
 
-        return Yii::$app->getSecurity()->encryptByKey(Json::encode([
+        return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
             'entity' => hash('crc32', get_class($post)),
             'entityId' => $post->id,
             'relatedTo' => get_class($post) . ':' . $post->id
-        ]), Module::$name);
+        ]), Module::$name));
     }
 }

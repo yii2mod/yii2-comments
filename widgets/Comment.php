@@ -154,10 +154,10 @@ class Comment extends Widget
      */
     protected function generateEntityKey()
     {
-        return Yii::$app->getSecurity()->encryptByKey(Json::encode([
+        return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
             'entity' => $this->entity,
             'entityId' => $this->entityId,
             'relatedTo' => $this->relatedTo
-        ]), Module::$name);
+        ]), Module::$name));
     }
 }

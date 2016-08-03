@@ -1,6 +1,5 @@
 <?php
 
-use yii\db\Schema;
 use yii\db\Migration;
 
 /**
@@ -20,21 +19,21 @@ class m010101_100001_init_comment extends Migration
         }
 
         $this->createTable('{{%Comment}}', [
-            'id' => Schema::TYPE_PK,
-            'entity' => 'CHAR(10) NOT NULL',
-            'entityId' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'content' => Schema::TYPE_TEXT . ' NOT NULL',
-            'parentId' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-            'level' => 'TINYINT(3) NOT NULL DEFAULT 1',
-            'createdBy' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updatedBy' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'status' => 'TINYINT(2) NOT NULL DEFAULT 1',
-            'createdAt' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updatedAt' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'id' => $this->primaryKey(),
+            'entity' => $this->char(10)->notNull(),
+            'entityId' => $this->integer()->notNull(),
+            'content' => $this->text()->notNull(),
+            'parentId' => $this->integer()->null(),
+            'level' => $this->smallInteger()->notNull()->defaultValue(1),
+            'createdBy' => $this->integer()->notNull(),
+            'updatedBy' => $this->integer()->notNull(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),
+            'createdAt' => $this->integer()->notNull(),
+            'updatedAt' => $this->integer()->notNull(),
         ], $tableOptions);
 
-        $this->createIndex('entity_index', '{{%Comment}}', 'entity');
-        $this->createIndex('status_index', '{{%Comment}}', 'status');
+        $this->createIndex('idx-Comment-entity', '{{%Comment}}', 'entity');
+        $this->createIndex('idx-Comment-status', '{{%Comment}}', 'status');
     }
 
     /**

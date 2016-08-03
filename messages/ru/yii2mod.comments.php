@@ -47,5 +47,6 @@ return [
     'Select Author' => 'Выберите Автора',
     'Update Comment: {0}' => 'Обновить комментарий: {0}',
     'Active' => 'Включён',
-    'Deleted' => 'Удален'
+    'Deleted' => 'Удален',
+    'Go Back' => 'Вернуться'
 ];

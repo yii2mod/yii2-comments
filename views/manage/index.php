@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="comments-index">
 
     <h1><?php echo Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(['enablePushState' => false, 'timeout' => 5000]); ?>
+    <?php Pjax::begin(['timeout' => 5000]); ?>
     <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

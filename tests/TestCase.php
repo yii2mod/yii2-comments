@@ -97,17 +97,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         $db->createCommand()->createTable('Comment', [
             'id' => 'pk',
-            'entity' => 'string',
-            'entityId' => 'integer',
-            'content' => 'string',
-            'parentId' => 'integer',
-            'level' => 'integer',
+            'entity' => 'char(10) not null',
+            'entityId' => 'integer not null',
+            'content' => 'text not null',
+            'parentId' => 'integer null',
+            'level' => 'integer not null default 1',
             'createdBy' => 'integer',
             'updatedBy' => 'integer',
-            'relatedTo' => 'string',
-            'status' => 'integer',
-            'createdAt' => 'integer',
-            'updatedAt' => 'integer',
+            'relatedTo' => 'string(500)',
+            'status' => 'smallint not null default 1',
+            'createdAt' => 'integer not null',
+            'updatedAt' => 'integer not null',
         ])->execute();
 
         $db->createCommand()->createTable('User', [

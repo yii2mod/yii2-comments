@@ -56,6 +56,9 @@ class CommentModel extends ActiveRecord
             [['entity', 'entityId'], 'required'],
             ['content', 'required', 'message' => Yii::t('yii2mod.comments', 'Comment cannot be blank.')],
             [['content', 'entity', 'relatedTo'], 'string'],
+            ['status', 'default', 'value' => CommentStatus::ACTIVE],
+            ['status', 'in', 'range' => [CommentStatus::ACTIVE, CommentStatus::DELETED]],
+            ['level', 'default', 'value' => 1],
             ['parentId', 'validateParentID'],
             [['entityId', 'parentId', 'createdBy', 'updatedBy', 'status', 'createdAt', 'updatedAt', 'level'], 'integer'],
         ];
@@ -99,7 +102,10 @@ class CommentModel extends ActiveRecord
                 'attributes' => ['content'],
                 'config' => [
                     'HTML.SafeIframe' => true,
-                    'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'
+                    'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%',
+                    'AutoFormat.Linkify' => true,
+                    'HTML.TargetBlank' => true,
+                    'HTML.Allowed' => 'a[href], iframe[src|width|height|frameborder], img[src]'
                 ]
             ]
         ];

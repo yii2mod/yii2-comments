@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": ">=2.0.4",
+    "yiisoft/yii2": ">=2.0.8",
     "yii2mod/yii2-behaviors": "*",
     "yii2mod/yii2-editable": "*",
     "yii2mod/yii2-enum": "*",

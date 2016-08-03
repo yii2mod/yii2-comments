@@ -47,5 +47,6 @@ return [
     'Select Author' => 'Select Author',
     'Update Comment: {0}' => 'Update Comment: {0}',
     'Active' => 'Active',
-    'Deleted' => 'Deleted'
+    'Deleted' => 'Deleted',
+    'Go Back' => 'Go Back'
 ];

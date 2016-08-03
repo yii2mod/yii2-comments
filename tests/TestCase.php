@@ -101,7 +101,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'entityId' => 'integer not null',
             'content' => 'text not null',
             'parentId' => 'integer null',
-            'level' => 'integer not null default 1',
+            'level' => 'smallint not null default 1',
             'createdBy' => 'integer',
             'updatedBy' => 'integer',
             'relatedTo' => 'string(500)',

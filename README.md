@@ -86,6 +86,7 @@ public function getUsername()
     // your custom code
 }
 ```
+
 Usage
 -------------------
 **Basic example:**

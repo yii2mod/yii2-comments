@@ -76,7 +76,13 @@ public function getAvatar()
     // return some image path
 }
 ```
-
+> 5. You can implement your own function `getUsername` in the `userIdentityClass`. Just create the `getUsername` method in your User model.
+```php
+public function getUsername()
+{
+    // your custom code
+}
+```
 Usage
 -------------------
 **Basic example:**

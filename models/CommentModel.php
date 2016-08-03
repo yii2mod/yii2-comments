@@ -287,11 +287,11 @@ class CommentModel extends ActiveRecord
      */
     public function hasChildren()
     {
-        return !empty($this->_children) ? true : false;
+        return !empty($this->_children);
     }
 
     /**
-     * @return boolean Whether comment is active or not
+     * @return boolean whether comment is active or not
      */
     public function getIsActive()
     {
@@ -299,7 +299,7 @@ class CommentModel extends ActiveRecord
     }
 
     /**
-     * @return boolean Whether comment is deleted or not
+     * @return boolean whether comment is deleted or not
      */
     public function getIsDeleted()
     {
@@ -323,6 +323,10 @@ class CommentModel extends ActiveRecord
      */
     public function getAuthorName()
     {
+        if ($this->author->hasMethod('getUsername')) {
+            return $this->author->getUsername();
+        }
+
         return $this->author->username;
     }
 
@@ -346,13 +350,16 @@ class CommentModel extends ActiveRecord
     {
         if ($this->author->hasMethod('getAvatar')) {
             return $this->author->getAvatar();
-        } else {
-            return "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y&s=50";
         }
+
+        return "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y&s=50";
     }
 
     /**
+     * Get a list of the authors of the comments
+     *
      * This function used for filter in gridView, for attribute `createdBy`.
+     *
      * @return array
      */
     public static function getListAuthorsNames()

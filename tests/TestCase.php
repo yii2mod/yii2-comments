@@ -102,9 +102,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'content' => 'text not null',
             'parentId' => 'integer null',
             'level' => 'smallint not null default 1',
-            'createdBy' => 'integer',
-            'updatedBy' => 'integer',
-            'relatedTo' => 'string(500)',
+            'createdBy' => 'integer not null',
+            'updatedBy' => 'integer not null',
+            'relatedTo' => 'string(500) not null',
             'status' => 'smallint not null default 1',
             'createdAt' => 'integer not null',
             'updatedAt' => 'integer not null',
@@ -125,9 +125,15 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         // Data :
 
-        $db->createCommand()->batchInsert('Comment', ['entity', 'entityId', 'content', 'parentId', 'level', 'createdBy', 'updatedBy', 'relatedTo', 'status', 'createdAt', 'updatedAt'], [
-            ['73ccdea0', 1, 'content', null, 1, 1, 1, 'related to', 1, time(), time()],
-            ['73ccdea0', 1, 'content 2', null, 1, 1, 1, 'related to', 2, time(), time()],
+        $db->createCommand()->insert('Comment', [
+            'entity' => '73ccdea0',
+            'entityId' => 1,
+            'content' => 'test content',
+            'createdBy' => 1,
+            'updatedBy' => 1,
+            'relatedTo' => 'test comment',
+            'createdAt' => time(),
+            'updatedAt' => time()
         ])->execute();
 
         $db->createCommand()->insert('User', [

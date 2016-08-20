@@ -5,7 +5,6 @@ namespace yii2mod\comments\widgets;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Widget;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii2mod\comments\CommentAsset;
 use yii2mod\comments\Module;
@@ -25,7 +24,7 @@ class Comment extends Widget
      * @var string relatedTo custom text, for example: cms url: about-us, john comment about us page, etc.
      * By default - className:primaryKey of the current model
      */
-    public $relatedTo = '';
+    public $relatedTo;
 
     /**
      * @var string the view file that will render the comment tree and form for posting comments.
@@ -108,6 +107,7 @@ class Comment extends Widget
 
     /**
      * Executes the widget.
+     *
      * @return string the result of widget execution to be outputted.
      */
     public function run()
@@ -136,6 +136,8 @@ class Comment extends Widget
 
     /**
      * Register assets.
+     *
+     * @return void
      */
     protected function registerAssets()
     {

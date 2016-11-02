@@ -16,24 +16,19 @@
 
     // Default settings
     var defaults = {
-        // Comment actions buttons selector
         toolsSelector: '.comment-action-buttons',
-        // Form selector
         formSelector: '#comment-form',
-        // Form container selector
         formContainerSelector: '.comment-form-container',
-        // Comment content selector
         contentSelector: '.comment-body',
-        // Cancel reply button selector
         cancelReplyBtnSelector: '#cancel-reply',
-        //Pjax container id
         pjaxContainerId: '#comment-pjax-container',
-        //Pjax default settings
         pjaxSettings: {
             timeout: 10000,
             scrollTo: false,
             url: window.location.href
-        }
+        },
+        submitBtnText: 'Comment',
+        submitBtnLoadingText: 'Loading...'
     };
 
     // Methods
@@ -46,7 +41,6 @@
                 }
                 var settings = $.extend({}, defaults, options || {});
                 $commentForm.data('comment', settings);
-                //Add events
                 $commentForm.on('beforeSubmit.comment', beforeSubmitForm);
                 var eventParams = {commentForm: $commentForm};
                 $(settings.pjaxContainerId).on('click.comment', '[data-action="reply"]', eventParams, reply);
@@ -71,23 +65,19 @@
      * This function used for `beforeSubmit` comment form event
      */
     function beforeSubmitForm() {
-        var $commentForm = $(this),
-            settings = $commentForm.data('comment');
-        //Add loading to comment button
-        $commentForm.find(':submit').prop('disabled', true).text('Loading...');
+        var $commentForm = $(this);
+        var settings = $commentForm.data('comment');
         var pjaxSettings = $.extend({container: settings.pjaxContainerId}, settings.pjaxSettings);
-        //Send post request
+
+        $commentForm.find(':submit').prop('disabled', true).text(settings.submitBtnLoadingText);
+
         $.post($commentForm.attr("action"), $commentForm.serialize(), function (data) {
-            //If success is status, then pjax container has been reloaded and comment form has been reset
             if (data.status == 'success') {
                 $.pjax(pjaxSettings).done(function () {
-                    $commentForm.find(':submit').prop('disabled', false).text('Comment');
                     $commentForm.trigger("reset");
-                    //Restart plugin
                     methods.reset.call($commentForm, settings);
                 });
             }
-            //If status is error, then only show form errors.
             else {
                 if (data.hasOwnProperty('errors')) {
                     $commentForm.yiiActiveForm('updateMessages', data.errors, true);
@@ -95,9 +85,10 @@
                 else {
                     $commentForm.yiiActiveForm('updateAttribute', 'commentmodel-content', [data.message]);
                 }
-                $commentForm.find(':submit').prop('disabled', false).text('Comment');
+                $commentForm.find(':submit').prop('disabled', false).text(settings.submitBtnText);
             }
         });
+
         return false;
     }
 
@@ -111,11 +102,8 @@
         var settings = $commentForm.data('comment');
         var $this = $(this);
         var parentCommentSelector = $this.parents('[data-comment-content-id="' + $this.data('comment-id') + '"]');
-        //Move form to comment container
         $commentForm.appendTo(parentCommentSelector);
-        //Update parentId field
         $commentForm.find('[data-comment="parent-id"]').val($this.data('comment-id'));
-        //Show cancel reply link
         $commentForm.find(settings.cancelReplyBtnSelector).show();
     }
 
@@ -128,15 +116,13 @@
         var $commentForm = event.data.commentForm;
         var settings = $commentForm.data('comment');
         $commentForm.find(settings.cancelReplyBtnSelector).hide();
-        //Move form back to form container
         var formContainer = $(settings.pjaxContainerId).find(settings.formContainerSelector);
         $commentForm.prependTo(formContainer);
-        //Update parentId field
         $commentForm.find('[data-comment="parent-id"]').val(null);
     }
 
     /**
-     * Delete comment
+     * Delete the comment
      * @param event
      */
     function deleteComment(event) {

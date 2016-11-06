@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii2mod\comments\events\CommentEvent;
 use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\Module;
 
@@ -19,8 +20,14 @@ use yii2mod\comments\Module;
 class DefaultController extends Controller
 {
     /**
+     * Event is triggered after creating a new comment.
+     * Triggered with yii2mod\comments\events\CommentEvent
+     */
+    const EVENT_AFTER_CREATE = 'afterCreate';
+
+    /**
      * Returns a list of behaviors that this component should behave as.
-     * 
+     *
      * @return array
      */
     public function behaviors()
@@ -31,22 +38,29 @@ class DefaultController extends Controller
                 'actions' => [
                     'create' => ['post'],
                     'delete' => ['post', 'delete']
-                ],
+                ]
             ],
+            'contentNegotiator' => [
+                'class' => 'yii\filters\ContentNegotiator',
+                'only' => ['create'],
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
+                ]
+            ]
         ];
     }
 
     /**
      * Create comment.
-     * 
+     *
      * @param $entity string encrypt entity
      * @return array|null|Response
      */
     public function actionCreate($entity)
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
         /* @var $module Module */
         $module = Yii::$app->getModule(Module::$name);
+        $event = Yii::createObject(['class' => CommentEvent::className(), 'user' => Yii::$app->user]);
         $commentModelClass = $module->commentModelClass;
         $decryptEntity = Yii::$app->getSecurity()->decryptByKey(utf8_decode($entity), $module::$name);
         if ($decryptEntity !== false) {
@@ -55,6 +69,7 @@ class DefaultController extends Controller
             $model = new $commentModelClass;
             $model->setAttributes($entityData);
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $this->trigger(self::EVENT_AFTER_CREATE, $event);
                 return ['status' => 'success'];
             } else {
                 return [

@@ -44,7 +44,20 @@ To access the module, you need to add the following code to your application con
 ```php
 'modules' => [
     'comment' => [
-        'class' => 'yii2mod\comments\Module'
+        'class' => 'yii2mod\comments\Module',
+        // use comment controller event example
+        'controllerMap' => [
+            'default' => [
+                'class' => 'yii2mod\comments\controllers\DefaultController',
+                'on afterCreate' => function ($event) {
+                    // get userId
+                    $event->getUser()->getId();
+                    // get identity
+                    $event->getUser()->getIdentity();
+                    // your custom code
+                }
+            ]
+        ]
     ]
 ]
 ```
@@ -54,7 +67,7 @@ To access the module, you need to add the following code to your application con
 To access the comments management section, you need to add the following code to your application configuration:
 ```php
   'controllerMap' => [
-      'comments' => 'yii2mod\comments\controllers\ManageController'
+      'comments' => 'yii2mod\comments\controllers\ManageController',
   ]  
 ```
 > Basically the above code must be placed in the `admin` module
@@ -123,7 +136,7 @@ echo \yii2mod\comments\widgets\Comment::widget([
         'pjaxContainerId' => 'unique-pjax-container-id' // also you can set the `pjaxContainerId`
     ]); 
   ```
-  
+
 ## Internationalization
 
 All text and messages introduced in this extension are translatable under category 'yii2mod.comments'.

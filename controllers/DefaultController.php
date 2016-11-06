@@ -69,6 +69,7 @@ class DefaultController extends Controller
             $model = new $commentModelClass;
             $model->setAttributes($entityData);
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $event->setCommentModel($model);
                 $this->trigger(self::EVENT_AFTER_CREATE, $event);
                 return ['status' => 'success'];
             } else {

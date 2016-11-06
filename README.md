@@ -54,6 +54,8 @@ To access the module, you need to add the following code to your application con
                     $event->getUser()->getId();
                     // get identity
                     $event->getUser()->getIdentity();
+                    // get saved comment model
+                    $event->getCommentModel();
                     // your custom code
                 }
             ]

@@ -3,7 +3,9 @@
 namespace yii2mod\comments\tests;
 
 use Yii;
+use yii\base\Event;
 use yii\helpers\Json;
+use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\Module;
 use yii2mod\comments\tests\data\PostModel;
 use yii2mod\comments\tests\data\User;
@@ -19,9 +21,31 @@ class CommentTest extends TestCase
         Yii::$app->user->login(User::find()->one());
         Yii::$app->request->bodyParams = [
             'CommentModel' => [
-                'content' => 'my comment',
+                'content' => 'test comment'
             ]
         ];
+        $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
+
+        $this->assertEquals('success', $response['status'], 'Unable to add a comment!');
+    }
+
+    public function testAfterCreateEvent()
+    {
+        $commentContent = 'test comment';
+        Yii::$app->user->login(User::find()->one());
+        Yii::$app->request->bodyParams = [
+            'CommentModel' => [
+                'content' => $commentContent
+            ]
+        ];
+        Event::on(
+            data\DefaultController::className(),
+            data\DefaultController::EVENT_AFTER_CREATE,
+            function ($event) use ($commentContent) {
+                $this->assertEquals($commentContent, $event->getCommentModel()->content);
+                $this->assertInstanceOf(CommentModel::className(), $event->getCommentModel());
+            }
+        );
         $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
 
         $this->assertEquals('success', $response['status'], 'Unable to add a comment!');

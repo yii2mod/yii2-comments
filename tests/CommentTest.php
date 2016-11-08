@@ -7,6 +7,7 @@ use yii\base\Event;
 use yii\helpers\Json;
 use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\Module;
+use yii2mod\comments\tests\data\DefaultController;
 use yii2mod\comments\tests\data\PostModel;
 use yii2mod\comments\tests\data\User;
 
@@ -39,8 +40,8 @@ class CommentTest extends TestCase
             ]
         ];
         Event::on(
-            data\DefaultController::className(),
-            data\DefaultController::EVENT_AFTER_CREATE,
+            DefaultController::className(),
+            DefaultController::EVENT_AFTER_CREATE,
             function ($event) use ($commentContent) {
                 $this->assertEquals($commentContent, $event->getCommentModel()->content);
                 $this->assertInstanceOf(CommentModel::className(), $event->getCommentModel());

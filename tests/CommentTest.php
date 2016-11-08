@@ -52,6 +52,24 @@ class CommentTest extends TestCase
         $this->assertEquals('success', $response['status'], 'Unable to add a comment!');
     }
 
+    public function testReply()
+    {
+        $comment = CommentModel::find()->one();
+        Yii::$app->user->login(User::find()->one());
+        Yii::$app->request->bodyParams = [
+            'CommentModel' => [
+                'parentId' => $comment->id,
+                'content' => 'test comment'
+            ]
+        ];
+        $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
+        $this->assertEquals('success', $response['status'], 'Unable to add a comment!');
+
+        $addedComment = CommentModel::find()->orderBy(['id' => SORT_DESC])->one();
+        $this->assertEquals($comment->id, $addedComment->parentId, 'Invalid value for parentId attribute!');
+
+    }
+
     public function testDeleteComment()
     {
         Yii::$app->user->login(User::find()->one());

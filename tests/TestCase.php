@@ -126,7 +126,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         // Data :
 
         $db->createCommand()->insert('Comment', [
-            'entity' => '73ccdea0',
+            'entity' => '025c69f4',
             'entityId' => 1,
             'content' => 'test content',
             'createdBy' => 1,

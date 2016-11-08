@@ -50,10 +50,6 @@ To access the module, you need to add the following code to your application con
             'default' => [
                 'class' => 'yii2mod\comments\controllers\DefaultController',
                 'on afterCreate' => function ($event) {
-                    // get userId
-                    $event->getUser()->getId();
-                    // get identity
-                    $event->getUser()->getIdentity();
                     // get saved comment model
                     $event->getCommentModel();
                     // your custom code

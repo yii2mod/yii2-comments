@@ -87,6 +87,8 @@
                 }
                 $commentForm.find(':submit').prop('disabled', false).text(settings.submitBtnText);
             }
+        }).fail(function (xhr, status, error) {
+            alert(error);
         });
 
         return false;

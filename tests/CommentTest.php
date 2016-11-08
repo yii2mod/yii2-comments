@@ -37,8 +37,8 @@ class CommentTest extends TestCase
 
     public function testTryAddCommentWithInvalidEntityParam()
     {
-        $response = Yii::$app->runAction('comment/default/create', ['entity' => 'invalid entity']);
-        $this->assertEquals('error', $response['status'], 'Response status is invalid!');
+        $this->setExpectedException('yii\web\BadRequestHttpException');
+        Yii::$app->runAction('comment/default/create', ['entity' => 'invalid entity']);
     }
 
     /**

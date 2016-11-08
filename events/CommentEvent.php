@@ -3,7 +3,6 @@
 namespace yii2mod\comments\events;
 
 use yii\base\Event;
-use yii\web\User;
 use yii2mod\comments\models\CommentModel;
 
 /**
@@ -13,30 +12,9 @@ use yii2mod\comments\models\CommentModel;
 class CommentEvent extends Event
 {
     /**
-     * @var User
-     */
-    private $_user;
-
-    /**
      * @var CommentModel
      */
     private $_commentModel;
-
-    /**
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->_user;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user)
-    {
-        $this->_user = $user;
-    }
 
     /**
      * @return CommentModel

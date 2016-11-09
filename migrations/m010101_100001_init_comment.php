@@ -43,5 +43,4 @@ class m010101_100001_init_comment extends Migration
     {
         $this->dropTable('{{%Comment}}');
     }
-
 }

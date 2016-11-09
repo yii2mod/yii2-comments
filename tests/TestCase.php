@@ -5,7 +5,6 @@ namespace yii2mod\comments\tests;
 use yii\helpers\ArrayHelper;
 use Yii;
 use yii\helpers\FileHelper;
-use yii2mod\comments\tests\data\Session;
 
 /**
  * This is the base class for all yii framework unit tests.
@@ -95,7 +94,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         // Structure :
 
-        $db->createCommand()->createTable('Comment', [
+        $db->createCommand()->createTable('comment', [
             'id' => 'pk',
             'entity' => 'char(10) not null',
             'entityId' => 'integer not null',
@@ -110,13 +109,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'updatedAt' => 'integer not null',
         ])->execute();
 
-        $db->createCommand()->createTable('User', [
+        $db->createCommand()->createTable('user', [
             'id' => 'pk',
             'username' => 'string',
             'email' => 'string',
         ])->execute();
 
-        $db->createCommand()->createTable('Post', [
+        $db->createCommand()->createTable('post', [
             'id' => 'pk',
             'title' => 'string',
             'description' => 'string',
@@ -125,7 +124,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         // Data :
 
-        $db->createCommand()->insert('Comment', [
+        $db->createCommand()->insert('comment', [
             'entity' => '025c69f4',
             'entityId' => 1,
             'content' => 'test content',
@@ -136,12 +135,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'updatedAt' => time()
         ])->execute();
 
-        $db->createCommand()->insert('User', [
+        $db->createCommand()->insert('user', [
             'username' => 'John Doe',
             'email' => 'johndoe@domain.com'
         ])->execute();
 
-        $db->createCommand()->insert('Post', [
+        $db->createCommand()->insert('post', [
             'title' => 'Post Title',
             'description' => 'some description',
             'createdAt' => time(),

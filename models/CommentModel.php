@@ -42,7 +42,7 @@ class CommentModel extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%Comment}}';
+        return '{{%comment}}';
     }
 
     /**

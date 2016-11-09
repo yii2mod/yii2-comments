@@ -15,7 +15,7 @@ class PostModel extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'Post';
+        return 'post';
     }
 
     /**
@@ -23,6 +23,13 @@ class PostModel extends ActiveRecord
      */
     public function rules()
     {
-        return [[['title', 'description'], 'required'],];
-    }
+        return [
+            [['title', 'description'], 'required']
+        ];
+    }/**
+     * This method is called at the end of inserting or updating a record.
+     *
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
 }

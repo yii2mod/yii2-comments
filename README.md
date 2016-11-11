@@ -66,6 +66,16 @@ To access the comments management section, you need to add the following code to
 ```php
   'controllerMap' => [
       'comments' => 'yii2mod\comments\controllers\ManageController',
+      // Also you can override some controller properties in following way:
+      'comments' => [
+          'class' => 'yii2mod\comments\controllers\ManageController',
+          'searchClass' => [
+              'class' => 'yii2mod\comments\models\search\CommentSearch',
+              'pageSize' => 25
+          ],
+          'indexView' => 'custom path to index view file',
+          'updateView' => 'custom path to update view file',
+      ],
   ]  
 ```
 > Basically the above code must be placed in the `admin` module
@@ -83,19 +93,19 @@ http://localhost/path/to/index.php?r=comments/index
 
 > 3) For change the any function in the CommentModel you can create your own model and change the property `commentModelClass` in the Comment Module.
 
-> 4) You can implement your own function `getAvatar` in the `userIdentityClass`. Just create the `getAvatar` method in your User model, and return a image path.
+> 4) You can implement your own methods `getAvatar` and `getUsername` in the `userIdentityClass`. Just create this methods in your User model. For example:
 ```php
+
 public function getAvatar()
 {
-    // return some image path
+    // your custom code
 }
-```
-> 5) You can implement your own function `getUsername` in the `userIdentityClass`. Just create the `getUsername` method in your User model.
-```php
+
 public function getUsername()
 {
     // your custom code
 }
+
 ```
 
 Usage

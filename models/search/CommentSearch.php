@@ -1,15 +1,21 @@
 <?php
 
-namespace yii2mod\comments\models;
+namespace yii2mod\comments\models\search;
 
 use yii\data\ActiveDataProvider;
+use yii2mod\comments\models\CommentModel;
 
 /**
- * Class CommentSearchModel
- * @package yii2mod\comments\models
+ * Class CommentSearch
+ * @package yii2mod\comments\models\search
  */
-class CommentSearchModel extends CommentModel
+class CommentSearch extends CommentModel
 {
+    /**
+     * @var int the default page size.
+     */
+    public $pageSize = 10;
+
     /**
      * @return array validation rules
      */
@@ -21,19 +27,20 @@ class CommentSearchModel extends CommentModel
     }
 
     /**
-     * Setup search function for filtering and sorting.
+     * Creates data provider instance with search query applied
      *
      * @param $params
-     * @param int $pageSize
+     *
      * @return ActiveDataProvider
      */
-    public function search($params, $pageSize = 20)
+    public function search($params)
     {
         $query = self::find();
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => $pageSize
+                'pageSize' => $this->pageSize
             ]
         ]);
 
@@ -46,7 +53,7 @@ class CommentSearchModel extends CommentModel
             return $dataProvider;
         }
 
-        //adjust the query by adding the filters
+        // adjust the query by adding the filters
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['createdBy' => $this->createdBy]);
         $query->andFilterWhere(['status' => $this->status]);

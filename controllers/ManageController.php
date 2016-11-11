@@ -7,13 +7,10 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii2mod\comments\models\CommentModel;
-use yii2mod\comments\models\CommentSearchModel;
 use yii2mod\comments\Module;
 use yii2mod\editable\EditableAction;
 
 /**
- * Manage comments in admin panel
- *
  * Class ManageController
  * @package yii2mod\comments\controllers
  */
@@ -28,6 +25,11 @@ class ManageController extends Controller
      * @var string path to update view file, which is used in admin panel
      */
     public $updateView = '@vendor/yii2mod/yii2-comments/views/manage/update';
+
+    /**
+     * @var string search class name for searching
+     */
+    public $searchClass = 'yii2mod\comments\models\search\CommentSearch';
 
     /**
      * Returns a list of behaviors that this component should behave as.
@@ -71,7 +73,7 @@ class ManageController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CommentSearchModel();
+        $searchModel = Yii::createObject($this->searchClass);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $commentModel = Yii::$app->getModule(Module::$name)->commentModelClass;
 
@@ -85,7 +87,7 @@ class ManageController extends Controller
     /**
      * Updates an existing CommentModel model.
      *
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
      * @return mixed
@@ -132,7 +134,9 @@ class ManageController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = CommentModel::findOne($id)) !== null) {
+        $commentModel = Yii::$app->getModule(Module::$name)->commentModelClass;
+
+        if (($model = $commentModel::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('yii2mod.comments', 'The requested page does not exist.'));

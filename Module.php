@@ -3,7 +3,6 @@
 namespace yii2mod\comments;
 
 use Yii;
-use yii2mod\comments\models\CommentModel;
 
 /**
  * Class Module
@@ -22,9 +21,9 @@ class Module extends \yii\base\Module
     public $userIdentityClass;
 
     /**
-     * @var string the class name of the comment model object, by default its yii2mod\comments\models\CommentModel::className();
+     * @var string the class name of the comment model object, by default its yii2mod\comments\models\CommentModel
      */
-    public $commentModelClass;
+    public $commentModelClass = 'yii2mod\comments\models\CommentModel';
 
     /**
      * @var string the namespace that controller classes are in.
@@ -36,14 +35,10 @@ class Module extends \yii\base\Module
      */
     public function init()
     {
-        if (empty($this->userIdentityClass)) {
+        parent::init();
+
+        if ($this->userIdentityClass === null) {
             $this->userIdentityClass = Yii::$app->getUser()->identityClass;
         }
-
-        if (empty($this->commentModelClass)) {
-            $this->commentModelClass = CommentModel::className();
-        }
-
-        parent::init();
     }
 }

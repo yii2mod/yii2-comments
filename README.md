@@ -94,6 +94,7 @@ http://localhost/path/to/index.php?r=comments/index
 > 3) For change the any function in the CommentModel you can create your own model and change the property `commentModelClass` in the Comment Module.
 
 > 4) You can implement your own methods `getAvatar` and `getUsername` in the `userIdentityClass`. Just create this methods in your User model. For example:
+
 ```php
 
 public function getAvatar()

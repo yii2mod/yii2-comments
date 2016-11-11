@@ -30,9 +30,7 @@ use yii\helpers\Url;
                     <?php echo Html::tag('meta', null, ['content' => Yii::$app->formatter->asDatetime($comment->updatedAt, 'php:c'), 'itemprop' => 'dateModified']); ?>
                     <div class="comment-author-name" itemprop="creator" itemscope itemtype="http://schema.org/Person">
                         <span itemprop="name"><?php echo $comment->getAuthorName(); ?></span>
-                        <span class="comment-date">
-                            <?php echo $comment->getPostedDate(); ?>
-                        </span>
+                        <?php echo Html::a($comment->getPostedDate(), "#comment-{$comment->id}", ['class' => 'comment-date']); ?>
                     </div>
                     <div class="comment-body" itemprop="text">
                         <?php echo $comment->getContent(); ?>

@@ -30,6 +30,7 @@ return [
     'Url' => 'Url',
     'Created date' => 'Created date',
     'Updated date' => 'Updated date',
+    'View' => 'View',
     'Update' => 'Update',
     'Delete' => 'Delete',
     'Reply' => 'Reply',

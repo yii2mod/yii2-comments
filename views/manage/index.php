@@ -4,6 +4,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\StringHelper;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 use yii2mod\comments\models\enums\CommentStatus;
 use yii2mod\editable\EditableColumn;
@@ -71,7 +72,26 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'header' => 'Actions',
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}',
+                'template' => '{view}{update}{delete}',
+                'buttons' => [
+                    'view' => function ($url, $model, $key) {
+                        $title = Yii::t('yii2mod.comments', 'View');
+                        $options = [
+                            'title' => $title,
+                            'aria-label' => $title,
+                            'data-pjax' => '0',
+                            'target' => '_blank'
+                        ];
+                        $icon = Html::tag('span', '', ['class' => 'glyphicon glyphicon-eye-open']);
+                        $url = $model->getViewUrl();
+
+                        if (!empty($url)) {
+                            return Html::a($icon, $url, $options);
+                        }
+
+                        return null;
+                    }
+                ]
             ]
         ],
     ]);

@@ -68,10 +68,12 @@
         var $commentForm = $(this);
         var settings = $commentForm.data('comment');
         var pjaxSettings = $.extend({container: settings.pjaxContainerId}, settings.pjaxSettings);
+        var formData = $commentForm.serializeArray();
+        formData.push({'name': 'CommentModel[url]', 'value': getCurrentUrl()});
 
         $commentForm.find(':submit').prop('disabled', true).text(settings.submitBtnLoadingText);
 
-        $.post($commentForm.attr("action"), $commentForm.serialize(), function (data) {
+        $.post($commentForm.attr("action"), formData, function (data) {
             if (data.status == 'success') {
                 $.pjax(pjaxSettings).done(function () {
                     $commentForm.trigger("reset");
@@ -143,6 +145,14 @@
                 $this.parents(settings.toolsSelector).remove();
             }
         });
+    }
+
+    /**
+     * Get current url without `hostname`
+     * @returns {string}
+     */
+    function getCurrentUrl() {
+        return window.location.pathname + window.location.search;
     }
 
 })(window.jQuery);

@@ -104,6 +104,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'createdBy' => 'integer not null',
             'updatedBy' => 'integer not null',
             'relatedTo' => 'string(500) not null',
+            'url' => 'text',
             'status' => 'smallint not null default 1',
             'createdAt' => 'integer not null',
             'updatedAt' => 'integer not null',
@@ -131,6 +132,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'createdBy' => 1,
             'updatedBy' => 1,
             'relatedTo' => 'test comment',
+            'url' => 'custom-url',
             'createdAt' => time(),
             'updatedAt' => time()
         ])->execute();

@@ -22,6 +22,7 @@ use yii2mod\comments\Module;
  * @property integer $createdBy
  * @property integer $updatedBy
  * @property string $relatedTo
+ * @property string $url
  * @property integer $status
  * @property integer $level
  * @property integer $createdAt
@@ -55,7 +56,7 @@ class CommentModel extends ActiveRecord
         return [
             [['entity', 'entityId'], 'required'],
             ['content', 'required', 'message' => Yii::t('yii2mod.comments', 'Comment cannot be blank.')],
-            [['content', 'entity', 'relatedTo'], 'string'],
+            [['content', 'entity', 'relatedTo', 'url'], 'string'],
             ['status', 'default', 'value' => CommentStatus::ACTIVE],
             ['status', 'in', 'range' => [CommentStatus::ACTIVE, CommentStatus::DELETED]],
             ['level', 'default', 'value' => 1],
@@ -129,6 +130,7 @@ class CommentModel extends ActiveRecord
             'createdBy' => Yii::t('yii2mod.comments', 'Created by'),
             'updatedBy' => Yii::t('yii2mod.comments', 'Updated by'),
             'relatedTo' => Yii::t('yii2mod.comments', 'Related to'),
+            'url' => Yii::t('yii2mod.comments', 'Url'),
             'createdAt' => Yii::t('yii2mod.comments', 'Created date'),
             'updatedAt' => Yii::t('yii2mod.comments', 'Updated date'),
         ];
@@ -382,5 +384,29 @@ class CommentModel extends ActiveRecord
         }
 
         return $query->count();
+    }
+
+    /**
+     * Get anchor url for comment
+     *
+     * @return string
+     */
+    public function getAnchorUrl()
+    {
+        return "#comment-{$this->id}";
+    }
+
+    /**
+     * Get view comment url
+     *
+     * @return null|string
+     */
+    public function getViewUrl()
+    {
+        if (!empty($this->url)) {
+            return $this->url . $this->getAnchorUrl();
+        }
+
+        return null;
     }
 }

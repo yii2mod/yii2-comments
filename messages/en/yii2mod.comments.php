@@ -27,6 +27,7 @@ return [
     'Created by' => 'Created by',
     'Updated by' => 'Related to',
     'Related to' => 'Related to',
+    'Url' => 'Url',
     'Created date' => 'Created date',
     'Updated date' => 'Updated date',
     'Update' => 'Update',
@@ -48,5 +49,5 @@ return [
     'Update Comment: {0}' => 'Update Comment: {0}',
     'Active' => 'Active',
     'Deleted' => 'Deleted',
-    'Go Back' => 'Go Back'
+    'Go Back' => 'Go Back',
 ];

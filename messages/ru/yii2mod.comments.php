@@ -27,6 +27,7 @@ return [
     'Created by' => 'Создан',
     'Updated by' => 'Обновлен',
     'Related to' => 'Относится к',
+    'Url' => 'Урл',
     'Created date' => 'Дата создания',
     'Updated date' => 'Дата обновления',
     'Update' => 'Обновить',

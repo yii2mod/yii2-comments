@@ -16,12 +16,12 @@ use yii\helpers\Url;
                     <?php echo Html::img($comment->getAvatar(), ['alt' => $comment->getAuthorName()]); ?>
                 </div>
                 <div class="comment-details">
-                    <?php if ($comment->isActive): ?>
+                    <?php if ($comment->isActive) : ?>
                         <div class="comment-action-buttons">
-                            <?php if (Yii::$app->getUser()->can('admin')): ?>
+                            <?php if (Yii::$app->getUser()->can('admin')) : ?>
                                 <?php echo Html::a('<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('yii2mod.comments', 'Delete'), '#', ['data' => ['action' => 'delete', 'url' => Url::to(['/comment/default/delete', 'id' => $comment->id]), 'comment-id' => $comment->id]]); ?>
                             <?php endif; ?>
-                            <?php if (!Yii::$app->user->isGuest && ($comment->level < $maxLevel || is_null($maxLevel))): ?>
+                            <?php if (!Yii::$app->user->isGuest && ($comment->level < $maxLevel || is_null($maxLevel))) : ?>
                                 <?php echo Html::a("<span class='glyphicon glyphicon-share-alt'></span> " . Yii::t('yii2mod.comments', 'Reply'), '#', ['class' => 'comment-reply', 'data' => ['action' => 'reply', 'comment-id' => $comment->id]]); ?>
                             <?php endif; ?>
                         </div>
@@ -37,9 +37,9 @@ use yii\helpers\Url;
                     </div>
                 </div>
             </div>
-            <?php if ($comment->hasChildren()): ?>
+            <?php if ($comment->hasChildren()) : ?>
                 <ul class="children">
-                    <?php echo $this->render('_list', ['comments' => $comment->children, 'maxLevel' => $maxLevel]) ?>
+                    <?php echo $this->render('_list', ['comments' => $comment->getChildren(), 'maxLevel' => $maxLevel]) ?>
                 </ul>
             <?php endif; ?>
         </li>

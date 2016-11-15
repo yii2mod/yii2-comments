@@ -4,7 +4,6 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\StringHelper;
-use yii\helpers\Url;
 use yii\widgets\Pjax;
 use yii2mod\comments\models\enums\CommentStatus;
 use yii2mod\editable\EditableColumn;

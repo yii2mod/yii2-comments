@@ -7,7 +7,7 @@ class m161109_092304_rename_comment_table extends Migration
     public function up()
     {
         if (Yii::$app->db->schema->getTableSchema('comment') === null) {
-            $this->renameTable('{{%Comment}}', "{{%comment}}");
+            $this->renameTable('{{%Comment}}', '{{%comment}}');
         }
     }
 

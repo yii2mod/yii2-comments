@@ -354,7 +354,7 @@ class CommentModel extends ActiveRecord
             return $this->author->getAvatar();
         }
 
-        return "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y&s=50";
+        return 'http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y&s=50';
     }
 
     /**

@@ -104,7 +104,6 @@ class ManageController extends Controller
         return $this->render($this->updateView, [
             'model' => $model,
         ]);
-
     }
 
     /**

@@ -1,6 +1,8 @@
 Comments module for Yii2 
 ========================
 
+[![Join the chat at https://gitter.im/yii2mod/yii2-comments](https://badges.gitter.im/yii2mod/yii2-comments.svg)](https://gitter.im/yii2mod/yii2-comments?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This module provide a comments managing system for Yii2 application.
 
 [![Latest Stable Version](https://poser.pugx.org/yii2mod/yii2-comments/v/stable)](https://packagist.org/packages/yii2mod/yii2-comments) 

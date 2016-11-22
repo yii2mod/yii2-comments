@@ -6,34 +6,35 @@ use yii\web\AssetBundle;
 
 /**
  * Class CommentAsset
+ *
  * @package yii2mod\comments
  */
 class CommentAsset extends AssetBundle
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $sourcePath = '@vendor/yii2mod/yii2-comments/assets';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $js = [
-        'js/comment.js'
+        'js/comment.js',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $css = [
-        'css/comment.css'
+        'css/comment.css',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $depends = [
         'yii\web\JqueryAsset',
-        'yii\web\YiiAsset'
+        'yii\web\YiiAsset',
     ];
 }

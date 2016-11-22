@@ -26,14 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'id',
-                'contentOptions' => ['style' => 'max-width: 50px;']
+                'contentOptions' => ['style' => 'max-width: 50px;'],
             ],
             [
                 'attribute' => 'content',
                 'contentOptions' => ['style' => 'max-width: 350px;'],
                 'value' => function ($model) {
                     return StringHelper::truncate($model->content, 100);
-                }
+                },
             ],
             'attribute' => 'relatedTo',
             [
@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => $title,
                             'aria-label' => $title,
                             'data-pjax' => '0',
-                            'target' => '_blank'
+                            'target' => '_blank',
                         ];
                         $icon = Html::tag('span', '', ['class' => 'glyphicon glyphicon-eye-open']);
                         $url = $model->getViewUrl();
@@ -89,9 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
 
                         return null;
-                    }
-                ]
-            ]
+                    },
+                ],
+            ],
         ],
     ]);
     ?>

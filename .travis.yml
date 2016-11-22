@@ -5,14 +5,6 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - hhvm
-
-# run build against hhvm but allow them to fail
-# http://docs.travis-ci.com/user/build-configuration/#Rows-That-are-Allowed-To-Fail
-matrix:
-  fast_finish: true
-  allow_failures:
-    - php: hhvm
 
 # faster builds on new travis setup not using sudo
 sudo: false
@@ -21,6 +13,7 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache
+    - vendor
 
 install:
   - travis_retry composer self-update && composer --version
@@ -29,4 +22,5 @@ install:
   - travis_retry composer install --prefer-dist --no-interaction
 
 script:
+  - vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run --diff
   - phpunit --verbose $PHPUNIT_FLAGS

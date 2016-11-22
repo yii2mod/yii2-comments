@@ -13,11 +13,11 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'options' => [
             'id' => $formId,
-            'class' => 'comment-box'
+            'class' => 'comment-box',
         ],
         'action' => Url::to(['/comment/default/create', 'entity' => $encryptedEntity]),
         'validateOnChange' => false,
-        'validateOnBlur' => false
+        'validateOnBlur' => false,
     ]); ?>
 
     <?php echo $form->field($commentModel, 'content', ['template' => '{input}{error}'])->textarea(['placeholder' => Yii::t('yii2mod.comments', 'Add a comment...'), 'rows' => 4, 'data' => ['comment' => 'content']]) ?>

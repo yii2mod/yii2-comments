@@ -11,6 +11,7 @@ use yii2mod\comments\Module;
 
 /**
  * Class Comment
+ *
  * @package yii2mod\comments\widgets
  */
 class Comment extends Widget
@@ -27,7 +28,7 @@ class Comment extends Widget
     public $relatedTo;
 
     /**
-     * @var string the view file that will render the comment tree and form for posting comments.
+     * @var string the view file that will render the comment tree and form for posting comments
      */
     public $commentView = '@vendor/yii2mod/yii2-comments/widgets/views/index';
 
@@ -42,12 +43,12 @@ class Comment extends Widget
     public $pjaxContainerId;
 
     /**
-     * @var null|integer maximum comments level, level starts from 1, null - unlimited level;
+     * @var null|int maximum comments level, level starts from 1, null - unlimited level;
      */
     public $maxLevel = 7;
 
     /**
-     * @var boolean show deleted comments. Defaults to `false`.
+     * @var bool show deleted comments. Defaults to `false`
      */
     public $showDeletedComments = false;
 
@@ -67,7 +68,7 @@ class Comment extends Widget
     protected $entity;
 
     /**
-     * @var integer primary key value of the widget model
+     * @var int primary key value of the widget model
      */
     protected $entityId;
 
@@ -108,7 +109,7 @@ class Comment extends Widget
     /**
      * Executes the widget.
      *
-     * @return string the result of widget execution to be outputted.
+     * @return string the result of widget execution to be outputted
      */
     public function run()
     {
@@ -118,7 +119,7 @@ class Comment extends Widget
         $commentModel = Yii::createObject([
             'class' => $commentModelClass,
             'entity' => $this->entity,
-            'entityId' => $this->entityId
+            'entityId' => $this->entityId,
         ]);
 
         $comments = $commentModelClass::getTree($this->entity, $this->entityId, $this->maxLevel, $this->showDeletedComments);
@@ -130,14 +131,12 @@ class Comment extends Widget
             'encryptedEntity' => $this->encryptedEntityKey,
             'pjaxContainerId' => $this->pjaxContainerId,
             'formId' => $this->formId,
-            'showDeletedComments' => $this->showDeletedComments
+            'showDeletedComments' => $this->showDeletedComments,
         ]);
     }
 
     /**
      * Register assets.
-     *
-     * @return void
      */
     protected function registerAssets()
     {
@@ -159,7 +158,7 @@ class Comment extends Widget
         return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
             'entity' => $this->entity,
             'entityId' => $this->entityId,
-            'relatedTo' => $this->relatedTo
+            'relatedTo' => $this->relatedTo,
         ]), Module::$name));
     }
 }

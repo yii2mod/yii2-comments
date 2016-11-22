@@ -14,20 +14,19 @@ use yii2mod\comments\Module;
 /**
  * Class CommentModel
  *
- * @property integer $id
+ * @property int $id
  * @property string $entity
- * @property integer $entityId
- * @property integer $parentId
+ * @property int $entityId
+ * @property int $parentId
  * @property string $content
- * @property integer $createdBy
- * @property integer $updatedBy
+ * @property int $createdBy
+ * @property int $updatedBy
  * @property string $relatedTo
  * @property string $url
- * @property integer $status
- * @property integer $level
- * @property integer $createdAt
- * @property integer $updatedAt
- *
+ * @property int $status
+ * @property int $level
+ * @property int $createdAt
+ * @property int $updatedAt
  */
 class CommentModel extends ActiveRecord
 {
@@ -96,7 +95,7 @@ class CommentModel extends ActiveRecord
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
                 'createdAtAttribute' => 'createdAt',
-                'updatedAtAttribute' => 'updatedAt'
+                'updatedAtAttribute' => 'updatedAt',
             ],
             'purify' => [
                 'class' => PurifyBehavior::className(),
@@ -106,9 +105,9 @@ class CommentModel extends ActiveRecord
                     'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%',
                     'AutoFormat.Linkify' => true,
                     'HTML.TargetBlank' => true,
-                    'HTML.Allowed' => 'a[href], iframe[src|width|height|frameborder], img[src]'
-                ]
-            ]
+                    'HTML.Allowed' => 'a[href], iframe[src|width|height|frameborder], img[src]',
+                ],
+            ],
         ];
     }
 
@@ -137,7 +136,7 @@ class CommentModel extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @return CommentQuery
      */
@@ -150,6 +149,7 @@ class CommentModel extends ActiveRecord
      * This method is called at the beginning of inserting or updating a record.
      *
      * @param bool $insert
+     *
      * @return bool
      */
     public function beforeSave($insert)
@@ -159,6 +159,7 @@ class CommentModel extends ActiveRecord
                 $parentNodeLevel = (int)self::find()->select('level')->where(['id' => $this->parentId])->scalar();
                 $this->level = $parentNodeLevel + 1;
             }
+
             return true;
         } else {
             return false;
@@ -202,6 +203,7 @@ class CommentModel extends ActiveRecord
      * @param $entityId integer model id
      * @param null $maxLevel
      * @param bool $showDeletedComments
+     *
      * @return array|\yii\db\ActiveRecord[] Comments tree
      */
     public static function getTree($entity, $entityId, $maxLevel = null, $showDeletedComments = true)
@@ -233,6 +235,7 @@ class CommentModel extends ActiveRecord
      *
      * @param array $data Records array
      * @param int $rootID parentId Root ID
+     *
      * @return array|ActiveRecord[] Comments tree
      */
     protected static function buildTree(&$data, $rootID = 0)
@@ -253,7 +256,7 @@ class CommentModel extends ActiveRecord
     /**
      * Delete comment.
      *
-     * @return boolean whether comment was deleted or not
+     * @return bool whether comment was deleted or not
      */
     public function deleteComment()
     {
@@ -293,7 +296,7 @@ class CommentModel extends ActiveRecord
     }
 
     /**
-     * @return boolean whether comment is active or not
+     * @return bool whether comment is active or not
      */
     public function getIsActive()
     {
@@ -301,7 +304,7 @@ class CommentModel extends ActiveRecord
     }
 
     /**
-     * @return boolean whether comment is deleted or not
+     * @return bool whether comment is deleted or not
      */
     public function getIsDeleted()
     {
@@ -336,6 +339,7 @@ class CommentModel extends ActiveRecord
      * Get comment content
      *
      * @param string $deletedCommentText
+     *
      * @return string
      */
     public function getContent($deletedCommentText = 'Comment has been deleted.')
@@ -373,6 +377,7 @@ class CommentModel extends ActiveRecord
      * Get comments count
      *
      * @param bool $onlyActiveComments
+     *
      * @return int|string
      */
     public function getCommentsCount($onlyActiveComments = true)

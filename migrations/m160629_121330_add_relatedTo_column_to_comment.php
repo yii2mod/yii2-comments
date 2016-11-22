@@ -8,7 +8,7 @@ use yii\db\Migration;
 class m160629_121330_add_relatedTo_column_to_comment extends Migration
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function up()
     {
@@ -16,7 +16,7 @@ class m160629_121330_add_relatedTo_column_to_comment extends Migration
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function down()
     {

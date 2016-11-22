@@ -2,8 +2,8 @@
 
 namespace yii2mod\comments\tests;
 
-use yii\helpers\ArrayHelper;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 
 /**
@@ -29,6 +29,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Populates Yii::$app with a new application
      * The application will be destroyed on tearDown() automatically.
+     *
      * @param array $config The application configuration, if needed
      * @param string $appClass name of the application class to create
      */
@@ -45,7 +46,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 ],
                 'request' => [
                     'hostInfo' => 'http://domain.com',
-                    'scriptUrl' => 'index.php'
+                    'scriptUrl' => 'index.php',
                 ],
                 'user' => [
                     'identityClass' => 'yii2mod\comments\tests\data\User',
@@ -63,8 +64,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 'comment' => [
                     'class' => 'yii2mod\comments\Module',
                     'userIdentityClass' => '',
-                    'controllerNamespace' => 'yii2mod\comments\tests\data'
-                ]
+                    'controllerNamespace' => 'yii2mod\comments\tests\data',
+                ],
             ],
         ], $config));
     }
@@ -120,7 +121,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'id' => 'pk',
             'title' => 'string',
             'description' => 'string',
-            'createdAt' => 'integer'
+            'createdAt' => 'integer',
         ])->execute();
 
         // Data :
@@ -134,12 +135,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'relatedTo' => 'test comment',
             'url' => 'custom-url',
             'createdAt' => time(),
-            'updatedAt' => time()
+            'updatedAt' => time(),
         ])->execute();
 
         $db->createCommand()->insert('user', [
             'username' => 'John Doe',
-            'email' => 'johndoe@domain.com'
+            'email' => 'johndoe@domain.com',
         ])->execute();
 
         $db->createCommand()->insert('post', [

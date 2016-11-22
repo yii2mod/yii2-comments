@@ -13,6 +13,7 @@ use yii2mod\comments\tests\data\User;
 
 /**
  * Class CommentTest
+ *
  * @package yii2mod\comments\tests
  */
 class CommentTest extends TestCase
@@ -22,8 +23,8 @@ class CommentTest extends TestCase
         Yii::$app->user->login(User::find()->one());
         Yii::$app->request->bodyParams = [
             'CommentModel' => [
-                'content' => 'test comment'
-            ]
+                'content' => 'test comment',
+            ],
         ];
         $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
 
@@ -36,8 +37,8 @@ class CommentTest extends TestCase
         Yii::$app->user->login(User::find()->one());
         Yii::$app->request->bodyParams = [
             'CommentModel' => [
-                'content' => $commentContent
-            ]
+                'content' => $commentContent,
+            ],
         ];
         Event::on(
             DefaultController::className(),
@@ -59,15 +60,14 @@ class CommentTest extends TestCase
         Yii::$app->request->bodyParams = [
             'CommentModel' => [
                 'parentId' => $comment->id,
-                'content' => 'test comment'
-            ]
+                'content' => 'test comment',
+            ],
         ];
         $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
         $this->assertEquals('success', $response['status'], 'Unable to add a comment!');
 
         $addedComment = CommentModel::find()->orderBy(['id' => SORT_DESC])->one();
         $this->assertEquals($comment->id, $addedComment->parentId, 'Invalid value for parentId attribute!');
-
     }
 
     public function testDeleteComment()
@@ -96,7 +96,7 @@ class CommentTest extends TestCase
         return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
             'entity' => hash('crc32', get_class($post)),
             'entityId' => $post->id,
-            'relatedTo' => get_class($post) . ':' . $post->id
+            'relatedTo' => get_class($post) . ':' . $post->id,
         ]), Module::$name));
     }
 }

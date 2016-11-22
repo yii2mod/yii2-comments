@@ -7,6 +7,7 @@ use yii2mod\comments\models\CommentModel;
 
 /**
  * Class CommentEvent
+ *
  * @package yii2mod\comments\events
  */
 class CommentEvent extends Event

@@ -16,6 +16,7 @@ use yii2mod\comments\Module;
 
 /**
  * Class DefaultController
+ *
  * @package yii2mod\comments\controllers
  */
 class DefaultController extends Controller
@@ -38,16 +39,16 @@ class DefaultController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'create' => ['post'],
-                    'delete' => ['post', 'delete']
-                ]
+                    'delete' => ['post', 'delete'],
+                ],
             ],
             'contentNegotiator' => [
                 'class' => 'yii\filters\ContentNegotiator',
                 'only' => ['create'],
                 'formats' => [
-                    'application/json' => Response::FORMAT_JSON
-                ]
-            ]
+                    'application/json' => Response::FORMAT_JSON,
+                ],
+            ],
         ];
     }
 
@@ -55,6 +56,7 @@ class DefaultController extends Controller
      * Create comment.
      *
      * @param $entity string encrypt entity
+     *
      * @return array
      */
     public function actionCreate($entity)
@@ -70,14 +72,15 @@ class DefaultController extends Controller
 
         return [
             'status' => 'error',
-            'errors' => ActiveForm::validate($commentModel)
+            'errors' => ActiveForm::validate($commentModel),
         ];
     }
 
     /**
      * Delete comment.
      *
-     * @param integer $id Comment ID
+     * @param int $id Comment ID
+     *
      * @return string Comment text
      */
     public function actionDelete($id)
@@ -86,6 +89,7 @@ class DefaultController extends Controller
             return Yii::t('yii2mod.comments', 'Comment has been deleted.');
         } else {
             Yii::$app->response->setStatusCode(500);
+
             return Yii::t('yii2mod.comments', 'Comment has not been deleted. Please try again!');
         }
     }
@@ -93,8 +97,10 @@ class DefaultController extends Controller
     /**
      * Find model by ID.
      *
-     * @param integer|array $id Comment ID
+     * @param int|array $id Comment ID
+     *
      * @return null|CommentModel
+     *
      * @throws NotFoundHttpException
      */
     protected function findModel($id)
@@ -112,6 +118,7 @@ class DefaultController extends Controller
      * Get list of attributes from encrypted entity
      *
      * @param $entity string encrypted entity
+     *
      * @return array|mixed
      *
      * @throws BadRequestHttpException

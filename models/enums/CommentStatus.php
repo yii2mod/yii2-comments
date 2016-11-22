@@ -6,6 +6,7 @@ use yii2mod\enum\helpers\BaseEnum;
 
 /**
  * Class CommentStatus
+ *
  * @package yii2mod\comments\models\enums
  */
 class CommentStatus extends BaseEnum
@@ -23,6 +24,6 @@ class CommentStatus extends BaseEnum
      */
     public static $list = [
         self::ACTIVE => 'Active',
-        self::DELETED => 'Deleted'
+        self::DELETED => 'Deleted',
     ];
 }

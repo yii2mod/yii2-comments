@@ -7,6 +7,7 @@ use yii2mod\comments\models\enums\CommentStatus;
 
 /**
  * Class CommentQuery
+ *
  * @package yii2mod\comments\models
  */
 class CommentQuery extends ActiveQuery

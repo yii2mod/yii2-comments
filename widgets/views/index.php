@@ -27,7 +27,7 @@ use yii\widgets\Pjax;
             <?php echo $this->render('_form', [
                 'commentModel' => $commentModel,
                 'encryptedEntity' => $encryptedEntity,
-                'formId' => $formId
+                'formId' => $formId,
             ]); ?>
         <?php endif; ?>
     </div>

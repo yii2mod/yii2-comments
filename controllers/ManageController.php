@@ -12,6 +12,7 @@ use yii2mod\editable\EditableAction;
 
 /**
  * Class ManageController
+ *
  * @package yii2mod\comments\controllers
  */
 class ManageController extends Controller
@@ -61,8 +62,8 @@ class ManageController extends Controller
             'edit-comment' => [
                 'class' => EditableAction::className(),
                 'modelClass' => CommentModel::className(),
-                'forceCreate' => false
-            ]
+                'forceCreate' => false,
+            ],
         ];
     }
 
@@ -80,7 +81,7 @@ class ManageController extends Controller
         return $this->render($this->indexView, [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
-            'commentModel' => $commentModel
+            'commentModel' => $commentModel,
         ]);
     }
 
@@ -89,7 +90,8 @@ class ManageController extends Controller
      *
      * If update is successful, the browser will be redirected to the 'index' page.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -98,6 +100,7 @@ class ManageController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', Yii::t('yii2mod.comments', 'Comment has been saved.'));
+
             return $this->redirect(['index']);
         }
 
@@ -111,13 +114,15 @@ class ManageController extends Controller
      *
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return mixed
      */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
         Yii::$app->session->setFlash('success', Yii::t('yii2mod.comments', 'Comment has been deleted.'));
+
         return $this->redirect(['index']);
     }
 
@@ -126,7 +131,8 @@ class ManageController extends Controller
      *
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return CommentModel the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found

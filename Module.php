@@ -6,6 +6,7 @@ use Yii;
 
 /**
  * Class Module
+ *
  * @package yii2mod\comments
  */
 class Module extends \yii\base\Module
@@ -16,7 +17,7 @@ class Module extends \yii\base\Module
     public static $name = 'comment';
 
     /**
-     * @var string the class name of the [[identity]] object.
+     * @var string the class name of the [[identity]] object
      */
     public $userIdentityClass;
 
@@ -26,12 +27,12 @@ class Module extends \yii\base\Module
     public $commentModelClass = 'yii2mod\comments\models\CommentModel';
 
     /**
-     * @var string the namespace that controller classes are in.
+     * @var string the namespace that controller classes are in
      */
     public $controllerNamespace = 'yii2mod\comments\controllers';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {

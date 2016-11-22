@@ -6,6 +6,7 @@ use yii\db\ActiveRecord;
 
 /**
  * Class PostModel
+ *
  * @package yii2mod\comments\tests\data
  */
 class PostModel extends ActiveRecord
@@ -19,14 +20,14 @@ class PostModel extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['title', 'description'], 'required']
+            [['title', 'description'], 'required'],
         ];
-    }/**
+    }/*
      * This method is called at the end of inserting or updating a record.
      *
      * @param bool $insert

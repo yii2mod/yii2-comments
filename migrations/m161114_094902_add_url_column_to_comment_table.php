@@ -8,7 +8,7 @@ use yii\db\Migration;
 class m161114_094902_add_url_column_to_comment_table extends Migration
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function up()
     {
@@ -16,7 +16,7 @@ class m161114_094902_add_url_column_to_comment_table extends Migration
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function down()
     {

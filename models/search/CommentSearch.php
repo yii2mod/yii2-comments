@@ -7,12 +7,13 @@ use yii2mod\comments\models\CommentModel;
 
 /**
  * Class CommentSearch
+ *
  * @package yii2mod\comments\models\search
  */
 class CommentSearch extends CommentModel
 {
     /**
-     * @var int the default page size.
+     * @var int the default page size
      */
     public $pageSize = 10;
 
@@ -40,8 +41,8 @@ class CommentSearch extends CommentModel
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => $this->pageSize
-            ]
+                'pageSize' => $this->pageSize,
+            ],
         ]);
 
         $dataProvider->setSort([

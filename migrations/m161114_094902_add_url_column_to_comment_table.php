@@ -12,7 +12,7 @@ class m161114_094902_add_url_column_to_comment_table extends Migration
      */
     public function up()
     {
-        $this->addColumn('comment', 'url', $this->text()->after('relatedTo'));
+        $this->addColumn('{{%comment}}', 'url', $this->text()->after('relatedTo'));
     }
 
     /**
@@ -20,6 +20,6 @@ class m161114_094902_add_url_column_to_comment_table extends Migration
      */
     public function down()
     {
-        $this->dropColumn('comment', 'url');
+        $this->dropColumn('{{%comment}}', 'url');
     }
 }

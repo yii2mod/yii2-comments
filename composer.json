@@ -1,25 +1,31 @@
 {
-  "name": "yii2mod/yii2-comments",
-  "description": "Comments module for Yii2",
-  "type": "yii2-extension",
-  "keywords": ["yii2", "extension"],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Igor Chepurnoy",
-      "email": "igorzfort@gmail.com"
+    "name": "yii2mod/yii2-comments",
+    "description": "Comments module for Yii2",
+    "type": "yii2-extension",
+    "keywords": [
+        "yii2",
+        "extension"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Chepurnoy",
+            "email": "igorzfort@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": ">=2.0.8",
+        "yii2mod/yii2-behaviors": "*",
+        "yii2mod/yii2-editable": "*",
+        "yii2mod/yii2-enum": "*",
+        "asofter/yii2-imperavi-redactor": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "~1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "yii2mod\\comments\\": ""
+        }
     }
-  ],
-  "require": {
-    "yiisoft/yii2": ">=2.0.8",
-    "yii2mod/yii2-behaviors": "*",
-    "yii2mod/yii2-editable": "*",
-    "yii2mod/yii2-enum": "*",
-    "asofter/yii2-imperavi-redactor": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "yii2mod\\comments\\": ""
-    }
-  }
 }

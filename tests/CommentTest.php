@@ -78,9 +78,11 @@ class CommentTest extends TestCase
         $this->assertEquals('Comment has been deleted.', $response, 'Unable to delete a comment!');
     }
 
+    /**
+     * @expectedException \yii\web\BadRequestHttpException
+     */
     public function testTryAddCommentWithInvalidEntityParam()
     {
-        $this->setExpectedException('yii\web\BadRequestHttpException');
         Yii::$app->runAction('comment/default/create', ['entity' => 'invalid entity']);
     }
 

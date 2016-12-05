@@ -5,8 +5,10 @@ namespace yii2mod\comments\widgets;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Widget;
+use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
 use yii2mod\comments\CommentAsset;
+use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\Module;
 
 /**
@@ -23,7 +25,7 @@ class Comment extends Widget
 
     /**
      * @var string relatedTo custom text, for example: cms url: about-us, john comment about us page, etc.
-     * By default - className:primaryKey of the current model
+     * By default - class:primaryKey of the current model
      */
     public $relatedTo;
 
@@ -45,17 +47,29 @@ class Comment extends Widget
     /**
      * @var null|int maximum comments level, level starts from 1, null - unlimited level;
      */
-    public $maxLevel = 7;
-
-    /**
-     * @var bool show deleted comments. Defaults to `false`
-     */
-    public $showDeletedComments = false;
+    public $maxLevel = 10;
 
     /**
      * @var string entity id attribute
      */
     public $entityIdAttribute = 'id';
+
+    /**
+     * @var array DataProvider config
+     */
+    public $dataProviderConfig = [
+        'pagination' => [
+            'pageSize' => false,
+        ],
+    ];
+
+    /**
+     * @var array ListView config
+     */
+    public $listViewConfig = [
+        'emptyText' => '',
+        'layout' => "{items}\n{pager}",
+    ];
 
     /**
      * @var array comment widget client options
@@ -73,15 +87,22 @@ class Comment extends Widget
     protected $entityId;
 
     /**
-     * @var string encrypted entity key from params: entity, entityId, relatedTo
+     * @var string encrypted entity
      */
-    protected $encryptedEntityKey;
+    protected $encryptedEntity;
+
+    /**
+     * @var string comment wrapper tag id
+     */
+    protected $commentWrapperId;
 
     /**
      * Initializes the widget params.
      */
     public function init()
     {
+        parent::init();
+
         if (empty($this->model)) {
             throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "model" property must be set.'));
         }
@@ -101,7 +122,8 @@ class Comment extends Widget
             $this->relatedTo = get_class($this->model) . ':' . $this->entityId;
         }
 
-        $this->encryptedEntityKey = $this->generateEntityKey();
+        $this->encryptedEntity = $this->getEncryptedEntity();
+        $this->commentWrapperId = $this->entity . $this->entityId;
 
         $this->registerAssets();
     }
@@ -113,26 +135,38 @@ class Comment extends Widget
      */
     public function run()
     {
-        /* @var $module Module */
-        $module = Yii::$app->getModule(Module::$name);
-        $commentModelClass = $module->commentModelClass;
+        $commentClass = Yii::$app->getModule(Module::$name)->commentModelClass;
         $commentModel = Yii::createObject([
-            'class' => $commentModelClass,
+            'class' => $commentClass,
             'entity' => $this->entity,
             'entityId' => $this->entityId,
         ]);
-
-        $comments = $commentModelClass::getTree($this->entity, $this->entityId, $this->maxLevel, $this->showDeletedComments);
+        $commentDataProvider = $this->getCommentDataProvider($commentClass);
 
         return $this->render($this->commentView, [
-            'comments' => $comments,
+            'commentDataProvider' => $commentDataProvider,
             'commentModel' => $commentModel,
             'maxLevel' => $this->maxLevel,
-            'encryptedEntity' => $this->encryptedEntityKey,
+            'encryptedEntity' => $this->encryptedEntity,
             'pjaxContainerId' => $this->pjaxContainerId,
             'formId' => $this->formId,
-            'showDeletedComments' => $this->showDeletedComments,
+            'listViewConfig' => $this->listViewConfig,
+            'commentWrapperId' => $this->commentWrapperId,
         ]);
+    }
+
+    /**
+     * Get encrypted entity
+     *
+     * @return string
+     */
+    protected function getEncryptedEntity()
+    {
+        return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
+            'entity' => $this->entity,
+            'entityId' => $this->entityId,
+            'relatedTo' => $this->relatedTo,
+        ]), Module::$name));
     }
 
     /**
@@ -140,25 +174,36 @@ class Comment extends Widget
      */
     protected function registerAssets()
     {
-        $this->clientOptions['pjaxContainerId'] = '#' . $this->pjaxContainerId;
-        $this->clientOptions['formSelector'] = '#' . $this->formId;
-        $options = Json::encode($this->clientOptions);
         $view = $this->getView();
         CommentAsset::register($view);
-        $view->registerJs("jQuery('#{$this->formId}').comment({$options});");
+        $view->registerJs("jQuery('#{$this->commentWrapperId}').comment({$this->getClientOptions()});");
     }
 
     /**
-     * Get encrypted entity key
-     *
      * @return string
      */
-    protected function generateEntityKey()
+    protected function getClientOptions()
     {
-        return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
-            'entity' => $this->entity,
-            'entityId' => $this->entityId,
-            'relatedTo' => $this->relatedTo,
-        ]), Module::$name));
+        $this->clientOptions['pjaxContainerId'] = '#' . $this->pjaxContainerId;
+        $this->clientOptions['formSelector'] = '#' . $this->formId;
+
+        return Json::encode($this->clientOptions);
+    }
+
+    /**
+     * Get comment ArrayDataProvider
+     *
+     * @param CommentModel $commentClass
+     *
+     * @return ArrayDataProvider
+     */
+    protected function getCommentDataProvider($commentClass)
+    {
+        $dataProvider = new ArrayDataProvider();
+        if (!isset($this->dataProviderConfig['allModels'])) {
+            $dataProvider->setModels($commentClass::getTree($this->entity, $this->entityId, $this->maxLevel));
+        }
+
+        return $dataProvider;
     }
 }

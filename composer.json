@@ -4,7 +4,9 @@
     "type": "yii2-extension",
     "keywords": [
         "yii2",
-        "extension"
+        "yii2-comments",
+        "yii2-comments-module",
+        "yii2-manage-comments"
     ],
     "license": "MIT",
     "authors": [
@@ -14,11 +16,13 @@
         }
     ],
     "require": {
+        "php": ">=5.5",
         "yiisoft/yii2": ">=2.0.8",
         "yii2mod/yii2-behaviors": "*",
-        "yii2mod/yii2-editable": "*",
         "yii2mod/yii2-enum": "*",
-        "asofter/yii2-imperavi-redactor": "*"
+        "asofter/yii2-imperavi-redactor": "*",
+        "paulzi/yii2-adjacency-list": "^2.0",
+        "yii2mod/yii2-moderation": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "~1.7"

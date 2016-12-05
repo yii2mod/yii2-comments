@@ -119,9 +119,6 @@ $model = Post::find()->where(['title' => 'some post title'])->one();
 
 <?php echo \yii2mod\comments\widgets\Comment::widget([
     'model' => $model,
-    'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current(), // for example
-    'maxLevel' => 3, // maximum comments level, level starts from 1, null - unlimited level. Defaults to `7`
-    'showDeletedComments' => true // show deleted comments. Defaults to `false`.
 ]); ?>
 ```
 
@@ -130,22 +127,57 @@ $model = Post::find()->where(['title' => 'some post title'])->one();
   ```php
 <?php echo \yii2mod\comments\widgets\Comment::widget([
     'model' => $model,
-    'commentView' => '@app/views/site/comments/index' //path to your template
+    'commentView' => '@app/views/site/comments/index' // path to your template
 ]); ?>
   ```
   
 **Use the following code for multiple widgets on the same page:**
   ```php
-echo \yii2mod\comments\widgets\Comment::widget([
+<?php echo \yii2mod\comments\widgets\Comment::widget([
         'model' => $model,
-    ]);
+]); ?>
 
-echo \yii2mod\comments\widgets\Comment::widget([
+<?php echo \yii2mod\comments\widgets\Comment::widget([
         'model' => $model2,
         'formId' => 'comment-form2',
-        'pjaxContainerId' => 'unique-pjax-container-id' // also you can set the `pjaxContainerId`
-    ]); 
+        'pjaxContainerId' => 'unique-pjax-container-id'
+]); ?>
   ```
+  
+**To enable the pagination for comments list use the following code:**
+```php
+<?php echo \yii2mod\comments\widgets\Comment::widget([
+      'model' => $model,
+      'dataProviderConfig' => [
+          'pagination' => [
+              'pageSize' => 10
+          ],
+      ]
+]); ?>
+```
+
+**Advanced example:**
+```php
+<?php echo \yii2mod\comments\widgets\Comment::widget([
+      'model' => $model,
+      'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current(),
+      'level' => 2,
+      // set `pageSize` with custom sorting
+      'dataProviderConfig' => [ 
+          'sort' => [
+              'attributes' => ['id'],
+              'defaultOrder' => ['id' => SORT_DESC],
+          ],
+          'pagination' => [
+              'pageSize' => 10
+          ],
+      ],
+       // your own config for comments ListView, for example:
+      'listViewConfig' => [
+          'emptyText' => Yii::t('app', 'No comments found.'),
+      ]
+]); ?>
+```
 
 ## Internationalization
 

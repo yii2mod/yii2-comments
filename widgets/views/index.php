@@ -1,35 +1,54 @@
 <?php
 
+use yii\helpers\ArrayHelper;
+use yii\widgets\ListView;
 use yii\widgets\Pjax;
 
 /* @var $this \yii\web\View */
-/* @var $comments array */
 /* @var $commentModel \yii2mod\comments\models\CommentModel */
 /* @var $maxLevel null|integer comments max level */
 /* @var $encryptedEntity string */
 /* @var $pjaxContainerId string */
 /* @var $formId string comment form id */
-/* @var $showDeletedComments boolean show deleted comments. */
+/* @var $commentDataProvider \yii\data\ArrayDataProvider */
+/* @var $listViewConfig array */
+/* @var $commentWrapperId string */
 ?>
-<?php Pjax::begin(['enablePushState' => false, 'timeout' => 20000, 'id' => $pjaxContainerId]); ?>
-<div class="comments row">
-    <div class="col-md-12 col-sm-12">
-        <div class="title-block clearfix">
-            <h3 class="h3-body-title">
-                <?php echo Yii::t('yii2mod.comments', 'Comments ({0})', $commentModel->getCommentsCount($showDeletedComments ? false : true)); ?>
-            </h3>
-            <div class="title-separator"></div>
+<div class="comment-wrapper" id="<?php echo $commentWrapperId; ?>">
+    <?php Pjax::begin(['enablePushState' => false, 'timeout' => 20000, 'id' => $pjaxContainerId]); ?>
+    <div class="comments row">
+        <div class="col-md-12 col-sm-12">
+            <div class="title-block clearfix">
+                <h3 class="h3-body-title">
+                    <?php echo Yii::t('yii2mod.comments', 'Comments ({0})', $commentModel->getCommentsCount()); ?>
+                </h3>
+                <div class="title-separator"></div>
+            </div>
+            <?php echo ListView::widget(ArrayHelper::merge(
+                [
+                    'dataProvider' => $commentDataProvider,
+                    'itemView' => '_list',
+                    'viewParams' => [
+                        'maxLevel' => $maxLevel,
+                    ],
+                    'options' => [
+                        'tag' => 'ol',
+                        'class' => 'comments-list',
+                    ],
+                    'itemOptions' => [
+                        'tag' => false,
+                    ],
+                ],
+                $listViewConfig
+            )); ?>
+            <?php if (!Yii::$app->user->isGuest) : ?>
+                <?php echo $this->render('_form', [
+                    'commentModel' => $commentModel,
+                    'formId' => $formId,
+                    'encryptedEntity' => $encryptedEntity,
+                ]); ?>
+            <?php endif; ?>
         </div>
-        <ol class="comments-list">
-            <?php echo $this->render('_list', ['comments' => $comments, 'maxLevel' => $maxLevel]); ?>
-        </ol>
-        <?php if (!Yii::$app->user->isGuest) : ?>
-            <?php echo $this->render('_form', [
-                'commentModel' => $commentModel,
-                'encryptedEntity' => $encryptedEntity,
-                'formId' => $formId,
-            ]); ?>
-        <?php endif; ?>
     </div>
+    <?php Pjax::end(); ?>
 </div>
-<?php Pjax::end(); ?>

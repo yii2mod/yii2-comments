@@ -2,13 +2,13 @@
 
 namespace yii2mod\comments\controllers;
 
+use paulzi\adjacencyList\AdjacencyListBehavior;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\Module;
-use yii2mod\editable\EditableAction;
 
 /**
  * Class ManageController
@@ -33,36 +33,18 @@ class ManageController extends Controller
     public $searchClass = 'yii2mod\comments\models\search\CommentSearch';
 
     /**
-     * Returns a list of behaviors that this component should behave as.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function behaviors()
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'index' => ['get'],
                     'update' => ['get', 'post'],
                     'delete' => ['post'],
                 ],
-            ],
-        ];
-    }
-
-    /**
-     * Declares external actions for the controller.
-     *
-     * @return array
-     */
-    public function actions()
-    {
-        return [
-            'edit-comment' => [
-                'class' => EditableAction::className(),
-                'modelClass' => CommentModel::className(),
-                'forceCreate' => false,
             ],
         ];
     }
@@ -110,7 +92,7 @@ class ManageController extends Controller
     }
 
     /**
-     * Deletes an existing CommentModel model.
+     * Deletes an existing comment with children.
      *
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
@@ -120,7 +102,7 @@ class ManageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id)->deleteWithChildren();
         Yii::$app->session->setFlash('success', Yii::t('yii2mod.comments', 'Comment has been deleted.'));
 
         return $this->redirect(['index']);
@@ -133,7 +115,7 @@ class ManageController extends Controller
      *
      * @param int $id
      *
-     * @return CommentModel the loaded model
+     * @return CommentModel|AdjacencyListBehavior the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

@@ -31,55 +31,56 @@
         submitBtnLoadingText: 'Loading...'
     };
 
+    var commentData = {};
+
     // Methods
     var methods = {
         init: function (options) {
             return this.each(function () {
-                var $commentForm = $(this);
-                if ($commentForm.data('comment')) {
+                var $comment = $(this);
+                var settings = $.extend({}, defaults, options || {});
+                var id = $comment.attr('id');
+                if (commentData[id] === undefined) {
+                    commentData[id] = {};
+                } else {
                     return;
                 }
-                var settings = $.extend({}, defaults, options || {});
-                $commentForm.data('comment', settings);
-                $commentForm.on('beforeSubmit.comment', beforeSubmitForm);
-                var eventParams = {commentForm: $commentForm};
-                $(settings.pjaxContainerId).on('click.comment', '[data-action="reply"]', eventParams, reply);
-                $(settings.pjaxContainerId).on('click.comment', '[data-action="cancel-reply"]', eventParams, cancelReply);
-                $(settings.pjaxContainerId).on('click.comment', '[data-action="delete"]', eventParams, deleteComment);
+                commentData[id] = $.extend(commentData[id], {settings: settings});
+
+                var formSelector = commentData[id].settings.formSelector;
+                var eventParams = {formSelector: formSelector, wrapperSelector: id};
+
+                $comment.on('beforeSubmit.comment', formSelector, eventParams, createComment);
+                $comment.on('click.comment', '[data-action="reply"]', eventParams, reply);
+                $comment.on('click.comment', '[data-action="cancel-reply"]', eventParams, cancelReply);
+                $comment.on('click.comment', '[data-action="delete"]', eventParams, deleteComment);
             });
         },
         data: function () {
-            return this.data('comment');
-        },
-        reset: function (settings) {
-            $(settings.pjaxContainerId).each(function () {
-                $(this).unbind('.comment');
-                $(this).removeData('comment');
-            });
-            $(settings.formSelector).comment(settings);
+            var id = $(this).attr('id');
+            return commentData[id];
         }
     };
 
 
     /**
-     * This function used for `beforeSubmit` comment form event
+     * Create a comment
+     * @returns {boolean}
      */
-    function beforeSubmitForm() {
+    function createComment(event) {
         var $commentForm = $(this);
-        var settings = $commentForm.data('comment');
+        var settings = commentData[event.data.wrapperSelector].settings;
         var pjaxSettings = $.extend({container: settings.pjaxContainerId}, settings.pjaxSettings);
         var formData = $commentForm.serializeArray();
         formData.push({'name': 'CommentModel[url]', 'value': getCurrentUrl()});
-
+        // disable submit button
         $commentForm.find(':submit').prop('disabled', true).text(settings.submitBtnLoadingText);
-
-        $.post($commentForm.attr("action"), formData, function (data) {
+        // creating a comment and errors handling
+        $.post($commentForm.attr('action'), formData, function (data) {
             if (data.status == 'success') {
-                $.pjax(pjaxSettings).done(function () {
-                    $commentForm.trigger("reset");
-                    methods.reset.call($commentForm, settings);
-                });
+                $.pjax(pjaxSettings);
             }
+            // errors handling
             else {
                 if (data.hasOwnProperty('errors')) {
                     $commentForm.yiiActiveForm('updateMessages', data.errors, true);
@@ -87,10 +88,12 @@
                 else {
                     $commentForm.yiiActiveForm('updateAttribute', 'commentmodel-content', [data.message]);
                 }
+                // enable submit button
                 $commentForm.find(':submit').prop('disabled', false).text(settings.submitBtnText);
             }
         }).fail(function (xhr, status, error) {
             alert(error);
+            $.pjax(pjaxSettings);
         });
 
         return false;
@@ -101,14 +104,16 @@
      * @param event
      */
     function reply(event) {
-        event.preventDefault();
-        var $commentForm = event.data.commentForm;
-        var settings = $commentForm.data('comment');
         var $this = $(this);
+        var $commentForm = $(event.data.formSelector);
+        var settings = commentData[event.data.wrapperSelector].settings;
         var parentCommentSelector = $this.parents('[data-comment-content-id="' + $this.data('comment-id') + '"]');
+        // append the comment form inside particular comment container
         $commentForm.appendTo(parentCommentSelector);
         $commentForm.find('[data-comment="parent-id"]').val($this.data('comment-id'));
         $commentForm.find(settings.cancelReplyBtnSelector).show();
+
+        return false;
     }
 
     /**
@@ -116,24 +121,25 @@
      * @param event
      */
     function cancelReply(event) {
-        event.preventDefault();
-        var $commentForm = event.data.commentForm;
-        var settings = $commentForm.data('comment');
-        $commentForm.find(settings.cancelReplyBtnSelector).hide();
+        var $commentForm = $(event.data.formSelector);
+        var settings = commentData[event.data.wrapperSelector].settings;
         var formContainer = $(settings.pjaxContainerId).find(settings.formContainerSelector);
+        // prepend the comment form to `formContainer`
+        $commentForm.find(settings.cancelReplyBtnSelector).hide();
         $commentForm.prependTo(formContainer);
         $commentForm.find('[data-comment="parent-id"]').val(null);
+
+        return false;
     }
 
     /**
-     * Delete the comment
+     * Delete a comment
      * @param event
      */
     function deleteComment(event) {
-        event.preventDefault();
-        var $commentForm = event.data.commentForm;
-        var settings = $commentForm.data('comment');
         var $this = $(this);
+        var settings = commentData[event.data.wrapperSelector].settings;
+
         $.ajax({
             url: $this.data('url'),
             type: 'DELETE',
@@ -145,6 +151,8 @@
                 $this.parents(settings.toolsSelector).remove();
             }
         });
+
+        return false;
     }
 
     /**

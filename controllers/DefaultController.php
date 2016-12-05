@@ -13,6 +13,7 @@ use yii\widgets\ActiveForm;
 use yii2mod\comments\events\CommentEvent;
 use yii2mod\comments\models\CommentModel;
 use yii2mod\comments\Module;
+use yii2mod\moderation\ModerationBehavior;
 
 /**
  * Class DefaultController
@@ -28,15 +29,13 @@ class DefaultController extends Controller
     const EVENT_AFTER_CREATE = 'afterCreate';
 
     /**
-     * Returns a list of behaviors that this component should behave as.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function behaviors()
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'create' => ['post'],
                     'delete' => ['post', 'delete'],
@@ -61,10 +60,11 @@ class DefaultController extends Controller
      */
     public function actionCreate($entity)
     {
+        /* @var $commentModel CommentModel */
         $commentModel = Yii::createObject(Yii::$app->getModule(Module::$name)->commentModelClass);
         $commentModel->setAttributes($this->getCommentAttributesFromEntity($entity));
-        if ($commentModel->load(Yii::$app->request->post()) && $commentModel->save()) {
-            $event = Yii::createObject(['class' => CommentEvent::className(), 'commentModel' => $commentModel]);
+        if ($commentModel->load(Yii::$app->request->post()) && $commentModel->saveComment()) {
+            $event = Yii::createObject(['class' => CommentEvent::class, 'commentModel' => $commentModel]);
             $this->trigger(self::EVENT_AFTER_CREATE, $event);
 
             return ['status' => 'success'];
@@ -85,7 +85,7 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        if ($this->findModel($id)->deleteComment()) {
+        if ($this->findModel($id)->markRejected()) {
             return Yii::t('yii2mod.comments', 'Comment has been deleted.');
         } else {
             Yii::$app->response->setStatusCode(500);
@@ -99,7 +99,7 @@ class DefaultController extends Controller
      *
      * @param int|array $id Comment ID
      *
-     * @return null|CommentModel
+     * @return null|CommentModel|ModerationBehavior
      *
      * @throws NotFoundHttpException
      */

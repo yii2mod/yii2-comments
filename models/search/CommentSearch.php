@@ -18,7 +18,7 @@ class CommentSearch extends CommentModel
     public $pageSize = 10;
 
     /**
-     * @return array validation rules
+     * @inheritdoc
      */
     public function rules()
     {
@@ -36,7 +36,7 @@ class CommentSearch extends CommentModel
      */
     public function search($params)
     {
-        $query = self::find();
+        $query = CommentModel::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -27,10 +27,5 @@ class PostModel extends ActiveRecord
         return [
             [['title', 'description'], 'required'],
         ];
-    }/*
-     * This method is called at the end of inserting or updating a record.
-     *
-     * @param bool $insert
-     * @param array $changedAttributes
-     */
+    }
 }

@@ -27,6 +27,7 @@ use yii\widgets\Pjax;
             <?php echo ListView::widget(ArrayHelper::merge(
                 [
                     'dataProvider' => $commentDataProvider,
+                    'layout' => "{items}\n{pager}",
                     'itemView' => '_list',
                     'viewParams' => [
                         'maxLevel' => $maxLevel,

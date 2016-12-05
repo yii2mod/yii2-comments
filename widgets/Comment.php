@@ -68,7 +68,6 @@ class Comment extends Widget
      */
     public $listViewConfig = [
         'emptyText' => '',
-        'layout' => "{items}\n{pager}",
     ];
 
     /**
@@ -199,9 +198,9 @@ class Comment extends Widget
      */
     protected function getCommentDataProvider($commentClass)
     {
-        $dataProvider = new ArrayDataProvider();
+        $dataProvider = new ArrayDataProvider($this->dataProviderConfig);
         if (!isset($this->dataProviderConfig['allModels'])) {
-            $dataProvider->setModels($commentClass::getTree($this->entity, $this->entityId, $this->maxLevel));
+            $dataProvider->allModels = $commentClass::getTree($this->entity, $this->entityId, $this->maxLevel);
         }
 
         return $dataProvider;

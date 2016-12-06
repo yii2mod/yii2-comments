@@ -41,7 +41,7 @@ class CommentModel extends ActiveRecord
     use ModerationQueryTrait;
 
     /**
-     * @var null|array|ActiveRecord[] Comment children
+     * @var null|array|ActiveRecord[] comment children
      */
     protected $children;
 
@@ -215,11 +215,11 @@ class CommentModel extends ActiveRecord
     /**
      * Get comments tree.
      *
-     * @param $entity string model class id
-     * @param $entityId integer model id
+     * @param string $entity
+     * @param string $entityId
      * @param null $maxLevel
      *
-     * @return array|\yii\db\ActiveRecord[] Comments tree
+     * @return array|ActiveRecord[]
      */
     public static function getTree($entity, $entityId, $maxLevel = null)
     {
@@ -232,7 +232,7 @@ class CommentModel extends ActiveRecord
             $query->andWhere(['<=', 'level', $maxLevel]);
         }
 
-        $models = $query->orderBy(['parentId' => SORT_ASC, 'createdAt' => SORT_ASC])->all();
+        $models = $query->all();
 
         if (!empty($models)) {
             $models = self::buildTree($models);
@@ -244,10 +244,10 @@ class CommentModel extends ActiveRecord
     /**
      * Build comments tree.
      *
-     * @param array $data Records array
-     * @param int $rootID parentId Root ID
+     * @param array $data comments list
+     * @param int $rootID
      *
-     * @return array|ActiveRecord[] Comments tree
+     * @return array|ActiveRecord[]
      */
     protected static function buildTree(&$data, $rootID = 0)
     {
@@ -265,9 +265,7 @@ class CommentModel extends ActiveRecord
     }
 
     /**
-     * $_children getter.
-     *
-     * @return null|array|ActiveRecord[] Comment children
+     * @return array|null|ActiveRecord[]
      */
     public function getChildren()
     {
@@ -275,9 +273,7 @@ class CommentModel extends ActiveRecord
     }
 
     /**
-     * $_children setter.
-     *
-     * @param array|ActiveRecord[] $value Comment children
+     * @param $value
      */
     public function setChildren($value)
     {

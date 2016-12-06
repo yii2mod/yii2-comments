@@ -161,7 +161,7 @@ $model = Post::find()->where(['title' => 'some post title'])->one();
 <?php echo \yii2mod\comments\widgets\Comment::widget([
       'model' => $model,
       'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current(),
-      'level' => 2,
+      'maxLevel' => 2,
       // set `pageSize` with custom sorting
       'dataProviderConfig' => [ 
           'sort' => [

@@ -99,9 +99,9 @@ class DefaultController extends Controller
      *
      * @param int|array $id Comment ID
      *
-     * @return null|CommentModel|ModerationBehavior
-     *
      * @throws NotFoundHttpException
+     *
+     * @return null|CommentModel|ModerationBehavior
      */
     protected function findModel($id)
     {
@@ -119,9 +119,9 @@ class DefaultController extends Controller
      *
      * @param $entity string encrypted entity
      *
-     * @return array|mixed
-     *
      * @throws BadRequestHttpException
+     *
+     * @return array|mixed
      */
     protected function getCommentAttributesFromEntity($entity)
     {

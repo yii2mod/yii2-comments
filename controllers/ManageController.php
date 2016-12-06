@@ -115,9 +115,9 @@ class ManageController extends Controller
      *
      * @param int $id
      *
-     * @return CommentModel|AdjacencyListBehavior the loaded model
-     *
      * @throws NotFoundHttpException if the model cannot be found
+     *
+     * @return CommentModel|AdjacencyListBehavior the loaded model
      */
     protected function findModel($id)
     {

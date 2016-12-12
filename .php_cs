@@ -7,6 +7,7 @@ $finder = PhpCsFixer\Finder::create()
 $config = PhpCsFixer\Config::create()
     ->setUsingCache(false)
     ->setRules([
+        '@Symfony' => true,
         'phpdoc_align' => false,
         'phpdoc_summary' => false,
         'phpdoc_inline_tag' => false,
@@ -17,15 +18,6 @@ $config = PhpCsFixer\Config::create()
         'phpdoc_no_package' => false,
         'concat_space' => ['spacing' => 'one'],
         'ordered_imports' => true,
-        'single_quote' => true,
-        'no_empty_comment' => true,
-        'no_empty_phpdoc' => true,
-        'no_empty_statement' => true,
-        'no_spaces_inside_parenthesis' => true,
-        'no_trailing_whitespace' => true,
-        'no_trailing_whitespace_in_comment' => true,
-        'phpdoc_order' => true,
-        'trim_array_spaces' => true,
         'array_syntax' => ['syntax' => 'short'],
     ])
     ->setFinder($finder);

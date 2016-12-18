@@ -46,7 +46,7 @@ To access the module, you need to add the following code to your application con
 'modules' => [
     'comment' => [
         'class' => 'yii2mod\comments\Module',
-        // use comment controller event example
+        // also you can use the `afterCreate` event as follows
         'controllerMap' => [
             'default' => [
                 'class' => 'yii2mod\comments\controllers\DefaultController',

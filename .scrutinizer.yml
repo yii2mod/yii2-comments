@@ -2,6 +2,10 @@ build:
     environment:
         php:
             version: 7.0.*
+    build:
+        dependencies:
+            before:
+                - composer global require "fxp/composer-asset-plugin:~1.1.2"
     tests:
         override:
             -
@@ -9,11 +13,12 @@ build:
                 coverage:
                     file: 'coverage.xml'
                     format: 'php-clover'
-
 filter:
     excluded_paths:
         - 'tests/*'
 
 checks:
     php: true
-    
+
+tools:
+    php_analyzer: false

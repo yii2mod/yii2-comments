@@ -2,10 +2,9 @@ build:
     environment:
         php:
             version: 7.0.*
-    build:
-        dependencies:
-            before:
-                - composer global require "fxp/composer-asset-plugin:~1.1.2"
+    dependencies:
+        before:
+            - composer global require "fxp/composer-asset-plugin:~1.1.2"
     tests:
         override:
             -

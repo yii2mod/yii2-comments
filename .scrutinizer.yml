@@ -1,7 +1,21 @@
-tools:
-    php_sim: true
-    php_pdepend: true
-    php_analyzer: true
+build:
+    environment:
+        php:
+            version: 7.1.0
+    dependencies:
+        before:
+            - composer global require "fxp/composer-asset-plugin:~1.1.2"
+    tests:
+        override:
+            -
+                command: 'phpunit --coverage-clover=coverage.xml'
+                coverage:
+                    file: 'coverage.xml'
+                    format: 'php-clover'
+
 filter:
     excluded_paths:
         - 'tests/*'
+
+checks:
+    php: true

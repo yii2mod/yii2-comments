@@ -110,12 +110,12 @@ class Comment extends Widget
             $this->pjaxContainerId = 'comment-pjax-container-' . $this->getId();
         }
 
-        $this->entity = hash('crc32', get_class($this->model));
-        $this->entityId = $this->model->{$this->entityIdAttribute};
-
-        if (empty($this->entityId)) {
+        if (empty($this->model->{$this->entityIdAttribute})) {
             throw new InvalidConfigException(Yii::t('yii2mod.comments', 'The "entityIdAttribute" value for widget model cannot be empty.'));
         }
+
+        $this->entity = hash('crc32', get_class($this->model));
+        $this->entityId = $this->model->{$this->entityIdAttribute};
 
         if (empty($this->relatedTo)) {
             $this->relatedTo = get_class($this->model) . ':' . $this->entityId;

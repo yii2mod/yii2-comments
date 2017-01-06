@@ -10,6 +10,7 @@ use yii2mod\comments\Module;
 use yii2mod\comments\tests\data\DefaultController;
 use yii2mod\comments\tests\data\PostModel;
 use yii2mod\comments\tests\data\User;
+use yii2mod\moderation\enums\Status;
 
 /**
  * Class CommentTest
@@ -31,6 +32,28 @@ class CommentTest extends TestCase
         $this->assertEquals('success', $response['status'], 'Unable to add a comment!');
     }
 
+    public function testBeforeCreateEvent()
+    {
+        $commentContent = 'test comment';
+        Yii::$app->user->login(User::find()->one());
+        Yii::$app->request->bodyParams = [
+            'CommentModel' => [
+                'content' => $commentContent,
+            ],
+        ];
+        Event::on(
+            DefaultController::class,
+            DefaultController::EVENT_BEFORE_CREATE,
+            function ($event) use ($commentContent) {
+                $this->assertEquals(1, $event->getCommentModel()->entityId);
+                $this->assertInstanceOf(CommentModel::class, $event->getCommentModel());
+            }
+        );
+        $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
+
+        $this->assertEquals('success', $response['status'], 'Unable to add a comment!');
+    }
+
     public function testAfterCreateEvent()
     {
         $commentContent = 'test comment';
@@ -41,11 +64,11 @@ class CommentTest extends TestCase
             ],
         ];
         Event::on(
-            DefaultController::className(),
+            DefaultController::class,
             DefaultController::EVENT_AFTER_CREATE,
             function ($event) use ($commentContent) {
                 $this->assertEquals($commentContent, $event->getCommentModel()->content);
-                $this->assertInstanceOf(CommentModel::className(), $event->getCommentModel());
+                $this->assertInstanceOf(CommentModel::class, $event->getCommentModel());
             }
         );
         $response = Yii::$app->runAction('comment/default/create', ['entity' => $this->generateEntity()]);
@@ -72,6 +95,40 @@ class CommentTest extends TestCase
 
     public function testDeleteComment()
     {
+        Yii::$app->user->login(User::find()->one());
+        $response = Yii::$app->runAction('comment/default/delete', ['id' => 1]);
+
+        $this->assertEquals('Comment has been deleted.', $response, 'Unable to delete a comment!');
+    }
+
+    public function testBeforeDeleteEvent()
+    {
+        Event::on(
+            DefaultController::class,
+            DefaultController::EVENT_BEFORE_DELETE,
+            function ($event) {
+                $this->assertEquals(Status::APPROVED, $event->getCommentModel()->status);
+                $this->assertInstanceOf(CommentModel::class, $event->getCommentModel());
+            }
+        );
+
+        Yii::$app->user->login(User::find()->one());
+        $response = Yii::$app->runAction('comment/default/delete', ['id' => 1]);
+
+        $this->assertEquals('Comment has been deleted.', $response, 'Unable to delete a comment!');
+    }
+
+    public function testAfterDeleteEvent()
+    {
+        Event::on(
+            DefaultController::class,
+            DefaultController::EVENT_AFTER_DELETE,
+            function ($event) {
+                $this->assertEquals(Status::REJECTED, $event->getCommentModel()->status);
+                $this->assertInstanceOf(CommentModel::class, $event->getCommentModel());
+            }
+        );
+
         Yii::$app->user->login(User::find()->one());
         $response = Yii::$app->runAction('comment/default/delete', ['id' => 1]);
 

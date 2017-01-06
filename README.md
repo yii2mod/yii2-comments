@@ -46,18 +46,7 @@ To access the module, you need to add the following code to your application con
 'modules' => [
     'comment' => [
         'class' => 'yii2mod\comments\Module',
-        // also you can use the `afterCreate` event as follows
-        'controllerMap' => [
-            'default' => [
-                'class' => 'yii2mod\comments\controllers\DefaultController',
-                'on afterCreate' => function ($event) {
-                    // get saved comment model
-                    $event->getCommentModel();
-                    // your custom code
-                }
-            ]
-        ]
-    ]
+    ],
 ]
 ```
 
@@ -161,7 +150,7 @@ $model = Post::find()->where(['title' => 'some post title'])->one();
 <?php echo \yii2mod\comments\widgets\Comment::widget([
       'model' => $model,
       'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current(),
-      'maxLevel' => 2,
+      'level' => 2,
       // set `pageSize` with custom sorting
       'dataProviderConfig' => [ 
           'sort' => [
@@ -177,6 +166,39 @@ $model = Post::find()->where(['title' => 'some post title'])->one();
           'emptyText' => Yii::t('app', 'No comments found.'),
       ]
 ]); ?>
+```
+
+## Using Events
+
+You may use the following events:
+
+```php
+'modules' => [
+    'comment' => [
+        'class' => 'yii2mod\comments\Module',
+        'controllerMap' => [
+            'default' => [
+                'class' => 'yii2mod\comments\controllers\DefaultController',
+                'on beforeCreate' => function ($event) {
+                    $event->getCommentModel();
+                    // your custom code
+                },
+                'on afterCreate' => function ($event) {
+                    $event->getCommentModel();
+                    // your custom code
+                },
+                'on beforeDelete' => function ($event) {
+                    $event->getCommentModel();
+                    // your custom code
+                },
+                'on afterDelete' => function ($event) {
+                    $event->getCommentModel();
+                    // your custom code
+                },
+            ]
+        ]
+    ]
+]
 ```
 
 ## Internationalization

@@ -23,10 +23,28 @@ use yii2mod\moderation\ModerationBehavior;
 class DefaultController extends Controller
 {
     /**
+     * Event is triggered before creating a new comment.
+     * Triggered with yii2mod\comments\events\CommentEvent
+     */
+    const EVENT_BEFORE_CREATE = 'beforeCreate';
+
+    /**
      * Event is triggered after creating a new comment.
      * Triggered with yii2mod\comments\events\CommentEvent
      */
     const EVENT_AFTER_CREATE = 'afterCreate';
+
+    /**
+     * Event is triggered before deleting the comment.
+     * Triggered with yii2mod\comments\events\CommentEvent
+     */
+    const EVENT_BEFORE_DELETE = 'beforeDelete';
+
+    /**
+     * Event is triggered after deleting the comment.
+     * Triggered with yii2mod\comments\events\CommentEvent
+     */
+    const EVENT_AFTER_DELETE = 'afterDelete';
 
     /**
      * @inheritdoc
@@ -52,7 +70,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Create comment.
+     * Create a comment.
      *
      * @param $entity string encrypt entity
      *
@@ -62,9 +80,10 @@ class DefaultController extends Controller
     {
         /* @var $commentModel CommentModel */
         $commentModel = Yii::createObject(Yii::$app->getModule(Module::$name)->commentModelClass);
+        $event = Yii::createObject(['class' => CommentEvent::class, 'commentModel' => $commentModel]);
         $commentModel->setAttributes($this->getCommentAttributesFromEntity($entity));
+        $this->trigger(self::EVENT_BEFORE_CREATE, $event);
         if ($commentModel->load(Yii::$app->request->post()) && $commentModel->saveComment()) {
-            $event = Yii::createObject(['class' => CommentEvent::class, 'commentModel' => $commentModel]);
             $this->trigger(self::EVENT_AFTER_CREATE, $event);
 
             return ['status' => 'success'];
@@ -85,7 +104,13 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        if ($this->findModel($id)->markRejected()) {
+        $commentModel = $this->findModel($id);
+        $event = Yii::createObject(['class' => CommentEvent::class, 'commentModel' => $commentModel]);
+        $this->trigger(self::EVENT_BEFORE_DELETE, $event);
+
+        if ($commentModel->markRejected()) {
+            $this->trigger(self::EVENT_AFTER_DELETE, $event);
+
             return Yii::t('yii2mod.comments', 'Comment has been deleted.');
         } else {
             Yii::$app->response->setStatusCode(500);
@@ -99,9 +124,9 @@ class DefaultController extends Controller
      *
      * @param int|array $id Comment ID
      *
-     * @throws NotFoundHttpException
-     *
      * @return null|CommentModel|ModerationBehavior
+     *
+     * @throws NotFoundHttpException
      */
     protected function findModel($id)
     {
@@ -119,9 +144,9 @@ class DefaultController extends Controller
      *
      * @param $entity string encrypted entity
      *
-     * @throws BadRequestHttpException
-     *
      * @return array|mixed
+     *
+     * @throws BadRequestHttpException
      */
     protected function getCommentAttributesFromEntity($entity)
     {

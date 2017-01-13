@@ -327,7 +327,7 @@ class CommentModel extends ActiveRecord
             return $this->author->getAvatar();
         }
 
-        return 'http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y&s=50';
+        return 'http://www.gravatar.com/avatar?d=mm&f=y&s=50';
     }
 
     /**
@@ -337,7 +337,15 @@ class CommentModel extends ActiveRecord
      */
     public static function getAuthors()
     {
-        return ArrayHelper::map(static::find()->joinWith('author')->groupBy('createdBy')->asArray()->all(), 'createdBy', 'author.username');
+        $query = static::find()
+            ->alias('c')
+            ->select(['c.createdBy', 'a.username'])
+            ->joinWith('author a')
+            ->groupBy('c.createdBy')
+            ->asArray()
+            ->all();
+
+        return ArrayHelper::map($query, 'createdBy', 'author.username');
     }
 
     /**

@@ -341,7 +341,8 @@ class CommentModel extends ActiveRecord
             ->alias('c')
             ->select(['c.createdBy', 'a.username'])
             ->joinWith('author a')
-            ->groupBy('c.createdBy')
+            ->groupBy(['c.createdBy', 'a.username'])
+            ->orderBy('a.username')
             ->asArray()
             ->all();
 

@@ -2,6 +2,7 @@
 
 namespace yii2mod\comments\migrations;
 
+use Yii;
 use yii\db\Migration;
 
 class m161109_092304_rename_comment_table extends Migration

@@ -36,7 +36,7 @@ Configuration
 
 Before using Comments Widget, we'll also need to prepare the database.
 ```php
-php yii migrate --migrationPath=@vendor/yii2mod/yii2-comments/migrations
+php yii migrate 'yii2mod\\comments\\migrations'
 ```
 
 **Module setup**

@@ -1,7 +1,5 @@
 <?php
 
-namespace yii2mod\comments\migrations;
-
 use yii\db\Migration;
 
 /**

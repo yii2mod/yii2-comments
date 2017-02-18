@@ -13,7 +13,7 @@ use yii2mod\behaviors\PurifyBehavior;
 use yii2mod\comments\Module;
 use yii2mod\moderation\enums\Status;
 use yii2mod\moderation\ModerationBehavior;
-use yii2mod\moderation\ModerationQueryTrait;
+use yii2mod\moderation\ModerationQuery;
 
 /**
  * Class CommentModel
@@ -38,8 +38,6 @@ use yii2mod\moderation\ModerationQueryTrait;
  */
 class CommentModel extends ActiveRecord
 {
-    use ModerationQueryTrait;
-
     /**
      * @var null|array|ActiveRecord[] comment children
      */
@@ -76,7 +74,8 @@ class CommentModel extends ActiveRecord
     public function validateParentID($attribute)
     {
         if ($this->{$attribute} !== null) {
-            $parentCommentExist = static::approved()
+            $parentCommentExist = static::find()
+                ->approved()
                 ->andWhere([
                     'id' => $this->{$attribute},
                     'entity' => $this->entity,
@@ -152,6 +151,14 @@ class CommentModel extends ActiveRecord
     }
 
     /**
+     * @return ModerationQuery
+     */
+    public static function find()
+    {
+        return new ModerationQuery(get_called_class());
+    }
+
+    /**
      * @inheritdoc
      */
     public function beforeSave($insert)
@@ -223,10 +230,12 @@ class CommentModel extends ActiveRecord
      */
     public static function getTree($entity, $entityId, $maxLevel = null)
     {
-        $query = static::approved()->andWhere([
-            'entityId' => $entityId,
-            'entity' => $entity,
-        ])->with(['author']);
+        $query = static::find()
+            ->approved()
+            ->andWhere([
+                'entityId' => $entityId,
+                'entity' => $entity,
+            ])->with(['author']);
 
         if ($maxLevel > 0) {
             $query->andWhere(['<=', 'level', $maxLevel]);
@@ -345,7 +354,8 @@ class CommentModel extends ActiveRecord
      */
     public function getCommentsCount()
     {
-        return (int)static::approved()
+        return (int)static::find()
+            ->approved()
             ->andWhere(['entity' => $this->entity, 'entityId' => $this->entityId])
             ->count();
     }

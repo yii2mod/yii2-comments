@@ -2,6 +2,7 @@
 
 namespace yii2mod\comments\tests;
 
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
@@ -9,7 +10,7 @@ use yii\helpers\FileHelper;
 /**
  * This is the base class for all yii framework unit tests.
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends PHPUnitTestCase
 {
     protected function setUp()
     {

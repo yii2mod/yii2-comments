@@ -34,7 +34,7 @@ use yii2mod\editable\Editable;
                         'url' => '/comment/default/quick-edit',
                         'options' => [
                             'id' => 'editable-comment-' . $model->id,
-                        ]
+                        ],
                     ]); ?>
                 <?php else: ?>
                     <?php echo $model->getContent(); ?>

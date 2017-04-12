@@ -2,7 +2,6 @@
 
 namespace yii2mod\comments\tests;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;

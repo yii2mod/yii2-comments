@@ -3,6 +3,7 @@
 namespace yii2mod\comments\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
@@ -12,8 +13,8 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii2mod\comments\events\CommentEvent;
 use yii2mod\comments\models\CommentModel;
-use yii2mod\comments\Module;
-use yii2mod\moderation\ModerationBehavior;
+use yii2mod\comments\traits\ModuleTrait;
+use yii2mod\editable\EditableAction;
 
 /**
  * Class DefaultController
@@ -22,6 +23,8 @@ use yii2mod\moderation\ModerationBehavior;
  */
 class DefaultController extends Controller
 {
+    use ModuleTrait;
+
     /**
      * Event is triggered before creating a new comment.
      * Triggered with yii2mod\comments\events\CommentEvent
@@ -49,9 +52,32 @@ class DefaultController extends Controller
     /**
      * @inheritdoc
      */
+    public function actions()
+    {
+        return [
+            'quick-edit' => [
+                'class' => EditableAction::class,
+                'modelClass' => CommentModel::class,
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['quick-edit'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -79,7 +105,7 @@ class DefaultController extends Controller
     public function actionCreate($entity)
     {
         /* @var $commentModel CommentModel */
-        $commentModel = Yii::createObject(Yii::$app->getModule(Module::$name)->commentModelClass);
+        $commentModel = Yii::createObject($this->getModule()->commentModelClass);
         $event = Yii::createObject(['class' => CommentEvent::class, 'commentModel' => $commentModel]);
         $commentModel->setAttributes($this->getCommentAttributesFromEntity($entity));
         $this->trigger(self::EVENT_BEFORE_CREATE, $event);
@@ -124,15 +150,14 @@ class DefaultController extends Controller
      *
      * @param int|array $id Comment ID
      *
-     * @return null|CommentModel|ModerationBehavior
+     * @return CommentModel
      *
      * @throws NotFoundHttpException
      */
     protected function findModel($id)
     {
-        /** @var CommentModel $model */
-        $commentModelClass = Yii::$app->getModule(Module::$name)->commentModelClass;
-        if (($model = $commentModelClass::findOne($id)) !== null) {
+        $commentModel = $this->getModule()->commentModelClass;
+        if (($model = $commentModel::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('yii2mod.comments', 'The requested page does not exist.'));
@@ -150,7 +175,7 @@ class DefaultController extends Controller
      */
     protected function getCommentAttributesFromEntity($entity)
     {
-        $decryptEntity = Yii::$app->getSecurity()->decryptByKey(utf8_decode($entity), Module::$name);
+        $decryptEntity = Yii::$app->getSecurity()->decryptByKey(utf8_decode($entity), $this->getModule()->id);
         if ($decryptEntity !== false) {
             return Json::decode($decryptEntity);
         }

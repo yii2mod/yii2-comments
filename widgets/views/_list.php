@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii2mod\editable\Editable;
 
 /* @var $this \yii\web\View */
 /* @var $model \yii2mod\comments\models\CommentModel */
@@ -26,7 +27,18 @@ use yii\helpers\Url;
                 <?php echo Html::a($model->getPostedDate(), $model->getAnchorUrl(), ['class' => 'comment-date']); ?>
             </div>
             <div class="comment-body">
-                <?php echo $model->getContent(); ?>
+                <?php if (Yii::$app->getModule('comment')->enableInlineEdit): ?>
+                    <?php echo Editable::widget([
+                        'model' => $model,
+                        'attribute' => 'content',
+                        'url' => '/comment/default/quick-edit',
+                        'options' => [
+                            'id' => 'editable-comment-' . $model->id,
+                        ],
+                    ]); ?>
+                <?php else: ?>
+                    <?php echo $model->getContent(); ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>

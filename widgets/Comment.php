@@ -9,7 +9,7 @@ use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
 use yii2mod\comments\CommentAsset;
 use yii2mod\comments\models\CommentModel;
-use yii2mod\comments\Module;
+use yii2mod\comments\traits\ModuleTrait;
 
 /**
  * Class Comment
@@ -18,6 +18,8 @@ use yii2mod\comments\Module;
  */
 class Comment extends Widget
 {
+    use ModuleTrait;
+
     /**
      * @var \yii\db\ActiveRecord|null Widget model
      */
@@ -134,7 +136,7 @@ class Comment extends Widget
      */
     public function run()
     {
-        $commentClass = Yii::$app->getModule(Module::$name)->commentModelClass;
+        $commentClass = $this->getModule()->commentModelClass;
         $commentModel = Yii::createObject([
             'class' => $commentClass,
             'entity' => $this->entity,
@@ -165,7 +167,7 @@ class Comment extends Widget
             'entity' => $this->entity,
             'entityId' => $this->entityId,
             'relatedTo' => $this->relatedTo,
-        ]), Module::$name));
+        ]), $this->getModule()->id));
     }
 
     /**

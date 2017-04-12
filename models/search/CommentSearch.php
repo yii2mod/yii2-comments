@@ -23,7 +23,8 @@ class CommentSearch extends CommentModel
     public function rules()
     {
         return [
-            [['id', 'createdBy', 'content', 'status', 'relatedTo'], 'safe'],
+            [['id', 'createdBy', 'status'], 'integer'],
+            [['content', 'relatedTo'], 'safe'],
         ];
     }
 
@@ -34,7 +35,7 @@ class CommentSearch extends CommentModel
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params)
     {
         $query = CommentModel::find();
 
@@ -49,15 +50,18 @@ class CommentSearch extends CommentModel
             'defaultOrder' => ['id' => SORT_DESC],
         ]);
 
-        // load the search form data and validate
-        if (!($this->load($params))) {
+        $this->load($params);
+
+        if (!$this->validate()) {
             return $dataProvider;
         }
 
-        // adjust the query by adding the filters
-        $query->andFilterWhere(['id' => $this->id]);
-        $query->andFilterWhere(['createdBy' => $this->createdBy]);
-        $query->andFilterWhere(['status' => $this->status]);
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'createdBy' => $this->createdBy,
+            'status' => $this->status,
+        ]);
+
         $query->andFilterWhere(['like', 'content', $this->content]);
         $query->andFilterWhere(['like', 'relatedTo', $this->relatedTo]);
 

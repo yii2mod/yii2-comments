@@ -10,7 +10,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii2mod\behaviors\PurifyBehavior;
-use yii2mod\comments\Module;
+use yii2mod\comments\traits\ModuleTrait;
 use yii2mod\moderation\enums\Status;
 use yii2mod\moderation\ModerationBehavior;
 use yii2mod\moderation\ModerationQuery;
@@ -35,9 +35,13 @@ use yii2mod\moderation\ModerationQuery;
  * @method ActiveRecord makeRoot()
  * @method ActiveRecord appendTo($node)
  * @method ActiveQuery getDescendants()
+ * @method ModerationBehavior markRejected()
+ * @method AdjacencyListBehavior deleteWithChildren()
  */
 class CommentModel extends ActiveRecord
 {
+    use ModuleTrait;
+
     /**
      * @var null|array|ActiveRecord[] comment children
      */
@@ -166,7 +170,7 @@ class CommentModel extends ActiveRecord
         if (parent::beforeSave($insert)) {
             if ($this->parentId > 0) {
                 $parentNodeLevel = static::find()->select('level')->where(['id' => $this->parentId])->scalar();
-                $this->level = $parentNodeLevel + 1;
+                $this->level += $parentNodeLevel;
             }
 
             return true;
@@ -214,9 +218,7 @@ class CommentModel extends ActiveRecord
      */
     public function getAuthor()
     {
-        $module = Yii::$app->getModule(Module::$name);
-
-        return $this->hasOne($module->userIdentityClass, ['id' => 'createdBy']);
+        return $this->hasOne($this->getModule()->userIdentityClass, ['id' => 'createdBy']);
     }
 
     /**

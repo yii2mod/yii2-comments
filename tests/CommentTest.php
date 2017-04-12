@@ -6,7 +6,6 @@ use Yii;
 use yii\base\Event;
 use yii\helpers\Json;
 use yii2mod\comments\models\CommentModel;
-use yii2mod\comments\Module;
 use yii2mod\comments\tests\data\DefaultController;
 use yii2mod\comments\tests\data\PostModel;
 use yii2mod\comments\tests\data\User;
@@ -156,6 +155,6 @@ class CommentTest extends TestCase
             'entity' => hash('crc32', get_class($post)),
             'entityId' => $post->id,
             'relatedTo' => get_class($post) . ':' . $post->id,
-        ]), Module::$name));
+        ]), 'comment'));
     }
 }

@@ -12,11 +12,6 @@ use Yii;
 class Module extends \yii\base\Module
 {
     /**
-     * @var string module name
-     */
-    public static $name = 'comment';
-
-    /**
      * @var string the class name of the [[identity]] object
      */
     public $userIdentityClass;
@@ -30,6 +25,11 @@ class Module extends \yii\base\Module
      * @var string the namespace that controller classes are in
      */
     public $controllerNamespace = 'yii2mod\comments\controllers';
+
+    /**
+     * @var bool whether admin can edit comment on frontend
+     */
+    public $enableInlineEdit = false;
 
     /**
      * {@inheritdoc}

@@ -2,13 +2,12 @@
 
 namespace yii2mod\comments\controllers;
 
-use paulzi\adjacencyList\AdjacencyListBehavior;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii2mod\comments\models\CommentModel;
-use yii2mod\comments\Module;
+use yii2mod\comments\traits\ModuleTrait;
 
 /**
  * Class ManageController
@@ -17,6 +16,8 @@ use yii2mod\comments\Module;
  */
 class ManageController extends Controller
 {
+    use ModuleTrait;
+
     /**
      * @var string path to index view file, which is used in admin panel
      */
@@ -58,7 +59,7 @@ class ManageController extends Controller
     {
         $searchModel = Yii::createObject($this->searchClass);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $commentModel = Yii::$app->getModule(Module::$name)->commentModelClass;
+        $commentModel = $this->getModule()->commentModelClass;
 
         return $this->render($this->indexView, [
             'dataProvider' => $dataProvider,
@@ -117,11 +118,11 @@ class ManageController extends Controller
      *
      * @throws NotFoundHttpException if the model cannot be found
      *
-     * @return CommentModel|AdjacencyListBehavior the loaded model
+     * @return CommentModel
      */
     protected function findModel($id)
     {
-        $commentModel = Yii::$app->getModule(Module::$name)->commentModelClass;
+        $commentModel = $this->getModule()->commentModelClass;
 
         if (($model = $commentModel::findOne($id)) !== null) {
             return $model;

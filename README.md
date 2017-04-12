@@ -45,6 +45,8 @@ To access the module, you need to add the following code to your application con
 'modules' => [
     'comment' => [
         'class' => 'yii2mod\comments\Module',
+        // when admin can edit comment on frontend
+        'enableInlineEdit' = false,
     ],
 ]
 ```

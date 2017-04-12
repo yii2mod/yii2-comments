@@ -27,7 +27,7 @@ class Module extends \yii\base\Module
     public $controllerNamespace = 'yii2mod\comments\controllers';
 
     /**
-     * @var bool whether admin can edit comment on frontend
+     * @var bool when admin can edit comment on frontend
      */
     public $enableInlineEdit = false;
 

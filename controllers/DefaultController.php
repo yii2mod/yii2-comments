@@ -70,7 +70,7 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['quick-edit'],
+                'only' => ['quick-edit', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,

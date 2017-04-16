@@ -3,6 +3,7 @@
 namespace yii2mod\comments\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -45,6 +46,15 @@ class ManageController extends Controller
                     'index' => ['get'],
                     'update' => ['get', 'post'],
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
                 ],
             ],
         ];

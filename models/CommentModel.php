@@ -237,7 +237,7 @@ class CommentModel extends ActiveRecord
             ->andWhere([
                 'entityId' => $entityId,
                 'entity' => $entity,
-            ])->with(['author']);
+            ])->orderBy(['parentId' => 'ASC', self::tableName().'.createdAt' => 'ASC'])->with(['author']);
 
         if ($maxLevel > 0) {
             $query->andWhere(['<=', 'level', $maxLevel]);

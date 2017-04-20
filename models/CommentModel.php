@@ -233,20 +233,23 @@ class CommentModel extends ActiveRecord
     public static function getTree($entity, $entityId, $maxLevel = null)
     {
         $query = static::find()
+            ->alias('c')
             ->approved()
             ->andWhere([
-                'entityId' => $entityId,
-                'entity' => $entity,
-            ])->with(['author']);
+                'c.entityId' => $entityId,
+                'c.entity' => $entity,
+            ])
+            ->orderBy(['c.parentId' => SORT_ASC, 'c.createdAt' => SORT_ASC])
+            ->with(['author']);
 
         if ($maxLevel > 0) {
-            $query->andWhere(['<=', 'level', $maxLevel]);
+            $query->andWhere(['<=', 'c.level', $maxLevel]);
         }
 
         $models = $query->all();
 
         if (!empty($models)) {
-            $models = self::buildTree($models);
+            $models = static::buildTree($models);
         }
 
         return $models;
@@ -365,7 +368,7 @@ class CommentModel extends ActiveRecord
      */
     public function getCommentsCount()
     {
-        return (int)static::find()
+        return (int) static::find()
             ->approved()
             ->andWhere(['entity' => $this->entity, 'entityId' => $this->entityId])
             ->count();
@@ -401,7 +404,7 @@ class CommentModel extends ActiveRecord
         $descendantIds = ArrayHelper::getColumn($this->getDescendants()->asArray()->all(), 'id');
 
         if (!empty($descendantIds)) {
-            self::updateAll(['status' => $this->status], ['id' => $descendantIds]);
+            static::updateAll(['status' => $this->status], ['id' => $descendantIds]);
         }
 
         return true;

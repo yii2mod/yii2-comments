@@ -3,7 +3,6 @@
 namespace yii2mod\comments\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -35,6 +34,19 @@ class ManageController extends Controller
     public $searchClass = 'yii2mod\comments\models\search\CommentSearch';
 
     /**
+     * @var array access control config
+     */
+    public $accessControlConfig = [
+        'class' => 'yii\filters\AccessControl',
+        'rules' => [
+            [
+                'allow' => true,
+                'roles' => ['admin'],
+            ],
+        ],
+    ];
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -48,15 +60,7 @@ class ManageController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                ],
-            ],
+            'access' => $this->accessControlConfig,
         ];
     }
 

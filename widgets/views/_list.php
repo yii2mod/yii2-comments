@@ -27,7 +27,7 @@ use yii2mod\editable\Editable;
                 <?php echo Html::a($model->getPostedDate(), $model->getAnchorUrl(), ['class' => 'comment-date']); ?>
             </div>
             <div class="comment-body">
-                <?php if (Yii::$app->getModule('comment')->enableInlineEdit): ?>
+                <?php if (Yii::$app->getModule('comment')->enableInlineEdit && Yii::$app->getUser()->can('admin')): ?>
                     <?php echo Editable::widget([
                         'model' => $model,
                         'attribute' => 'content',

@@ -46,9 +46,7 @@ use yii2mod\editable\Editable;
 <?php if ($model->hasChildren()) : ?>
     <ul class="children">
         <?php foreach ($model->getChildren() as $children) : ?>
-            <li class="comment" id="comment-<?php echo $children->id; ?>">
-                <?php echo $this->render('_list', ['model' => $children, 'maxLevel' => $maxLevel]) ?>
-            </li>
+            <?php echo $this->render('_list', ['model' => $children, 'maxLevel' => $maxLevel]) ?>
         <?php endforeach; ?>
     </ul>
 <?php endif; ?>

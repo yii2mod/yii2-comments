@@ -31,6 +31,63 @@
         submitBtnLoadingText: 'Loading...'
     };
 
+    var events = {
+        /**
+         * beforeCreate event is triggered before creating the comment.
+         * The signature of the event handler should be:
+         *     function (event)
+         * where
+         *  - event: an Event object.
+         *
+         * If the handler returns a boolean false, it will stop further comment creation after this event.
+         */
+        beforeCreate: 'beforeCreate',
+        /**
+         * afterCreate event is triggered after comment has been created.
+         * The signature of the event handler should be:
+         *     function (event)
+         * where
+         *  - event: an Event object.
+         */
+        afterCreate: 'afterCreate',
+        /**
+         * beforeDelete event is triggered before comment has been deleted.
+         * The signature of the event handler should be:
+         *     function (event)
+         * where
+         *  - event: an Event object.
+         *
+         * If the handler returns a boolean false, it will stop further comment deletion after this event.
+         */
+        beforeDelete: 'beforeDelete',
+        /**
+         * afterDelete event is triggered after comment has been deleted.
+         * The signature of the event handler should be:
+         *     function (event)
+         * where
+         *  - event: an Event object.
+         */
+        afterDelete: 'afterDelete',
+        /**
+         * beforeReply event is triggered before reply to comment.
+         * The signature of the event handler should be:
+         *     function (event)
+         * where
+         *  - event: an Event object.
+         *
+         * If the handler returns a boolean false, it will stop further comment reply after this event.
+         */
+        beforeReply: 'beforeReply',
+        /**
+         * beforeReply event is triggered after reply to comment.
+         * The signature of the event handler should be:
+         *     function (event)
+         * where
+         *  - event: an Event object.
+         */
+        afterReply: 'afterReply'
+    };
+
     var commentData = {};
 
     // Methods
@@ -65,20 +122,27 @@
 
     /**
      * Create a comment
-     * @returns {boolean}
      */
-    function createComment(event) {
+    function createComment(params) {
         var $commentForm = $(this);
-        var settings = commentData[event.data.wrapperSelector].settings;
+
+        var event = $.Event(events.beforeCreate);
+        $commentForm.trigger(event);
+        if (event.result === false) {
+            return false;
+        }
+
+        var settings = commentData[params.data.wrapperSelector].settings;
         var pjaxSettings = $.extend({container: settings.pjaxContainerId}, settings.pjaxSettings);
         var formData = $commentForm.serializeArray();
         formData.push({'name': 'CommentModel[url]', 'value': getCurrentUrl()});
-        // disable submit button
         $commentForm.find(':submit').prop('disabled', true).text(settings.submitBtnLoadingText);
-        // creating a comment and errors handling
+
         $.post($commentForm.attr('action'), formData, function (data) {
-            if (data.status == 'success') {
+            if (data.status === 'success') {
                 $.pjax(pjaxSettings);
+
+                $commentForm.trigger($.Event(events.afterCreate));
             }
             // errors handling
             else {
@@ -88,7 +152,6 @@
                 else {
                     $commentForm.yiiActiveForm('updateAttribute', 'commentmodel-content', [data.message]);
                 }
-                // enable submit button
                 $commentForm.find(':submit').prop('disabled', false).text(settings.submitBtnText);
             }
         }).fail(function (xhr, status, error) {
@@ -101,28 +164,39 @@
 
     /**
      * Reply to comment
-     * @param event
+     *
+     * @param params
      */
-    function reply(event) {
+    function reply(params) {
         var $this = $(this);
-        var $commentForm = $(event.data.formSelector);
-        var settings = commentData[event.data.wrapperSelector].settings;
+        var $commentForm = $(params.data.formSelector);
+
+        var event = $.Event(events.beforeReply);
+        $commentForm.trigger(event);
+        if (event.result === false) {
+            return false;
+        }
+
+        var settings = commentData[params.data.wrapperSelector].settings;
         var parentCommentSelector = $this.parents('[data-comment-content-id="' + $this.data('comment-id') + '"]');
         // append the comment form inside particular comment container
         $commentForm.appendTo(parentCommentSelector);
         $commentForm.find('[data-comment="parent-id"]').val($this.data('comment-id'));
         $commentForm.find(settings.cancelReplyBtnSelector).show();
 
+        $commentForm.trigger($.Event(events.afterReply));
+
         return false;
     }
 
     /**
      * Cancel reply
-     * @param event
+     *
+     * @param params
      */
-    function cancelReply(event) {
-        var $commentForm = $(event.data.formSelector);
-        var settings = commentData[event.data.wrapperSelector].settings;
+    function cancelReply(params) {
+        var $commentForm = $(params.data.formSelector);
+        var settings = commentData[params.data.wrapperSelector].settings;
         var formContainer = $(settings.pjaxContainerId).find(settings.formContainerSelector);
         // prepend the comment form to `formContainer`
         $commentForm.find(settings.cancelReplyBtnSelector).hide();
@@ -134,11 +208,19 @@
 
     /**
      * Delete a comment
-     * @param event
+     *
+     * @param params
      */
-    function deleteComment(event) {
+    function deleteComment(params) {
         var $this = $(this);
-        var settings = commentData[event.data.wrapperSelector].settings;
+        var $commentForm = $(params.data.formSelector);
+        var settings = commentData[params.data.wrapperSelector].settings;
+
+        var event = $.Event(events.beforeDelete);
+        $commentForm.trigger(event);
+        if (event.result === false) {
+            return false;
+        }
 
         $.ajax({
             url: $this.data('url'),
@@ -151,6 +233,8 @@
                 $this.parents(settings.toolsSelector).remove();
             }
         });
+
+        $commentForm.trigger(events.afterDelete);
 
         return false;
     }

@@ -202,6 +202,26 @@ You may use the following events:
 ]
 ```
 
+## Using Comment Plugin Events
+
+```js
+$(document).on('beforeCreate', '#comment-form', function (e) {
+    if (!confirm("Everything is correct. Submit?")) {
+        return false;
+    }
+    return true;
+});
+```
+
+Available events are:
+
+* beforeCreate
+* afterCreate
+* beforeDelete
+* afterDelete
+* beforeReply
+* afterReply
+
 ## Internationalization
 
 All text and messages introduced in this extension are translatable under category 'yii2mod.comments'.

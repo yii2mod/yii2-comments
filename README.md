@@ -77,6 +77,8 @@ http://localhost/path/to/index.php?r=comments/index
 > If you have added this controller in the module admin, the URL will look like the following
 > http://localhost/path/to/index.php?r=admin/comments/index
 
+> By default only users with `admin` role have access to comments management section. But, you can override `accessControlConfig` property for ManageController.
+
 **Notes:**
 > 1) Delete button visible only for user with `admin` role. 
 

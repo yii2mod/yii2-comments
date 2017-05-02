@@ -21,7 +21,7 @@ php composer.phar require --prefer-dist yii2mod/yii2-comments "*"
 
 or add
 
-```json
+```
 "yii2mod/yii2-comments": "*"
 ```
 
@@ -51,40 +51,17 @@ To access the module, you need to add the following code to your application con
 ]
 ```
 
-**Comments management section setup**
-
-To access the comments management section, you need to add the following code to your application configuration:
-```php
-  'controllerMap' => [
-      'comments' => 'yii2mod\comments\controllers\ManageController',
-      // Also you can override some controller properties in following way:
-      'comments' => [
-          'class' => 'yii2mod\comments\controllers\ManageController',
-          'searchClass' => [
-              'class' => 'yii2mod\comments\models\search\CommentSearch',
-              'pageSize' => 25
-          ],
-          'indexView' => 'custom path to index view file',
-          'updateView' => 'custom path to update view file',
-      ],
-  ]  
-```
-> Basically the above code must be placed in the `admin` module
-
-You can then access to management section through the following URL:
+Now you can access to management section through the following URL:
 http://localhost/path/to/index.php?r=comments/index
-
-> If you have added this controller in the module admin, the URL will look like the following
-> http://localhost/path/to/index.php?r=admin/comments/index
 
 > By default only users with `admin` role have access to comments management section. But, you can override `accessControlConfig` property for ManageController.
 
 **Notes:**
-> 1) Delete button visible only for user with `admin` role. 
+> 1) Delete button visible only for users with `admin` role.
 
 > 2) When you delete a comment, all nested comments will be marked as `deleted`.
 
-> 3) For change the any function in the CommentModel you can create your own model and change the property `commentModelClass` in the Comment Module.
+> 3) You can override default CommentModel class by changing the property `commentModelClass` in the Comment Module.
 
 > 4) You can implement your own methods `getAvatar` and `getUsername` in the `userIdentityClass`. Just create this methods in your User model. For example:
 
@@ -154,20 +131,14 @@ $model = Post::find()->where(['title' => 'some post title'])->one();
       'model' => $model,
       'relatedTo' => 'User ' . \Yii::$app->user->identity->username . ' commented on the page ' . \yii\helpers\Url::current(),
       'maxLevel' => 2,
-      // set `pageSize` with custom sorting
-      'dataProviderConfig' => [ 
-          'sort' => [
-              'attributes' => ['id'],
-              'defaultOrder' => ['id' => SORT_DESC],
-          ],
+      'dataProviderConfig' => [
           'pagination' => [
               'pageSize' => 10
           ],
       ],
-       // your own config for comments ListView, for example:
       'listViewConfig' => [
           'emptyText' => Yii::t('app', 'No comments found.'),
-      ]
+      ],
 ]); ?>
 ```
 

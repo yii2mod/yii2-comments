@@ -50,7 +50,7 @@ To access the module, you need to add the following code to your application con
     ],
 ]
 ```
->**NOTE:** Module id must be `comment` and not otherwise. This is because it is referred (somewhere)[https://github.com/yii2mod/yii2-comments/blob/master/traits/ModuleTrait.php#L20] in the code with such name. A PR to fix it to use configured module id is welcome.
+>**NOTE:** Module id must be `comment` and not otherwise. This is because it is referred [somewhere](https://github.com/yii2mod/yii2-comments/blob/master/traits/ModuleTrait.php#L20) in the code with such name. A PR to fix it to use configured module id is welcome.
 
 Now you can access to management section through the following URL:
 http://localhost/path/to/index.php?r=comments/index

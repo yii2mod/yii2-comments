@@ -6,7 +6,7 @@
     <br>
 </p>
 
-This module provide a comments managing system for Yii2 application.
+This module provides a comments managing system.
 
 [![Latest Stable Version](https://poser.pugx.org/yii2mod/yii2-comments/v/stable)](https://packagist.org/packages/yii2mod/yii2-comments) 
 [![Total Downloads](https://poser.pugx.org/yii2mod/yii2-comments/downloads)](https://packagist.org/packages/yii2mod/yii2-comments) 

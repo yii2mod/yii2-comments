@@ -12,6 +12,7 @@ This module provides a comments managing system.
 [![Total Downloads](https://poser.pugx.org/yii2mod/yii2-comments/downloads)](https://packagist.org/packages/yii2mod/yii2-comments) 
 [![License](https://poser.pugx.org/yii2mod/yii2-comments/license)](https://packagist.org/packages/yii2mod/yii2-comments)
 [![Build Status](https://travis-ci.org/yii2mod/yii2-comments.svg?branch=master)](https://travis-ci.org/yii2mod/yii2-comments)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yii2mod/yii2-comments/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yii2mod/yii2-comments/?branch=master)
 
 Installation
 ------------

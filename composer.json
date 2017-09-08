@@ -26,7 +26,8 @@
         "paulzi/yii2-adjacency-list": "^2.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~2.0"
+        "friendsofphp/php-cs-fixer": "~2.0",
+        "phpunit/phpunit": "~6.0"
     },
     "autoload": {
         "psr-4": {

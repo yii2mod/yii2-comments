@@ -168,7 +168,7 @@ class CommentModel extends ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            if ($this->parentId > 0) {
+            if ($this->parentId > 0 && $this->isNewRecord) {
                 $parentNodeLevel = static::find()->select('level')->where(['id' => $this->parentId])->scalar();
                 $this->level += $parentNodeLevel;
             }

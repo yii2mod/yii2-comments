@@ -18,4 +18,4 @@ install:
 
 script:
   - vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run --diff
-  - phpunit --verbose
+  - vendor/bin/phpunit --verbose

@@ -131,6 +131,7 @@ class DefaultController extends Controller
     public function actionDelete($id)
     {
         $commentModel = $this->findModel($id);
+        $commentModel->setScenario(CommentModel::SCENARIO_MODERATION);
         $event = Yii::createObject(['class' => CommentEvent::class, 'commentModel' => $commentModel]);
         $this->trigger(self::EVENT_BEFORE_DELETE, $event);
 

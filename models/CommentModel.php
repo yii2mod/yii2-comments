@@ -42,6 +42,8 @@ class CommentModel extends ActiveRecord
 {
     use ModuleTrait;
 
+    const SCENARIO_MODERATION = 'moderation';
+
     /**
      * @var null|array|ActiveRecord[] comment children
      */
@@ -67,7 +69,7 @@ class CommentModel extends ActiveRecord
             ['status', 'default', 'value' => Status::APPROVED],
             ['status', 'in', 'range' => Status::getConstantsByName()],
             ['level', 'default', 'value' => 1],
-            ['parentId', 'validateParentID'],
+            ['parentId', 'validateParentID', 'except'=>static::SCENARIO_MODERATION],
             [['entityId', 'parentId', 'status', 'level'], 'integer'],
         ];
     }

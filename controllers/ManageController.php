@@ -142,7 +142,7 @@ class ManageController extends Controller
     {
         $commentModel = $this->getModule()->commentModelClass;
 
-        if (($model = $commentModel::findOne($id)) !== null) {
+        if (null !== ($model = $commentModel::findOne($id))) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('yii2mod.comments', 'The requested page does not exist.'));

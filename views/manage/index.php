@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="comments-index">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title); ?></h1>
     <?php Pjax::begin(['timeout' => 10000]); ?>
     <?php echo GridView::widget([
         'dataProvider' => $dataProvider,

@@ -14,7 +14,7 @@ class m010101_100001_init_comment extends Migration
     {
         $tableOptions = null;
 
-        if ($this->db->driverName === 'mysql') {
+        if ('mysql' === $this->db->driverName) {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 

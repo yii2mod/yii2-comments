@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = Yii::t('yii2mod.comments', 'Update');
 ?>
 <div class="comment-update">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title); ?></h1>
 
     <div class="comment-form">
         <?php $form = ActiveForm::begin(); ?>
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = Yii::t('yii2mod.comments', 'Update');
         ?>
         <?php echo $form->field($model, 'status')->dropDownList(Status::listData()); ?>
         <div class="form-group">
-            <?php echo Html::submitButton(Yii::t('yii2mod.comments', 'Update'), ['class' => 'btn btn-primary']) ?>
+            <?php echo Html::submitButton(Yii::t('yii2mod.comments', 'Update'), ['class' => 'btn btn-primary']); ?>
             <?php echo Html::a(Yii::t('yii2mod.comments', 'Go Back'), ['index'], ['class' => 'btn btn-default']); ?>
         </div>
         <?php ActiveForm::end(); ?>

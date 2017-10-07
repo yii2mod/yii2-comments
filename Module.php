@@ -38,7 +38,7 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        if ($this->userIdentityClass === null) {
+        if (null === $this->userIdentityClass) {
             $this->userIdentityClass = Yii::$app->getUser()->identityClass;
         }
     }

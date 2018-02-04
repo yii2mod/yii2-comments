@@ -12,7 +12,7 @@ class m160629_121330_add_relatedTo_column_to_comment extends Migration
      */
     public function up()
     {
-        $this->addColumn('{{%Comment}}', 'relatedTo', $this->string(500)->notNull()->after('updatedBy'));
+        $this->addColumn('{{%Comment}}', 'relatedTo', $this->string(500)->notNull()->defaultValue("")->after('updatedBy'));
     }
 
     /**

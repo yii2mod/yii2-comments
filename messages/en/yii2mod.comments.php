@@ -25,7 +25,7 @@ return [
     'Status' => 'Status',
     'Level' => 'Level',
     'Created by' => 'Created by',
-    'Updated by' => 'Related to',
+    'Updated by' => 'Updated by',
     'Related to' => 'Related to',
     'Url' => 'Url',
     'Created date' => 'Created date',

@@ -227,3 +227,9 @@ return [
 #### Example comments
 -----
 ![Alt text](http://res.cloudinary.com/zfort/image/upload/v1467214676/comments-preview.png "Example comments")
+
+
+## Support us
+
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/yii2mod). 
+All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.

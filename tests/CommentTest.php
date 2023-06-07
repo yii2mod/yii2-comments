@@ -151,10 +151,10 @@ class CommentTest extends TestCase
     {
         $post = PostModel::find()->one();
 
-        return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
+        return mb_convert_encoding(Yii::$app->getSecurity()->encryptByKey(Json::encode([
             'entity' => hash('crc32', get_class($post)),
             'entityId' => $post->id,
             'relatedTo' => get_class($post) . ':' . $post->id,
-        ]), 'comment'));
+        ]), 'comment'),  'UTF-8');
     }
 }

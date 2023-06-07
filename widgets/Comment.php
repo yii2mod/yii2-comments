@@ -163,11 +163,11 @@ class Comment extends Widget
      */
     protected function getEncryptedEntity()
     {
-        return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
+        return mb_convert_encoding(Yii::$app->getSecurity()->encryptByKey(Json::encode([
             'entity' => $this->entity,
             'entityId' => $this->entityId,
             'relatedTo' => $this->relatedTo,
-        ]), $this->getModule()->id));
+        ]), $this->getModule()->id), 'UTF-8');
     }
 
     /**

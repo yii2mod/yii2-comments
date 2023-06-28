@@ -9,25 +9,27 @@ use yii\widgets\ActiveForm;
 /* @var $encryptedEntity string */
 /* @var $formId string comment form id */
 ?>
-<div class="comment-form-container">
+<div class="nk-chat-editor">
     <?php $form = ActiveForm::begin([
         'options' => [
             'id' => $formId,
-            'class' => 'comment-box',
+            //'class' => '',
         ],
         'action' => Url::to(['/comment/default/create', 'entity' => $encryptedEntity]),
         'validateOnChange' => false,
         'validateOnBlur' => false,
     ]); ?>
+    <div class="nk-chat-editor-form">
 
-    <?php echo $form->field($commentModel, 'content', ['template' => '{input}{error}'])->textarea(['placeholder' => Yii::t('yii2mod.comments', 'Add a comment...'), 'rows' => 4, 'data' => ['comment' => 'content']]); ?>
+    <?php echo $form->field($commentModel, 'content', ['template' => '{input}{error}'])->textarea(['class' => 'form-control form-control-simple no-resize', 'placeholder' => Yii::t('yii2mod.comments', 'Add a comment...'), 'rows' => 4, 'data' => ['comment' => 'content']]); ?>
     <?php echo $form->field($commentModel, 'parentId', ['template' => '{input}'])->hiddenInput(['data' => ['comment' => 'parent-id']]); ?>
-    <div class="comment-box-partial">
-        <div class="button-container show">
-            <?php echo Html::a(Yii::t('yii2mod.comments', 'Click here to cancel reply.'), '#', ['id' => 'cancel-reply', 'class' => 'pull-right', 'data' => ['action' => 'cancel-reply']]); ?>
-            <?php echo Html::submitButton(Yii::t('yii2mod.comments', 'Comment'), ['class' => 'btn btn-primary comment-submit']); ?>
-        </div>
     </div>
+    <ul class="nk-chat-editor-tools g-2">
+        <li>
+            <?php echo Html::a(Yii::t('yii2mod.comments', 'Click here to cancel reply.'), '#', ['id' => 'cancel-reply', 'class' => 'pull-right', 'data' => ['action' => 'cancel-reply']]); ?>
+            <?php echo Html::submitButton('<em class="icon ni ni-send-alt"></em>', ['class' => 'btn btn-round btn-primary btn-icon comment-submit']); ?>
+        </li>
+    </ul>
     <?php $form->end(); ?>
-    <div class="clearfix"></div>
+
 </div>

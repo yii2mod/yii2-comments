@@ -163,11 +163,30 @@ class Comment extends Widget
      */
     protected function getEncryptedEntity()
     {
-        return utf8_encode(Yii::$app->getSecurity()->encryptByKey(Json::encode([
+        return $this->toUtf8(Yii::$app->getSecurity()->encryptByKey(Json::encode([
             'entity' => $this->entity,
             'entityId' => $this->entityId,
             'relatedTo' => $this->relatedTo,
         ]), $this->getModule()->id));
+    }
+
+    /**
+     * Converts a binary-safe ISO-8859-1 string to UTF-8.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function toUtf8($value)
+    {
+        if (function_exists('mb_convert_encoding')) {
+            return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
+        }
+
+        if (function_exists('iconv')) {
+            return iconv('ISO-8859-1', 'UTF-8//IGNORE', $value);
+        }
+
+        return $value;
     }
 
     /**
